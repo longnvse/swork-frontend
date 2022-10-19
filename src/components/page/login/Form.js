@@ -34,7 +34,7 @@ function LoginForm(props) {
                     </Form.Item>
                     <div className="flex items-center justify-between">
                         <Form.Item
-                            name={"remember"}
+                            name={"rememberMe"}
                             valuePropName={"checked"}
                         >
                             <Checkbox>Nhớ mật khẩu</Checkbox>
