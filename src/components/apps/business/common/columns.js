@@ -22,5 +22,8 @@ export const columns = [
     {
         title: 'Lĩnh vực',
         dataIndex: 'fieldOperations',
+    }, {
+        dataIndex: 'action',
+        width: '10%'
     }
 ]
