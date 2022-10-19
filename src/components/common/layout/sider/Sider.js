@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Layout, Menu} from "antd";
 import logo from "../../../../images/logo.png";
+import {Link} from "react-router-dom";
 
 const {Sider} = Layout
 
@@ -9,8 +10,8 @@ function CommonSider({children}) {
 
     const items = [
         {
-            label: "Dự án",
-            key: "project"
+            label: <Link to={"/business"}>Công ty/Doanh nghiệp</Link>,
+            key: "business",
         },
     ]
 
