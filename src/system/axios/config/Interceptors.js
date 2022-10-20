@@ -1,5 +1,4 @@
 import {
-    getLanguage,
     getLocalAccessToken,
     getLocalOauth2Token,
     SWAxios as axiosInstance,
@@ -42,7 +41,7 @@ const setup = (store) => {
             const status = response?.status
 
 
-            if (!originalConfig.url.includes("/login-rest/v2.0/signin")) {
+            if (!originalConfig?.url?.includes("/login-rest/v1.0/signin")) {
                 // Access Token was expired
                 if (status === 401 && !originalConfig._retry) {
                     originalConfig._retry = true;
@@ -52,7 +51,8 @@ const setup = (store) => {
                         updateLocalAccessToken(accessToken);
                         return axiosInstance(originalConfig);
                     } catch (_error) {
-                        if (_error.config.url === `${_error.config.baseURL}/login-rest/v2.0/refreshtoken` && _error.response.status === 400) {
+                        debugger
+                        if (_error.config.url === `/login-rest/v1.0/refreshtoken` && _error.response.status === 400) {
                             store.dispatch(logoutStart());
                         }
                         return Promise.reject(_error);

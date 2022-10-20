@@ -29,7 +29,3 @@ export const updateLocalOauth2Token = (oauth2Token) => {
     localStorage.setItem("oauth2Token", JSON.stringify(oauth2Token));
 }
 
-export const getLanguage = () => {
-    return localStorage.getItem("language")
-}
-
