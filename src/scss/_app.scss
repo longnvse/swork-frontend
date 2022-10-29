@@ -21,4 +21,11 @@
             margin: auto;
         }
     }
+
+    &__content {
+        border-radius: var(--border-radius);
+        margin: 8px;
+        padding: 16px;
+        background-color: #fff;
+    }
 }

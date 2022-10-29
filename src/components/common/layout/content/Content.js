@@ -6,9 +6,7 @@ const {Content} = Layout
 function CommonContent({children}) {
     return (
         <Content
-            style={{
-                margin: '15px',
-            }}
+            className={"app__content"}
         >
             {children}
         </Content>
