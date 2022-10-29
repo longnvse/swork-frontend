@@ -15,9 +15,7 @@ function CommonHeader() {
             <Col>
                 <div className={"text__header pl-4"}>Danh sách công ty</div>
             </Col>
-            <Col style={{
-                paddingRight: 4
-            }}>
+            <Col style={{paddingRight: 4}}>
                 <ProfileIcon/>
             </Col>
         </Header>
