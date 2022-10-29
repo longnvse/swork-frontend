@@ -1,5 +1,19 @@
 .app {
     &__header {
+        &--item {
+            &:hover {
+                background-color: var(--color-lighter);
+                cursor: pointer;
+                border-radius: var(--border-radius);
+            }
+
+            min-width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         &--logo {
             width: 100px;
             height: 64px;

@@ -1,0 +1,15 @@
+.ant-dropdown {
+    border-radius: 4px;
+
+    &-menu {
+        padding: 3px 4px;
+
+        &-item {
+            min-height: 44px;
+        }
+
+        &-item:hover {
+            border-radius: 4px;
+        }
+    }
+}
