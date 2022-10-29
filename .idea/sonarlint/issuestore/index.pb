@@ -9,8 +9,6 @@ R
 "src/components/page/login/index.js,a/2/a2b90b60b3a4f4869af81f265592b6d6566d1d3b
 T
 $src/components/apps/project/index.js,4/0/4074a88faa260a26bc322023a8356ab4ab976e69
-<
-src/index.js,f\9\f900edc44cb929c2267a16100a32851f6d5b477d
 N
 src/system/axios/config/Url.js,7\1\71b4f28d20d03f26888f91ba8e7a5e74dc2e7742
 Z

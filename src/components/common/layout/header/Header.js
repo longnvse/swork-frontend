@@ -10,7 +10,8 @@ function CommonHeader() {
             className={"flex flex-row justify-between items-center"}
             style={{
                 background: '#FFFFFFFF',
-                padding: 0
+                padding: 0,
+                borderLeft: '1px solid inherit'
             }}>
             <Col>
                 <div className={"text__header pl-4"}>Danh sách công ty</div>

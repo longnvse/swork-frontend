@@ -2,12 +2,18 @@ import React, {useEffect, useState} from 'react';
 import {Button, message, Row, Table} from "antd";
 import {columns} from "./common/columns";
 import {deleteBusiness, getBusinessPages} from "../../../api/business/api";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 
 const BusinessList = props => {
-
     const [data, setData] = useState([]);
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        // console.log(searchParams.get('status'))
+    }, [searchParams]);
+
+
     const mapData = (item, index) => {
         return {
             key: item.id,

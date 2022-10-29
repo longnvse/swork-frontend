@@ -15,9 +15,8 @@
         }
 
         &--logo {
-            width: 100px;
-            height: 64px;
-            object-fit: cover;
+            height: 42px;
+            object-fit: contain;
             margin: auto;
         }
     }
