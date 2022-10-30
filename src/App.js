@@ -4,8 +4,11 @@ import Dashboard from "./components/common/layout";
 import BusinessList from "./components/apps/business";
 import RootPage from "./components/page";
 import BusinessRouter from "./components/apps/business/router";
+import {ConfigProvider} from "antd";
 
 function App() {
+
+
     return (
         <BrowserRouter>
             <Routes>

@@ -11,6 +11,12 @@ import setupInterceptors from "./system/axios/config/Interceptors";
 import vi_VN from 'antd/es/locale/vi_VN';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+ConfigProvider.config({
+    theme: {
+        primaryColor: '#7D6CE2FF'
+    }
+})
+
 root.render(
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
