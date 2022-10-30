@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Button, message, Row, Table} from "antd";
+import {message} from "antd";
 import {columns} from "./common/columns";
 import {deleteBusiness, getBusinessPages} from "../../../api/business/api";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
+import CommonList from "../../common/list";
 
 const BusinessList = props => {
     const [data, setData] = useState([]);
@@ -44,14 +45,15 @@ const BusinessList = props => {
 
     return (
         <div>
-            <Row className={"mb-4"}>
-                <Button onClick={onClickAdd}>Thêm mới</Button>
-            </Row>
-            <Table
-                columns={columns}
-                dataSource={data}
-                bordered={true}
-            />
+            {/*<Row className={"mb-4"}>*/}
+            {/*    <Button icon={<BsPlusLg/>} onClick={onClickAdd}>Thêm mới</Button>*/}
+            {/*</Row>*/}
+            {/*<Table*/}
+            {/*    columns={columns}*/}
+            {/*    dataSource={data}*/}
+            {/*    bordered={true}*/}
+            {/*/>*/}
+            <CommonList mapData={mapData} load={getBusinessPages} columns={columns}/>
         </div>
     );
 };

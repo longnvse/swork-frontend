@@ -1,3 +1,72 @@
+.ant-btn {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    justify-content: center;
+    border-color: var(--color);
+    color: var(--color);
+    gap: 4px;
+    padding: 0 8px;
+    font-size: 16px;
+
+    & > .anticon + span {
+        margin-left: 0;
+    }
+
+    &-primary {
+        background-color: var(--color);
+        color: #ffffff !important;
+
+        &:active {
+            background-color: var(--color);
+        }
+
+        &:hover {
+            background-color: var(--color-hover);
+        }
+
+        &:focus {
+            background-color: var(--color);
+        }
+    }
+
+    &:hover {
+        border-color: var(--color-hover);
+        color: var(--color-hover);
+    }
+
+    &:active {
+        border-color: var(--color);
+        color: var(--color);
+    }
+
+    &:focus {
+        border-color: var(--color);
+        color: var(--color);
+    }
+}
+
+.ant-checkbox {
+
+    &:hover .ant-checkbox-inner {
+        border-color: var(--color)
+    }
+
+    &-checked .ant-checkbox-inner {
+        background-color: var(--color);
+        border-color: var(--color)
+    }
+
+    &-input:focus + .ant-checkbox-inner {
+        border-color: var(--color)
+    }
+
+
+    &-wrapper:hover .ant-checkbox-inner {
+        border-color: var(--color)
+    }
+}
+
 .ant-dropdown {
     border-radius: 4px;
 
@@ -10,6 +79,83 @@
 
         &-item:hover {
             border-radius: 4px;
+        }
+    }
+}
+
+.ant-input-affix-wrapper {
+    border-radius: var(--border-radius-small);
+
+    &:not(.ant-input-affix-wrapper-disabled):hover {
+        border-color: var(--color);
+    }
+
+    &:focus {
+        border-color: var(--color);
+        box-shadow: 0 0 0 2px var(--color-shadow);
+    }
+
+    &-focused {
+        border-color: var(--color);
+        box-shadow: 0 0 0 2px var(--color-shadow);
+    }
+}
+
+.ant-pagination {
+    & * {
+        border: none !important;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        line-height: inherit;
+    }
+
+    &-prev:hover .ant-pagination-item-link {
+        color: var(--color)
+    }
+
+    &-next:hover .ant-pagination-item-link {
+        color: var(--color)
+    }
+
+    &-item {
+        //justify-content: center;
+        &:hover {
+            border-color: white;
+
+            & a {
+                color: inherit;
+            }
+        }
+
+        &-active {
+            background-color: var(--color);
+            border-radius: 16px;
+            justify-content: center;
+
+            &:hover {
+                border-color: white;
+
+                & a {
+                    color: white;
+                }
+            }
+
+            & a {
+                color: white;
+
+                &:hover {
+                    color: white !important;
+                }
+            }
+        }
+
+        &-link-icon {
+            color: var(--color) !important;
+        }
+
+        &-ellipsis {
+            margin-right: 20px !important;
         }
     }
 }

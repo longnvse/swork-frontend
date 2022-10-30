@@ -7,7 +7,7 @@ import Sider from "antd/es/layout/Sider";
 
 function CommonSider({children}) {
     const [collapsed, setCollapsed] = useState(false);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         console.log(searchParams.getAll('menu'))
@@ -60,7 +60,6 @@ function CommonSider({children}) {
                     style={{
                         backgroundColor: 'inherit'
                     }}
-                    // onClick={onSelectItem}
                     defaultSelectedKeys={searchParams.getAll("menu")}
                 />
             </div>

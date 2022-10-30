@@ -3,6 +3,8 @@ import {Button, Col, Form, Input, message, Row, Typography} from "antd";
 import {addBusiness, getBusiness, updateBusiness} from "../../../../api/business/api";
 import FormItem from "antd/es/form/FormItem";
 import {useNavigate, useParams} from "react-router-dom";
+import {BsPlusLg} from "react-icons/bs";
+import {CloseOutlined} from "@ant-design/icons";
 
 const BusinessForm = props => {
     const navigate = useNavigate();
@@ -19,7 +21,7 @@ const BusinessForm = props => {
 
 
     const onFinish = (values) => {
-        if(!id){
+        if (!id) {
             addBusiness(values).then(response => {
                 message.success("Tạo mới thành công!");
                 form.resetFields();
@@ -27,7 +29,7 @@ const BusinessForm = props => {
                 console.log(error)
                 message.error(error?.response?.data?.detail || "Đã xảy ra lỗi, vui lòng thử lại!");
             })
-        } else{
+        } else {
             updateBusiness(id, values).then(response => {
                 message.success("Cập nhật thành công!");
                 navigate("/business")
@@ -154,10 +156,15 @@ const BusinessForm = props => {
                 </Row>
                 <Row gutter={12}>
                     <Col>
-                        <Button htmlType="submit">{`${id ? "Cập nhật" : "Thêm mới"}`}</Button>
+                        <Button type={"primary"}
+                                icon={<BsPlusLg/>}
+                                htmlType="submit">
+                            {`${id ? "Cập nhật" : "Thêm mới"}`}
+                        </Button>
                     </Col>
                     <Col>
-                        <Button onClick={() => navigate("/business")}>Hủy</Button>
+                        <Button icon={<CloseOutlined style={{fontSize: 20}}/>}
+                                onClick={() => navigate("/business")}>Hủy bỏ</Button>
                     </Col>
                 </Row>
             </Form>
