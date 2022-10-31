@@ -44,7 +44,7 @@ function CommonSider({children}) {
             <div style={{
                 margin: 8,
                 maxHeight: 64
-            }}>
+            }} className={"flex items-center justify-center"}>
                 <Image
                     src={logo}
                     alt={"logo"}

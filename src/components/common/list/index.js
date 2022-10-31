@@ -1,9 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Checkbox, Col, Input, Row, Table} from "antd";
-import {BsPlusLg} from "react-icons/bs";
+import {Col, Input, Row, Table} from "antd";
 import PropTypes from "prop-types";
 import {debounce} from "lodash";
 import {FiSearch} from "react-icons/fi";
+import ButtonDrawer from "../button/ButtonDrawer";
+import BusinessForm from "../../apps/business/form";
 
 function CommonList({mapData, load, onClickAdd, columns, buttonAdd}) {
     const [params, setParams] = useState({});
@@ -35,7 +36,8 @@ function CommonList({mapData, load, onClickAdd, columns, buttonAdd}) {
             <Row gutter={12} className={"mb-4"}>
                 <Col>
                     {buttonAdd}
-                    <Button icon={<BsPlusLg/>} onClick={onClickAdd}>Thêm mới</Button>
+                    {/*<Button type={"primary"} icon={<BsPlusLg/>} onClick={onClickAdd}>Thêm mới</Button>*/}
+                    <ButtonDrawer form={"business-form"}><BusinessForm/></ButtonDrawer>
                 </Col>
                 <Col span={6}>
                     <Input
@@ -43,7 +45,6 @@ function CommonList({mapData, load, onClickAdd, columns, buttonAdd}) {
                         style={{height: 36, fontSize: 16}}
                         onChange={onChangeSearch}/>
                 </Col>
-                <Col><Checkbox/></Col>
             </Row>
             <Table
                 columns={columns}
