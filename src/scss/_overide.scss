@@ -1,17 +1,20 @@
-.ant-btn {
-    display: flex;
-    align-items: center;
-    height: 36px;
-    justify-content: center;
-    gap: 4px;
-    padding: 0 8px;
-    font-size: 16px;
-
-    & > .anticon + span {
-        margin-left: 0;
-    }
+//.ant-btn {
+//    display: flex;
+//    align-items: center;
+//    height: 36px;
+//    justify-content: center;
+//    gap: 4px;
+//    padding: 0 8px;
+//    font-size: 16px;
+//
+//    & > .anticon + span {
+//        margin-left: 0;
+//    }
+//}
+.ant-drawer-content {
+    border-radius: var(--border-radius);
 }
-
+//
 .ant-dropdown {
     border-radius: 4px;
 
@@ -53,58 +56,58 @@
         }
     }
 }
-
-.ant-menu {
-    font-size: 16px;
-
-    &-light {
-        & .ant-menu-submenu-title:hover {
-            color: var(--color);
-        }
-
-        & .ant-menu-item:hover {
-            color: var(--color);
-        }
-    }
-
-    &:not(.ant-menu-horizontal) .ant-menu-item-selected {
-        background-color: #ffffff;
-    }
-
-    &-submenu > .ant-menu {
-        border-radius: var(--border-radius-small);
-    }
-
-    &-sub.ant-menu-inline {
-        background-color: #ffffff;
-    }
-
-    &-inline .ant-menu-item::after {
-        border-right: 3px solid var(--color);
-    }
-
-    &-item {
-        display: flex;
-        align-items: center;
-
-        &-icon {
-            font-size: calc(100% + 8px) !important;
-        }
-    }
-
-    &-item {
-        &-active {
-            color: var(--color) !important;
-        }
-
-        &-selected {
-            color: var(--color) !important;
-
-
-            & a {
-                color: var(--color);
-            }
-        }
-    }
-}
-
+//
+//.ant-menu {
+//    font-size: 16px;
+//
+//    &-light {
+//        & .ant-menu-submenu-title:hover {
+//            color: var(--color);
+//        }
+//
+//        & .ant-menu-item:hover {
+//            color: var(--color);
+//        }
+//    }
+//
+//    &:not(.ant-menu-horizontal) .ant-menu-item-selected {
+//        background-color: #ffffff;
+//    }
+//
+//    &-submenu > .ant-menu {
+//        border-radius: var(--border-radius-small);
+//    }
+//
+//    &-sub.ant-menu-inline {
+//        background-color: #ffffff;
+//    }
+//
+//    &-inline .ant-menu-item::after {
+//        border-right: 3px solid var(--color);
+//    }
+//
+//    &-item {
+//        display: flex;
+//        align-items: center;
+//
+//        &-icon {
+//            font-size: calc(100% + 8px) !important;
+//        }
+//    }
+//
+//    &-item {
+//        &-active {
+//            color: var(--color) !important;
+//        }
+//
+//        &-selected {
+//            color: var(--color) !important;
+//
+//
+//            & a {
+//                color: var(--color);
+//            }
+//        }
+//    }
+//}
+//

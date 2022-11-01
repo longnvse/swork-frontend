@@ -4,10 +4,10 @@ import {addBusiness, getBusiness, updateBusiness} from "../../../../api/business
 import FormItem from "antd/es/form/FormItem";
 import {useNavigate, useParams} from "react-router-dom";
 
-const BusinessForm = props => {
+const BusinessForm = (props) => {
     const navigate = useNavigate();
     const {id} = useParams();
-    const [form] = Form.useForm();
+    const form = props.form;
 
     useEffect(() => {
         if (id) {

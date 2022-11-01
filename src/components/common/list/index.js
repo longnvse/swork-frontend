@@ -37,12 +37,15 @@ function CommonList({mapData, load, onClickAdd, columns, buttonAdd}) {
                 <Col>
                     {buttonAdd}
                     {/*<Button type={"primary"} icon={<BsPlusLg/>} onClick={onClickAdd}>Thêm mới</Button>*/}
-                    <ButtonDrawer form={"business-form"}><BusinessForm/></ButtonDrawer>
+                    <ButtonDrawer
+                        title={"Thêm mới công ty/Doanh nghiệp"}
+                        formId={"business-form"}>
+                        <BusinessForm/>
+                    </ButtonDrawer>
                 </Col>
                 <Col span={6}>
                     <Input
                         prefix={<FiSearch/>}
-                        style={{height: 36, fontSize: 16}}
                         onChange={onChangeSearch}/>
                 </Col>
             </Row>

@@ -7,6 +7,10 @@ function CommonContent({children}) {
     return (
         <Content
             className={"app__content"}
+            id={"content"}
+            style={{
+                position: "relative"
+            }}
         >
             {children}
         </Content>
