@@ -1,59 +1,67 @@
-import React, {useEffect, useState} from 'react';
-import {message} from "antd";
+import React from 'react';
+import {Button, message, Popconfirm} from "antd";
 import {columns} from "./common/columns";
-import {deleteBusiness, getBusinessPages} from "../../../api/business/api";
-import {Link, useNavigate, useSearchParams} from "react-router-dom";
+import {approvalBusiness, deleteBusiness, getBusinessPages} from "../../../api/business/api";
 import CommonList from "../../common/list";
+import ButtonDrawer from "../../common/button/ButtonDrawer";
+import BusinessForm from "./form";
+import {CheckOutlined, DeleteOutlined, EditOutlined, StopOutlined} from "@ant-design/icons";
+import {ACTIVE, INACTIVE, UPDATE, PENDING} from "../../common/Constant";
+import {renderStatus} from "../../common/status";
 
 const BusinessList = props => {
-    const [data, setData] = useState([]);
-    const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
+    const onConfirmStatus = (id, status) => {
+        approvalBusiness(id, status).then(status => {
+            message.success("Thành công!");
+        })
+    }
 
-    useEffect(() => {
-        // console.log(searchParams.get('status'))
-    }, [searchParams]);
+    const onConfirmDelete = (id) => {
+        deleteBusiness(id).then(value => {
+            message.success("Xoá thành công!");
+        })
+    }
 
 
     const mapData = (item, index) => {
         return {
             key: item.id,
             ...item,
-            action: <div className={"flex justify-evenly"}><Link to={`/business/update/${item.id}`}>Cập nhật</Link><Link
-                onClick={() => onDeleteBusiness(item.id)} to={``}>Xóa</Link></div>,
+            status: renderStatus(item.status),
+            action: <div className={"flex justify-evenly"}>
+                <ButtonDrawer
+                    title={"Cập nhật Công ty/Doanh nghiệp"}
+                    formId={"business-form"}
+                    mode={UPDATE}
+                    buttonProps={{
+                        icon: <EditOutlined/>,
+                        type: "link",
+                        value: null
+                    }}
+                >
+                    <BusinessForm id={item.id}/>
+                </ButtonDrawer>
+                <Popconfirm title={"Chắc chắn chứ!"}
+                            onConfirm={() => onConfirmStatus(item.id, item.status === ACTIVE ? INACTIVE : ACTIVE)}>
+                    <Button type={"link"} icon={item.status === ACTIVE ? <StopOutlined/> : <CheckOutlined/>}/>
+                </Popconfirm>
+                <Popconfirm disabled={item.status !== PENDING}
+                            title={"Chắc chắn chứ!"}
+                            onConfirm={() => onConfirmDelete(item.id)}>
+                    <Button type={"link"} disabled={item.status !== PENDING} icon={<DeleteOutlined/>}/>
+                </Popconfirm>
+            </div>,
             index: index + 1
         }
     }
 
-    const onDeleteBusiness = (businessId) => {
-        deleteBusiness(businessId).then(response => {
-            message.success("Xóa thành công!");
-            setData(data.filter(value => value.id !== businessId));
-        })
-    }
-
-    useEffect(() => {
-        getBusinessPages().then(response => {
-                setData(response?.data?.items?.map(mapData) || [])
-            }
-        )
-    }, []);
-
-    const onClickAdd = () => {
-        navigate('/business/add')
-    }
-
     return (
         <div>
-            {/*<Row className={"mb-4"}>*/}
-            {/*    <Button icon={<BsPlusLg/>} onClick={onClickAdd}>Thêm mới</Button>*/}
-            {/*</Row>*/}
-            {/*<Table*/}
-            {/*    columns={columns}*/}
-            {/*    dataSource={data}*/}
-            {/*    bordered={true}*/}
-            {/*/>*/}
-            <CommonList mapData={mapData} load={getBusinessPages} columns={columns}/>
+            <CommonList
+                mapData={mapData}
+                load={getBusinessPages}
+                columns={columns}
+            />
         </div>
     );
 };

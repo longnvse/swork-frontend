@@ -28,3 +28,17 @@
         background-color: #fff;
     }
 }
+
+.loading {
+    animation: loadingAppear 0.1s ;
+}
+
+@keyframes loadingAppear {
+    from {
+        top: -10px;
+    }
+
+    to {
+        top: 0;
+    }
+}

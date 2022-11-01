@@ -1,15 +1,22 @@
-import React, {useState} from 'react';
-import {Button, Col, Drawer, Form, Row, Switch, Tooltip} from "antd";
+import React, {useEffect, useMemo, useState} from 'react';
+import {Button, Col, Drawer, Row, Switch, Tooltip} from "antd";
+import {ADD, UPDATE} from "../Constant";
+import {useDispatch, useSelector} from "react-redux";
+import {closeDrawer} from "../../../redux/actions/common/actions";
 
 const ButtonDrawer = ({
                           children = React.createElement("div"),
                           title = "",
                           formId = undefined,
-                          drawerProps = {}
+                          mode = "",
+                          drawerProps = {},
+                          buttonProps = {}
                       }) => {
     const [open, setOpen] = useState(false);
-    const [form] = Form.useForm();
     const [toggle, setToggle] = useState(false);
+    const [afterSubmit, setAfterSubmit] = useState(false);
+    const {isCloseDrawer} = useSelector(state => state.commonReducer);
+    const dispatch = useDispatch();
 
     const onOpen = () => {
         setOpen(true);
@@ -19,21 +26,45 @@ const ButtonDrawer = ({
         setOpen(false);
     }
 
-    const onClickSubmit = () => {
-        form.validateFields().then(() => {
-            form.submit();
-            if (!toggle) {
-                onClose();
-            }
-        }).catch(() => {
+    useEffect(() => {
+        return () => {
+            dispatch(closeDrawer(false));
+        };
+    }, []);
 
-        });
+
+    useEffect(() => {
+        if (mode === UPDATE) {
+            dispatch(closeDrawer(true));
+        }
+    }, [mode]);
+
+
+    useEffect(() => {
+        if (afterSubmit && !toggle && isCloseDrawer) {
+            onClose();
+        }
+    }, [isCloseDrawer]);
+
+    const buttonTitle = useMemo(() => {
+        if (mode === ADD) {
+            return <span>Thêm mới </span>;
+        } else if (mode === UPDATE) {
+            return <span>Cập nhật </span>;
+        }
+
+        return undefined;
+    }, [mode]);
+
+    const onClickSubmit = (e) => {
+        setAfterSubmit(true);
     }
 
     const footer = (
         <Row gutter={12}>
             <Col>
-                <Button type={"primary"} onClick={onClickSubmit}>Thêm mới</Button>
+                <Button type={"primary"} onClick={onClickSubmit} form={formId}
+                        htmlType={"submit"}>{buttonTitle}</Button>
             </Col>
             <Col>
                 <Button type={"default"} onClick={onClose}>Hủy bỏ</Button>
@@ -43,14 +74,14 @@ const ButtonDrawer = ({
 
     return (
         <div>
-            <Button type={"default"} onClick={onOpen}>Thêm mới</Button>
+            <Button onClick={onOpen} {...buttonProps}>{buttonProps.value}</Button>
             <Drawer
                 open={open}
                 title={title || ""}
                 placement="right"
                 onClose={onClose}
                 footer={footer}
-                destroyOnClose
+                destroyOnClose={true}
                 drawerStyle={{
                     borderRadius: 8
                 }}
@@ -61,7 +92,7 @@ const ButtonDrawer = ({
                 contentWrapperStyle={{
                     borderRadius: 8
                 }}
-                extra={formId ? <Tooltip
+                extra={formId && mode === ADD ? <Tooltip
                     title={!toggle ? "Đóng lại sau khi hoàn thành tác vụ" : "Giữ lại sau khi hoàn thành tác vụ"}
                     placement={"left"}
                 >
@@ -69,7 +100,7 @@ const ButtonDrawer = ({
                 </Tooltip> : null}
                 {...drawerProps}
             >
-                {React.cloneElement(children, formId ? {form} : undefined)}
+                {React.cloneElement(children)}
             </Drawer>
         </div>
     );

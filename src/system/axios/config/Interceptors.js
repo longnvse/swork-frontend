@@ -7,6 +7,7 @@ import {
 } from "../index";
 import {getToken, refreshToken} from "../../../api/login/api";
 import {logoutStart} from "../../../redux/actions/login/actions";
+import {closeDrawer, isReload, loadingFinish, loadingStart} from "../../../redux/actions/common/actions";
 
 const setup = (store) => {
 
@@ -19,20 +20,38 @@ const setup = (store) => {
             config.headers["Authorization"] = oauth2Token;
             config.headers["swork-x-user-context-request"] = accessToken;
 
+            store.dispatch(loadingStart(config.url));
+
             return config;
 
         },
         (error) => {
+            store.dispatch(loadingFinish(error.config.url));
+
             return Promise.reject(error);
         }
     );
 
     axiosInstance.interceptors.response.use(
         (res) => {
+            store.dispatch(loadingFinish(res.config.url));
+            if (res.config.method === "get") {
+                store.dispatch(isReload(false));
+            }
+
+            switch (res.config.method) {
+                case "put":
+                case "post":
+                case "delete": {
+                    store.dispatch(isReload(true));
+                    store.dispatch(closeDrawer(new Boolean(true)));
+                }
+            }
+
             return res;
         },
         async (err) => {
-            console.log(err);
+            store.dispatch(loadingFinish(err.config.url));
 
             const originalConfig = err.config;
 
@@ -70,6 +89,8 @@ const setup = (store) => {
                     return Promise.reject(_error);
                 }
             }
+
+            store.dispatch(closeDrawer(false));
 
             return Promise.reject(err);
         }

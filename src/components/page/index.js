@@ -8,7 +8,7 @@ import {LoadingOutlined} from "@ant-design/icons";
 import {useSelector} from "react-redux";
 
 const RootPage = props => {
-    // const {loading} = useSelector(state => state.axiosReducer)
+    const {loading} = useSelector(state => state.commonReducer)
     const antIcon = <LoadingOutlined style={{fontSize: 24}} spin/>
 
 
@@ -22,7 +22,11 @@ const RootPage = props => {
             <Layout>
                 <CommonHeader/>
                 <CommonContent>
-                    <Spin spinning={false} indicator={antIcon}>
+                    <Spin style={{
+                        height: 'inherit'
+                    }}
+                          className={'loading'}
+                          spinning={loading} indicator={antIcon}>
                         <Outlet/>
                     </Spin>
                 </CommonContent>

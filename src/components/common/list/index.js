@@ -5,25 +5,36 @@ import {debounce} from "lodash";
 import {FiSearch} from "react-icons/fi";
 import ButtonDrawer from "../button/ButtonDrawer";
 import BusinessForm from "../../apps/business/form";
+import {ADD} from "../Constant";
+import {useSelector} from "react-redux";
 
-function CommonList({mapData, load, onClickAdd, columns, buttonAdd}) {
+function CommonList({mapData, load, columns = [], isSelections = false}) {
     const [params, setParams] = useState({});
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const {reload} = useSelector(state => state.commonReducer);
+
     const searchBounce = useRef(debounce((nextValue) => setParams(prevState => ({
         ...prevState,
         search: nextValue
     })), 500)).current;
 
     useEffect(() => {
-        setLoading(true);
+        fetchData(params)
+    }, [params]);
+
+    useEffect(() => {
+        if (reload) {
+            fetchData(params)
+        }
+    }, [reload]);
+
+    const fetchData = (params) => {
         load(params).then(response => {
             setData(response.data?.items?.map(mapData));
-            setLoading(false);
         }).catch(err => {
             console.log(err)
         });
-    }, [params]);
+    }
 
 
     const onChangeSearch = (e) => {
@@ -35,11 +46,14 @@ function CommonList({mapData, load, onClickAdd, columns, buttonAdd}) {
         <div>
             <Row gutter={12} className={"mb-4"}>
                 <Col>
-                    {buttonAdd}
-                    {/*<Button type={"primary"} icon={<BsPlusLg/>} onClick={onClickAdd}>Thêm mới</Button>*/}
                     <ButtonDrawer
                         title={"Thêm mới công ty/Doanh nghiệp"}
-                        formId={"business-form"}>
+                        formId={"business-form"}
+                        mode={ADD}
+                        buttonProps={{
+                            value: "Thêm mới"
+                        }}
+                    >
                         <BusinessForm/>
                     </ButtonDrawer>
                 </Col>
@@ -52,8 +66,14 @@ function CommonList({mapData, load, onClickAdd, columns, buttonAdd}) {
             <Table
                 columns={columns}
                 dataSource={data}
-                loading={loading}
-                rowSelection={{}}
+                rowSelection={isSelections && {}}
+                onHeaderRow={() => {
+                    return {
+                        style: {
+                            fontWeight: 'bold'
+                        }
+                    }
+                }}
                 pagination={{
                     defaultCurrent: 1,
                     hideOnSinglePage: true,

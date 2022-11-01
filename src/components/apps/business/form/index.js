@@ -2,13 +2,9 @@ import React, {useCallback, useEffect} from 'react';
 import {Form, Input, message, Typography} from "antd";
 import {addBusiness, getBusiness, updateBusiness} from "../../../../api/business/api";
 import FormItem from "antd/es/form/FormItem";
-import {useNavigate, useParams} from "react-router-dom";
 
-const BusinessForm = (props) => {
-    const navigate = useNavigate();
-    const {id} = useParams();
-    const form = props.form;
-
+const BusinessForm = ({id}) => {
+    const [form] = Form.useForm();
     useEffect(() => {
         if (id) {
             getBusiness(id).then(response => {
@@ -30,7 +26,6 @@ const BusinessForm = (props) => {
         } else {
             updateBusiness(id, values).then(response => {
                 message.success("Cập nhật thành công!");
-                navigate("/business")
             }).catch(error => {
                 console.log(error)
                 message.error(error?.response?.data?.detail || "Đã xảy ra lỗi, vui lòng thử lại!");
