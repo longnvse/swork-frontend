@@ -1,0 +1,111 @@
+//replace
+import {call, fork, put, take, takeEvery} from "@redux-saga/core/effects";
+import {t} from "i18next";
+import {message} from "antd";
+
+function* onLoadReplacesStartAsync({params}) {
+    try {
+        const response = yield call(loadReplacesApi, params);
+        if (response.status === 200) {
+            yield put(loadReplacesSuccess(response.data));
+        }
+    } catch (error) {
+        message.error(error.response.data.detail)
+        yield put(loadReplacesError(error));
+    }
+}
+
+function* onLoadReplaces() {
+    yield takeEvery(replaceType.LOADS_REQUEST, onLoadReplacesStartAsync);
+}
+
+//Load Index
+function* onLoadDetailReplaceStartAsync({replaceId}) {
+    try {
+        const response = yield call(loadDetailReplaceApi, replaceId);
+        if (response.status === 200) {
+            yield put(loadDetailReplaceSuccess(response.data));
+        }
+    } catch (error) {
+        message.error(error.response.data.detail)
+        yield put(loadDetailReplaceError(error.data));
+    }
+}
+
+function* onLoadDetailReplace() {
+    takeEvery(replaceType.LOAD_REQUEST, onLoadDetailReplaceStartAsync)
+}
+
+//add
+function* onAddReplaceStartAsync({replace}) {
+    try {
+        const response = yield call(addReplaceApi, replace);
+        if (response.status === 200) {
+            yield put(addReplaceSuccess(response.data));
+            message.success(t("replace.message.add"))
+        }
+    } catch (error) {
+        message.error(error.response.data.detail)
+        yield put(addReplaceError(error));
+
+    }
+}
+
+function* onAddReplace() {
+    yield takeEvery(replaceType.ADD_REQUEST, onAddReplaceStartAsync);
+        yield takeEvery(replaceType.ADD_SUCCESS, onLoadReplacesStartAsync)
+
+}
+
+// update
+function* onUpdateReplaceStartAsync({replaceId, replace}) {
+    try {
+        const response = yield call(updateReplaceApi, replaceId, replace);
+        if (response.status === 200) {
+            yield put(updateReplaceSuccess(response.data));
+            message.success(t("replace.message.update"));
+
+        }
+    } catch (error) {
+        message.error(error.response.data.detail)
+        yield put(updateReplaceError(error.response));
+
+    }
+}
+
+function* onUpdateReplace() {
+
+    yield takeEvery(replaceType.UPDATE_REQUEST, onUpdateReplaceStartAsync)
+    yield takeEvery(replaceType.UPDATE_SUCCESS, onLoadReplacesStartAsync)
+}
+
+//Delete
+
+function* onDeleteReplaceStartAsync(replaceId) {
+    try {
+        const response = yield call(deleteReplaceApi, replaceId);
+        if (response.status === 204) {
+            yield put(deleteReplacesSuccess(replaceId));
+            message.success(t("replace.message.delete"))
+
+        }
+    } catch (error) {
+        message.error(error.response.data.detail)
+        yield put(deleteReplacesError(error))
+
+    }
+}
+
+function* onDeleteReplace() {
+    while (true) {
+        const {replaceId} = yield take(replaceType.DELETE_REQUEST);
+        yield call(onDeleteReplaceStartAsync, replaceId);
+    }
+}
+
+
+const replace = [fork(onLoadReplaces), fork(onUpdateReplace), fork(onAddReplace), fork(onDeleteReplace), fork(onLoadDetailReplace)
+
+]
+
+export default replace;

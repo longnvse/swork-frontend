@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import LoginPage from "./components/page/login";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Dashboard from "./components/common/layout";
+import BusinessList from "./components/apps/business";
+import RootPage from "./components/page";
+import BusinessRouter from "./components/apps/business/router";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route element={<RootPage/>}>
+                    <Route index element={<BusinessList/>}/>
+                    <Route path={"/business/*"} element={<BusinessRouter/>}/>
+                    <Route path={"/dashboard"} element={<Dashboard/>}/>
+
+                </Route>
+                <Route path={"/login"} element={<LoginPage/>}/>
+                {/*<Route path={"/list"} element={<CommonList/>}/>*/}
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;

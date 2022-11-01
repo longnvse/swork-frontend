@@ -1,0 +1,10 @@
+.app {
+    &__header {
+        &--logo {
+            width: 100px;
+            height: 64px;
+            object-fit: cover;
+            margin: auto;
+        }
+    }
+}
