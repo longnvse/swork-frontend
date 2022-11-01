@@ -1,10 +1,44 @@
 .app {
     &__header {
+        &--item {
+            &:hover {
+                background-color: var(--color-lighter);
+                cursor: pointer;
+                border-radius: var(--border-radius);
+            }
+
+            min-width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         &--logo {
-            width: 100px;
-            height: 64px;
-            object-fit: cover;
+            height: 42px;
+            object-fit: contain;
             margin: auto;
         }
+    }
+
+    &__content {
+        border-radius: var(--border-radius);
+        margin: 8px;
+        padding: 16px;
+        background-color: #fff;
+    }
+}
+
+.loading {
+    animation: loadingAppear 0.1s ;
+}
+
+@keyframes loadingAppear {
+    from {
+        top: -10px;
+    }
+
+    to {
+        top: 0;
     }
 }

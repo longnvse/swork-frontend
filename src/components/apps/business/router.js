@@ -5,11 +5,11 @@ import BusinessForm from "./form";
 
 const BusinessRouter = props => {
     return (
-        <Routes path={"/"}>
+        <Routes path={""}>
             <Route index element={<BusinessList/>}/>
             <Route path={"add"} element={<BusinessForm/>}/>
             <Route path={"update/:id"} element={<BusinessForm/>}/>
-
+            <Route path={"?:status"} element={<BusinessList/>}/>
         </Routes>
     );
 };

@@ -5,8 +5,8 @@ import {BASE_PATH} from "./config/Url";
 export const SWAxios = axios.create({
     baseURL: `${BASE_PATH}`,
     headers: {
-        "Content-Type": "application/json"
-    },
+        'Content-Type': "application/json"
+    }
 });
 
 

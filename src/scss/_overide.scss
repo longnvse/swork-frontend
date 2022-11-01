@@ -1,0 +1,113 @@
+//.ant-btn {
+//    display: flex;
+//    align-items: center;
+//    height: 36px;
+//    justify-content: center;
+//    gap: 4px;
+//    padding: 0 8px;
+//    font-size: 16px;
+//
+//    & > .anticon + span {
+//        margin-left: 0;
+//    }
+//}
+.ant-drawer-content {
+    border-radius: var(--border-radius);
+}
+//
+.ant-dropdown {
+    border-radius: 4px;
+
+    &-menu {
+        padding: 3px 4px;
+
+        &-item {
+            min-height: 44px;
+        }
+
+        &-item:hover {
+            border-radius: 4px;
+        }
+    }
+}
+
+.ant-input-affix-wrapper {
+    border-radius: var(--border-radius-small);
+}
+
+.ant-pagination {
+    & * {
+        border: none !important;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        line-height: inherit;
+    }
+
+    &-item {
+        &-active {
+            border-radius: 16px;
+            justify-content: center;
+
+        }
+
+        &-ellipsis {
+            margin-right: 20px !important;
+        }
+    }
+}
+//
+//.ant-menu {
+//    font-size: 16px;
+//
+//    &-light {
+//        & .ant-menu-submenu-title:hover {
+//            color: var(--color);
+//        }
+//
+//        & .ant-menu-item:hover {
+//            color: var(--color);
+//        }
+//    }
+//
+//    &:not(.ant-menu-horizontal) .ant-menu-item-selected {
+//        background-color: #ffffff;
+//    }
+//
+//    &-submenu > .ant-menu {
+//        border-radius: var(--border-radius-small);
+//    }
+//
+//    &-sub.ant-menu-inline {
+//        background-color: #ffffff;
+//    }
+//
+//    &-inline .ant-menu-item::after {
+//        border-right: 3px solid var(--color);
+//    }
+//
+//    &-item {
+//        display: flex;
+//        align-items: center;
+//
+//        &-icon {
+//            font-size: calc(100% + 8px) !important;
+//        }
+//    }
+//
+//    &-item {
+//        &-active {
+//            color: var(--color) !important;
+//        }
+//
+//        &-selected {
+//            color: var(--color) !important;
+//
+//
+//            & a {
+//                color: var(--color);
+//            }
+//        }
+//    }
+//}
+//

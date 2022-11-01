@@ -2,6 +2,9 @@ export const columns = [
     {
         title: 'STT',
         dataIndex: 'index',
+        style: {
+            fontWeight: 'bold'
+        }
     },
     {
         title: 'Tên',
@@ -22,7 +25,12 @@ export const columns = [
     {
         title: 'Lĩnh vực',
         dataIndex: 'fieldOperations',
-    }, {
+    },
+    {
+        title: "Trạng thái",
+        dataIndex: "status"
+    },
+    {
         dataIndex: 'action',
         width: '10%'
     }
