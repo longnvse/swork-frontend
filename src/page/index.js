@@ -1,8 +1,8 @@
 import React from 'react';
-import CommonSider from "../common/layout/sider/Sider";
+import CommonSider from "../components/common/layout/sider/Sider";
 import {Layout, Spin} from "antd";
-import CommonHeader from "../common/layout/header/Header";
-import CommonContent from "../common/layout/content/Content";
+import CommonHeader from "../components/common/layout/header/Header";
+import CommonContent from "../components/common/layout/content/Content";
 import {Outlet} from "react-router-dom";
 import {LoadingOutlined} from "@ant-design/icons";
 import {useSelector} from "react-redux";

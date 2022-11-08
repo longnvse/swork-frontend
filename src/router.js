@@ -5,6 +5,7 @@ import BusinessRouter from "./components/apps/business/router";
 import Dashboard from "./components/common/layout";
 import LoginPage from "./page/login";
 import RootPage from "./page";
+import ProjectRouter from "./components/apps/project/router";
 
 const Routers = (props) => {
     return (
@@ -13,6 +14,7 @@ const Routers = (props) => {
                 <Route element={<RootPage />}>
                     <Route index element={<BusinessList />} />
                     <Route path={"/business/*"} element={<BusinessRouter />} />
+                    <Route path={"/project/*"} element={<ProjectRouter />} />
                     <Route path={"/dashboard"} element={<Dashboard />} />
                 </Route>
                 <Route path={"/login"} element={<LoginPage />} />

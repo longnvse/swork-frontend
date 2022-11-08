@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, Checkbox, Form, Input} from "antd";
-import banner from "../../../images/banner.jpg";
+import banner from "../../images/banner.jpg";
 import {useDispatch} from "react-redux";
-import {loginStart} from "../../../redux/actions/login/actions";
+import {loginStart} from "../../redux/actions/login/actions";
 
 function LoginForm(props) {
     const dispatch = useDispatch();

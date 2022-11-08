@@ -1,9 +1,24 @@
-import React from 'react';
+import React from "react";
+import { getBusinessPages } from "../../../api/business/api";
+import CommonList from "../../common/list";
+import { columns } from "./common/columns";
 
-function ProjectPage(props) {
-    return (
-        <div></div>
-    );
+function ProjectList(props) {
+	const mapData = (item, index) => {
+		return {
+			...item,
+		};
+	};
+
+	return (
+		<div>
+			<CommonList
+				mapData={mapData}
+				load={getBusinessPages}
+				columns={columns}
+			/>
+		</div>
+	);
 }
 
-export default ProjectPage;
+export default ProjectList;
