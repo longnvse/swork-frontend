@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 //@import 'antd/dist/antd.css';
-@import 'antd/dist/antd.variable.min.css';
+@import "antd/dist/antd.variable.min.css";
 
 :root {
     --color: rgba(125, 108, 226);
@@ -11,14 +11,13 @@
     --border-radius-small: 4px;
     --color-hover: rgba(125, 108, 226, 0.7);
     --color-shadow: rgba(125, 108, 226, 0.2);
-
 }
 
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
 }
 
 body {
@@ -28,8 +27,8 @@ body {
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
 }
 
 //================= IMPORT ===========================//
