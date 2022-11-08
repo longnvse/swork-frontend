@@ -4,8 +4,6 @@
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-V
-&src/components/apps/business/router.js,f\a\fa1abf5f4d60efb21741bda5d336c396b6c2308a
 R
 "src/redux/actions/login/actions.js,7\b\7bb816cf10635a553e243ba19a44033f70de35f5
 _
