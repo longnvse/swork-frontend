@@ -4,7 +4,6 @@ import {KeyOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {logoutStart} from "../../../../../redux/actions/login/actions";
-import {getMe} from "../../../../../api/common";
 
 const ProfileIcon = props => {
     let navigate = useNavigate();
@@ -33,7 +32,8 @@ const ProfileIcon = props => {
                                     }}
                                     // src={`${base_url}${portraitThumbnail}`}
                                 />
-                                {getMe().fullName}
+                                {/*{getMe().fullName}*/}
+                                {"Nguyễn Văn A"}
                             </Space>
                         </>
                     ),
