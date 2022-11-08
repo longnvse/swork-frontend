@@ -32,5 +32,3 @@ S
 #src/components/common/list/index.js,6\c\6c8cbbcbbec95a3a6f8181e0031658bdd9c84978
 U
 %src/components/apps/business/index.js,9\7\97d418cc3cebcdb069fda10b217f83cd0ab64e19
-L
-src/components/page/index.js,a\e\ae37aa1c0573436b7ea849dc8e5b2832a40d4a22

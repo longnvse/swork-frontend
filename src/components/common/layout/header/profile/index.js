@@ -49,6 +49,9 @@ const ProfileIcon = props => {
                     label: "Đăng xuất",
                     key: '/logout',
                     icon: <LogoutOutlined/>,
+                    style: {
+                        borderTop: "1px solid #ccc"
+                    },
                     onClick: handleOnLogout
                 },
             ]}
