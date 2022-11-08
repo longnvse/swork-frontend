@@ -1,29 +1,25 @@
 import React, { useEffect } from "react";
-import LoginForm from "./Form";
-import background from "../../images/background.png";
+import SignUpForm from "./Form";
+import background from "../../images/authentication/background.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import AuthenticationLayout from "../../components/layout/Authentication";
 
 function SignUpPage(props) {
-  const navigate = useNavigate();
-  const { loggedInSuccess } = useSelector((state) => state.loginReducer);
+    const navigate = useNavigate();
+    const { loggedInSuccess } = useSelector((state) => state.loginReducer);
 
-  useEffect(() => {
-    if (loggedInSuccess) {
-      navigate("/dashboard");
-    }
-  }, [loggedInSuccess]);
+    useEffect(() => {
+        if (loggedInSuccess) {
+            navigate("/dashboard");
+        }
+    }, [loggedInSuccess]);
 
-  return (
-    <div
-      className={"page__login-container flex items-center justify-center"}
-      style={{
-        backgroundImage: `url(${background})`,
-      }}
-    >
-      <LoginForm />
-    </div>
-  );
+    return (
+        <AuthenticationLayout>
+            <SignUpForm />
+        </AuthenticationLayout>
+    );
 }
 
 export default SignUpPage;

@@ -5,6 +5,7 @@ import BusinessRouter from "./components/apps/business/router";
 import Dashboard from "./components/common/layout";
 import LoginPage from "./page/login";
 import RootPage from "./page";
+import SignUpPage from "./page/signup";
 
 const Routers = (props) => {
     return (
@@ -16,7 +17,7 @@ const Routers = (props) => {
                     <Route path={"/dashboard"} element={<Dashboard />} />
                 </Route>
                 <Route path={"/login"} element={<LoginPage />} />
-                <Route path={"/sign-up"} element={<LoginPage />} />
+                <Route path={"/sign-up"} element={<SignUpPage />} />
             </Routes>
         </BrowserRouter>
     );
