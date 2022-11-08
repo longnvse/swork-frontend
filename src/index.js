@@ -1,30 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.scss';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import {persistor, store} from "./redux/store/store";
-import {PersistGate} from "redux-persist/integration/react";
-import {ConfigProvider} from "antd";
-import {Provider} from "react-redux";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.scss";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { persistor, store } from "./redux/store/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { ConfigProvider } from "antd";
+import { Provider } from "react-redux";
 import setupInterceptors from "./system/axios/config/Interceptors";
-import vi_VN from 'antd/es/locale/vi_VN';
+import vi_VN from "antd/es/locale/vi_VN";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 ConfigProvider.config({
     theme: {
-        primaryColor: '#57AAE5FF'
-    }
-})
+        primaryColor: "#57AAE5FF",
+    },
+});
 
 root.render(
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
             <ConfigProvider locale={vi_VN}>
-                <App/>
+                <App />
             </ConfigProvider>
         </PersistGate>
-    </Provider>
+    </Provider>,
 );
 
 setupInterceptors(store);
