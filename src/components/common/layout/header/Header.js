@@ -9,9 +9,9 @@ function CommonHeader() {
         <Header
             className={"flex flex-row justify-between items-center"}
             style={{
-                background: '#FFFFFFFF',
+                background: '#57AAE5FF',
                 padding: 0,
-                borderLeft: '1px solid inherit'
+                borderLeft: '1px solid inherit',
             }}>
             <Col>
                 <div className={"text__header pl-4"}>Danh sách công ty</div>

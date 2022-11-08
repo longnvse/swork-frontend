@@ -13,7 +13,7 @@ import vi_VN from 'antd/es/locale/vi_VN';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 ConfigProvider.config({
     theme: {
-        primaryColor: '#7D6CE2FF'
+        primaryColor: '#57AAE5FF'
     }
 })
 

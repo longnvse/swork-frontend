@@ -4,10 +4,16 @@ import {ACTIVE, INACTIVE, PENDING} from "../Constant";
 export const renderStatus = (status) => {
     switch (status) {
         case PENDING:
-            return <Tag color={"warning"}>Chờ duyệt</Tag>
+            return renderTag("Chờ duyệt", "warning");
         case ACTIVE:
-            return <Tag color={"success"}>Đang hoạt động</Tag>
+            return renderTag("Đang hoạt động", "success");
         case INACTIVE:
-            return <Tag color={"error"}>Dừng hoạt động</Tag>
+            return renderTag("Dừng hoạt động", "error");
+
     }
+}
+
+const renderTag = (title, color) => {
+    return <Tag style={{borderRadius: 14, height: 28}} className={"flex items-center w-fit border-none  cursor-pointer"}
+                color={color}>{title}</Tag>
 }

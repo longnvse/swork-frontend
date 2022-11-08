@@ -15,7 +15,7 @@ function LoginForm(props) {
     return (
         <div className={"page__login-form w-1/2 m-auto flex items-center justify-center"}>
             <div className={"w-1/2 p-20 bg-white h-full"}>
-                <h1 className={"text-center text-3xl font-bold mb-10"}>Sign in</h1>
+                <h1 className={"text-center text-3xl font-bold mb-10"}>Đăng nhập</h1>
                 <Form
                     onFinish={onFinish}
                     layout={"vertical"}
@@ -23,12 +23,24 @@ function LoginForm(props) {
                     <Form.Item
                         label={"Tên đăng nhập"}
                         name={"username"}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng nhập Tên đăng nhập!"
+                            }
+                        ]}
                     >
                         <Input/>
                     </Form.Item>
                     <Form.Item
                         label={"Mật khẩu"}
                         name={"password"}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng nhập Mật khẩu!"
+                            }
+                        ]}
                     >
                         <Input.Password/>
                     </Form.Item>
@@ -40,7 +52,7 @@ function LoginForm(props) {
                             <Checkbox>Nhớ mật khẩu</Checkbox>
                         </Form.Item>
                         <Form.Item>
-                            Quên mật khẩu
+                            Quên mật khẩu?
                         </Form.Item>
                     </div>
                     <Button
