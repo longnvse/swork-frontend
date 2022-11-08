@@ -28,7 +28,8 @@ export const columns = [
     },
     {
         title: "Trạng thái",
-        dataIndex: "status"
+        dataIndex: "status",
+        width: '10%'
     },
     {
         dataIndex: 'action',
