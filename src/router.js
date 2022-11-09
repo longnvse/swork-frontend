@@ -6,21 +6,32 @@ import Dashboard from "./components/common/layout";
 import SignUpPage from "./page/signup";
 import {URIS} from "./utils/constant";
 import ResetPasswordPage from "./page/resetPassword";
-import RootPage from "./components/page";
-import LoginPage from "./components/page/login";
+import CommonSider from "./components/common/layout/sider/Sider";
+import AccountSidebar from "./components/common/layout/sider/AccountSidebar";
+import AccountInfo from "./page/accountInfo";
+import AccountSecurity from "./page/accountSecurity";
 import DepartmentRouter from "./components/apps/department/router";
 import AccountRouter from "./components/apps/account/router";
+import LoginPage from "./page/login";
+import RootPage from "./page";
 
 const Routers = (props) => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route element={<RootPage/>}>
-                    <Route index element={<BusinessList/>}/>
+                <Route
+                    element={
+                        <RootPage
+                            title="Danh sách công ty"
+                            sidebar={<CommonSider />}
+                        />
+                    }
+                >
+                    <Route index element={<BusinessList />} />
                     <Route path={URIS.BUSINESS} element={<BusinessRouter/>}/>
                     <Route path={URIS.DEPARTMENT} element={<DepartmentRouter/>}/>
                     <Route path={URIS.ACCOUNT} element={<AccountRouter/>}/>
-                    <Route path={URIS.DASHBOARD} element={<Dashboard/>}/>
+                    <Route path={URIS.DASHBOARD} element={<Dashboard />} />
                 </Route>
                 <Route path={URIS.LOGIN} element={<LoginPage/>}/>
                 <Route path={URIS.SIGN_UP} element={<SignUpPage/>}/>
@@ -28,6 +39,21 @@ const Routers = (props) => {
                     path={URIS.RESET_PASSWORD}
                     element={<ResetPasswordPage/>}
                 />
+                <Route
+                    element={
+                        <RootPage
+                            title="Cài đặt tài khoản"
+                            sidebar={<AccountSidebar />}
+                        />
+                    }
+                >
+                    <Route path="/account/info" element={<AccountInfo />} />
+                    <Route
+                        path={"account/security"}
+                        element={<AccountSecurity />}
+                    />
+                    <Route path={URIS.DASHBOARD} element={<Dashboard />} />
+                </Route>
             </Routes>
         </BrowserRouter>
     );
