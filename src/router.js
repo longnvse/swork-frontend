@@ -5,6 +5,9 @@ import BusinessRouter from "./components/apps/business/router";
 import Dashboard from "./components/common/layout";
 import LoginPage from "./page/login";
 import RootPage from "./page";
+import SignUpPage from "./page/signup";
+import { URIS } from "./utils/constant";
+import ResetPasswordPage from "./page/resetPassword";
 
 const Routers = (props) => {
     return (
@@ -13,10 +16,14 @@ const Routers = (props) => {
                 <Route element={<RootPage />}>
                     <Route index element={<BusinessList />} />
                     <Route path={"/business/*"} element={<BusinessRouter />} />
-                    <Route path={"/dashboard"} element={<Dashboard />} />
+                    <Route path={URIS.DASHBOARD} element={<Dashboard />} />
                 </Route>
-                <Route path={"/login"} element={<LoginPage />} />
-                <Route path={"/sign-up"} element={<LoginPage />} />
+                <Route path={URIS.LOGIN} element={<LoginPage />} />
+                <Route path={URIS.SIGN_UP} element={<SignUpPage />} />
+                <Route
+                    path={URIS.RESET_PASSWORD}
+                    element={<ResetPasswordPage />}
+                />
             </Routes>
         </BrowserRouter>
     );

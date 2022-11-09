@@ -4,15 +4,15 @@ import AuthenticationLayout from "../../components/layout/Authentication";
 
 const signUpFields = [
     {
-        label: "Tên công ty",
-        name: "companyName",
+        label: "Tên đăng nhập",
+        name: "username",
         rules: [
             {
                 required: true,
-                message: "Tên công ty là bắt buộc",
+                message: "Tên đăng nhập là bắt buộc",
             },
         ],
-        placeholder: "Tên công ty",
+        placeholder: "Tên đăng nhập",
     },
     {
         label: "Email",
@@ -25,31 +25,9 @@ const signUpFields = [
         ],
         placeholder: "Email",
     },
-    {
-        label: "Số điện thoại",
-        name: "phone",
-        rules: [
-            {
-                required: true,
-                message: "Số điện thoại là bắt buộc",
-            },
-        ],
-        placeholder: "Số điện thoại",
-    },
-    {
-        label: "Địa chỉ",
-        name: "address",
-        rules: [
-            {
-                required: true,
-                message: "Địa chỉ là bắt buộc",
-            },
-        ],
-        placeholder: "Địa chỉ",
-    },
 ];
 
-function SignUpPage() {
+function ResetPasswordPage() {
     const handleSubmit = (values) => {
         console.log(values);
     };
@@ -57,13 +35,13 @@ function SignUpPage() {
     return (
         <AuthenticationLayout>
             <FormAuthentication
-                title="Đăng ký sử dụng"
+                title="Lấy lại mật khẩu"
                 fieldsData={signUpFields}
-                buttonLabel="Đăng ký"
+                buttonLabel="Xác nhận"
                 onSubmit={handleSubmit}
             />
         </AuthenticationLayout>
     );
 }
 
-export default SignUpPage;
+export default ResetPasswordPage;
