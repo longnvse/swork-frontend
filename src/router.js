@@ -8,12 +8,22 @@ import RootPage from "./page";
 import SignUpPage from "./page/signup";
 import { URIS } from "./utils/constant";
 import ResetPasswordPage from "./page/resetPassword";
+import CommonSider from "./components/common/layout/sider/Sider";
+import AccountSidebar from "./components/common/layout/sider/AccountSidebar";
+import AccountInfo from "./page/accountInfo";
 
 const Routers = (props) => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route element={<RootPage />}>
+                <Route
+                    element={
+                        <RootPage
+                            title="Danh sách công ty"
+                            sidebar={<CommonSider />}
+                        />
+                    }
+                >
                     <Route index element={<BusinessList />} />
                     <Route path={"/business/*"} element={<BusinessRouter />} />
                     <Route path={URIS.DASHBOARD} element={<Dashboard />} />
@@ -24,6 +34,21 @@ const Routers = (props) => {
                     path={URIS.RESET_PASSWORD}
                     element={<ResetPasswordPage />}
                 />
+                <Route
+                    element={
+                        <RootPage
+                            title="Cài đặt tài khoản"
+                            sidebar={<AccountSidebar />}
+                        />
+                    }
+                >
+                    <Route path="/account/info" element={<AccountInfo />} />
+                    <Route
+                        path={"account/security"}
+                        element={<BusinessRouter />}
+                    />
+                    <Route path={URIS.DASHBOARD} element={<Dashboard />} />
+                </Route>
             </Routes>
         </BrowserRouter>
     );

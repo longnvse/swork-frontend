@@ -61,6 +61,7 @@ function SignUpPage() {
                 fieldsData={signUpFields}
                 buttonLabel="Đăng ký"
                 onSubmit={handleSubmit}
+                className="ml-[137px]"
             />
         </AuthenticationLayout>
     );
