@@ -13,7 +13,7 @@ function FormAuthentication(props) {
         className,
         onClose,
     } = props;
-    const InputType = type ? Input : Input.Password;
+    const InputType = type === "password" ? Input.Password : Input;
 
     return (
         <div
