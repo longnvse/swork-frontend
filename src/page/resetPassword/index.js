@@ -39,6 +39,7 @@ function ResetPasswordPage() {
                 fieldsData={signUpFields}
                 buttonLabel="Xác nhận"
                 onSubmit={handleSubmit}
+                className="ml-[137px]"
             />
         </AuthenticationLayout>
     );

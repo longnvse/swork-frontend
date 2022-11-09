@@ -1,23 +1,52 @@
 import { Button, Form, Input } from "antd";
 import React from "react";
+import { VscClose } from "react-icons/vsc";
+import classNames from "classnames/bind";
 
 function FormAuthentication(props) {
-    const { title, fieldsData, buttonLabel, onSubmit } = props;
+    const {
+        type,
+        title,
+        fieldsData,
+        buttonLabel,
+        onSubmit,
+        className,
+        onClose,
+    } = props;
+    const InputType = type === "password" ? Input.Password : Input;
 
     return (
         <div
-            className="ml-[137px] w-full rounded-lg flex flex-col h-fit px-12 py-10 "
+            className={
+                "w-full rounded-lg flex flex-col h-fit px-12 py-10 " + className
+            }
             style={{ border: "2px solid #57AAE5FF" }}
         >
-            <img
-                src={require("../../../images/myLogo.jpg")}
-                alt=""
-                className="w-[30%] mx-auto"
-            />
-            <div className="mt-8 text-[#57AAE5FF] text-32/48 text-center font-secondary">
+            {!onClose && (
+                <img
+                    src={require("../../../images/myLogo.jpg")}
+                    alt=""
+                    className="w-[30%] mx-auto"
+                />
+            )}
+            {onClose && (
+                <div className="text-right">
+                    <VscClose
+                        size={40}
+                        className="cursor-pointer"
+                        onClick={onClose}
+                    />
+                </div>
+            )}
+            <div
+                className={classNames(
+                    !onClose && "mt-8",
+                    "text-primary text-32/48 text-center font-secondary",
+                )}
+            >
                 {title}
             </div>
-            <div className="mt-8">
+            <div className={classNames(!onClose ? "mt-8" : "mt-12")}>
                 <Form onFinish={onSubmit} layout={"vertical"}>
                     {fieldsData.map((field) => (
                         <Form.Item
@@ -30,7 +59,7 @@ function FormAuthentication(props) {
                                 className="font-normal"
                                 rules={field.rules}
                             >
-                                <Input
+                                <InputType
                                     placeholder={field.placeholder}
                                     className="border-0 border-b-2 px-0"
                                 />
@@ -42,7 +71,7 @@ function FormAuthentication(props) {
                         htmlType="submit"
                         block
                         className={
-                            "h-10 bg-[#57AAE5FF] text-white hover:border-[#57AAE5FF] hover:text-[#57AAE5FF] focus:border-[#57AAE5FF] focus:text-[#57AAE5FF]"
+                            "h-10 bg-primary text-white hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
                         }
                     >
                         {buttonLabel}
