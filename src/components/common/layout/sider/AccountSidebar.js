@@ -1,29 +1,25 @@
-import React, { useEffect, useState } from "react";
 import { Image, Menu } from "antd";
-import logo from "../../../../images/logo.png";
-import { Link, useSearchParams } from "react-router-dom";
-import { VscAccount } from "react-icons/vsc";
-import { RiGitRepositoryPrivateLine } from "react-icons/ri";
 import Sider from "antd/es/layout/Sider";
+import React, { useState } from "react";
+import { RiGitRepositoryPrivateLine } from "react-icons/ri";
+import { VscAccount } from "react-icons/vsc";
+import { Link, useLocation } from "react-router-dom";
+import logo from "../../../../images/logo.png";
 import { URIS } from "../../../../utils/constant";
 
 function AccountSidebar({ children }) {
     const [collapsed, setCollapsed] = useState(false);
-    const [searchParams] = useSearchParams();
-
-    useEffect(() => {
-        console.log(searchParams.getAll("menu"));
-    }, [searchParams]);
+    const location = useLocation();
 
     const items = [
         {
             label: <Link to={URIS.ACCOUNT_INFO}>Thông tin cá nhân</Link>,
-            key: "account-info",
+            key: URIS.ACCOUNT_INFO,
             icon: <VscAccount style={{ fontSize: 20 }} />,
         },
         {
             label: <Link to={URIS.ACCOUNT_SERCURITY}>Bảo mật</Link>,
-            key: "account-sercurity",
+            key: URIS.ACCOUNT_SERCURITY,
             icon: <RiGitRepositoryPrivateLine style={{ fontSize: 20 }} />,
         },
     ];
@@ -58,7 +54,7 @@ function AccountSidebar({ children }) {
                     style={{
                         backgroundColor: "inherit",
                     }}
-                    defaultSelectedKeys={searchParams.getAll("menu")}
+                    defaultSelectedKeys={location.pathname}
                 />
             </div>
         </Sider>

@@ -11,6 +11,7 @@ import ResetPasswordPage from "./page/resetPassword";
 import CommonSider from "./components/common/layout/sider/Sider";
 import AccountSidebar from "./components/common/layout/sider/AccountSidebar";
 import AccountInfo from "./page/accountInfo";
+import AccountSecurity from "./page/accountSecurity";
 
 const Routers = (props) => {
     return (
@@ -45,7 +46,7 @@ const Routers = (props) => {
                     <Route path="/account/info" element={<AccountInfo />} />
                     <Route
                         path={"account/security"}
-                        element={<BusinessRouter />}
+                        element={<AccountSecurity />}
                     />
                     <Route path={URIS.DASHBOARD} element={<Dashboard />} />
                 </Route>
