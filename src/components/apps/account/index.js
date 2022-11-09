@@ -1,27 +1,21 @@
 import React from 'react';
 import {Button, message, Popconfirm} from "antd";
 import {columns} from "./common/columns";
-import {approvalBusiness, deleteBusiness, getBusinessPages} from "../../../api/business/api";
+import {approvalBusiness} from "../../../api/business/api";
 import CommonList from "../../common/list";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
-import BusinessForm from "./form";
-import {CheckOutlined, DeleteOutlined, EditOutlined, StopOutlined} from "@ant-design/icons";
-import {ACTIVE, ADD, INACTIVE, PENDING, UPDATE} from "../../common/Constant";
+import AccountForm from "./form";
+import {CheckOutlined, EditOutlined, StopOutlined} from "@ant-design/icons";
+import {ACTIVE, ADD, INACTIVE, UPDATE} from "../../common/Constant";
 import {renderStatus} from "../../common/status";
+import {approvalAccount, getAccountPages} from "../../../api/account/api";
 
-const BusinessList = props => {
+const AccountList = props => {
     const onConfirmStatus = (id, status) => {
-        approvalBusiness(id, status).then(status => {
+        approvalAccount(id, status).then(status => {
             message.success("Thành công!");
         })
     }
-
-    const onConfirmDelete = (id) => {
-        deleteBusiness(id).then(value => {
-            message.success("Xoá thành công!");
-        })
-    }
-
 
     const mapData = (item, index) => {
         return {
@@ -30,8 +24,8 @@ const BusinessList = props => {
             status: renderStatus(item.status),
             action: <div className={"flex justify-evenly"}>
                 <ButtonDrawer
-                    title={"Cập nhật Công ty/Doanh nghiệp"}
-                    formId={"business-form"}
+                    title={"Cập nhật tài khoản"}
+                    formId={"account-form"}
                     mode={UPDATE}
                     buttonProps={{
                         icon: <EditOutlined/>,
@@ -39,16 +33,11 @@ const BusinessList = props => {
                         value: null
                     }}
                 >
-                    <BusinessForm id={item.id}/>
+                    <AccountForm id={item.id}/>
                 </ButtonDrawer>
                 <Popconfirm title={"Chắc chắn chứ!"}
                             onConfirm={() => onConfirmStatus(item.id, item.status === ACTIVE ? INACTIVE : ACTIVE)}>
                     <Button type={"link"} icon={item.status === ACTIVE ? <StopOutlined/> : <CheckOutlined/>}/>
-                </Popconfirm>
-                <Popconfirm disabled={item.status !== PENDING}
-                            title={"Chắc chắn chứ!"}
-                            onConfirm={() => onConfirmDelete(item.id)}>
-                    <Button type={"link"} disabled={item.status !== PENDING} icon={<DeleteOutlined/>}/>
                 </Popconfirm>
             </div>,
             index: index + 1
@@ -56,21 +45,21 @@ const BusinessList = props => {
     }
 
     const buttonAdd = <ButtonDrawer
-        title={"Thêm mới công ty/Doanh nghiệp"}
-        formId={"business-form"}
+        title={"Thêm mới tài khoản"}
+        formId={"account-form"}
         mode={ADD}
         buttonProps={{
             value: "Thêm mới"
         }}
     >
-        <BusinessForm/>
+        <AccountForm/>
     </ButtonDrawer>
 
     return (
         <div>
             <CommonList
                 mapData={mapData}
-                load={getBusinessPages}
+                load={getAccountPages}
                 columns={columns}
                 buttonAdd={buttonAdd}
             />
@@ -78,6 +67,6 @@ const BusinessList = props => {
     );
 };
 
-BusinessList.propTypes = {};
+AccountList.propTypes = {};
 
-export default BusinessList;
+export default AccountList;
