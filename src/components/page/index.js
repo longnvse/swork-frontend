@@ -22,11 +22,14 @@ const RootPage = props => {
             <Layout>
                 <CommonHeader/>
                 <CommonContent>
-                    <Spin style={{
-                        height: 'inherit'
-                    }}
-                          className={'loading'}
-                          spinning={loading} indicator={antIcon}>
+                    <Spin
+                        style={{
+                            height: 'inherit'
+                        }}
+                        delay={0.5}
+                        className={'loading'}
+                        spinning={loading}
+                        indicator={antIcon}>
                         <Outlet/>
                     </Spin>
                 </CommonContent>

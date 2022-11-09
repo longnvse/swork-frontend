@@ -8,7 +8,7 @@ import BusinessForm from "../../apps/business/form";
 import {ADD} from "../Constant";
 import {useSelector} from "react-redux";
 
-function CommonList({mapData, load, columns = [], isSelections = false}) {
+function CommonList({mapData, buttonAdd = <></>, load, columns = [], isSelections = false}) {
     const [params, setParams] = useState({});
     const [data, setData] = useState([]);
     const {reload} = useSelector(state => state.commonReducer);
@@ -46,16 +46,10 @@ function CommonList({mapData, load, columns = [], isSelections = false}) {
         <div>
             <Row gutter={12} className={"mb-4"}>
                 <Col>
-                    <ButtonDrawer
-                        title={"Thêm mới công ty/Doanh nghiệp"}
-                        formId={"business-form"}
-                        mode={ADD}
-                        buttonProps={{
-                            value: "Thêm mới"
-                        }}
-                    >
-                        <BusinessForm/>
-                    </ButtonDrawer>
+                    {
+                        buttonAdd
+                    }
+
                 </Col>
                 <Col span={6}>
                     <Input

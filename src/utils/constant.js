@@ -4,4 +4,7 @@ export const URIS = {
     SIGN_UP: "/sign-up",
     RESET_PASSWORD: "/reset-password",
     CHANGE_PASSWORD: "/change-password",
+    BUSINESS: "/business",
+    DEPARTMENT: "/department",
+    ACCOUNT: "/account",
 };
