@@ -1,6 +1,5 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { loginStart } from "../../redux/actions/login/actions";
 import { URIS } from "../../utils/constant";
 
 import React, { useEffect } from "react";
@@ -19,15 +18,6 @@ function AuthenticationLayout(props) {
         }
     }, [loggedInSuccess]);
 
-    const dispatch = useDispatch();
-
-    const onFinish = (values) => {
-        console.log(values);
-        dispatch(loginStart(values));
-    };
-
-    const hasAccount = true;
-
     return (
         <div
             className={"page__login-container flex"}
@@ -37,9 +27,7 @@ function AuthenticationLayout(props) {
         >
             <div className="w-full px-10 py-8">
                 <div className="flex justify-end ">
-                    <span className="mr-5">
-                        {hasAccount ? "Đã có tài khoản?" : "Chưa có tài khoản?"}
-                    </span>
+                    <span className="mr-5">Đã có tài khoản?</span>
                     <Link
                         to={URIS.LOGIN}
                         className="underline text-[#2525EBFF]"
@@ -47,7 +35,10 @@ function AuthenticationLayout(props) {
                         Đăng nhập
                     </Link>
                 </div>
-                <div className="flex mt-[70px]">
+                <div
+                    className="flex mt-5"
+                    style={{ minHeight: "calc(100vh - 150px)" }}
+                >
                     <div className="mt-[100px] w-[15%] text-right">
                         <img
                             src={require("../../images/authentication/Coffee.png")}
@@ -55,7 +46,7 @@ function AuthenticationLayout(props) {
                         />
                         <div className="mt-10 h-2 w-full bg-[#ed7d2d] rounded-xl"></div>
                     </div>
-                    <div className="mt-[150px] w-[20%] ml-[84px] text-[#9095A1FF]">
+                    <div className="mt-[150px] w-[21%] ml-[84px] text-[#9095A1FF]">
                         <div className="text-48/68">
                             Great to have you back!
                         </div>
@@ -68,7 +59,7 @@ function AuthenticationLayout(props) {
                             alt=""
                         />
                     </div>
-                    {children}
+                    <div className="flex items-center w-[45%]"> {children}</div>
                     <div className="flex-1 text-end mt-[200px]">
                         <img
                             src={require("../../images/authentication/Lightbulb.png")}
