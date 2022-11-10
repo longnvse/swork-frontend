@@ -110,7 +110,6 @@ const AccountSecurity = () => {
                             onSubmit={handleSubmit}
                             onClose={handleClosePopup}
                         />
-                        {/* <span onClick={handleClosePopup}>×</span> */}
                     </div>
                 </div>
             )}

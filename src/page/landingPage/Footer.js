@@ -48,11 +48,8 @@ const Footer = () => {
                             <div key={item.title} className="flex-1 text-20/30">
                                 <div>{item.title}</div>
                                 <ul className="list-none">
-                                    {item.subtitles.map((subtitle) => (
-                                        <li
-                                            key={subtitle.title}
-                                            className="mt-3"
-                                        >
+                                    {item.subtitles.map((subtitle, index) => (
+                                        <li key={index} className="mt-3">
                                             <Link to={subtitle.uri}>
                                                 <span className="text-14/22 text-white">
                                                     {subtitle.label}
@@ -107,8 +104,8 @@ const Footer = () => {
                         </ul>
                     </div>
                     <ul className="flex space-x-4">
-                        {socials.map((item) => (
-                            <a href={item.link} key={item.link}>
+                        {socials.map((item, index) => (
+                            <a href={item.link} key={index}>
                                 <img
                                     src={item.icon}
                                     alt=""
