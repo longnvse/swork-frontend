@@ -16,6 +16,7 @@ module.exports = {
             primary: "#57AAE5FF",
         },
         fontSize: {
+            "12/20": ["12px", { lineHeight: "20px" }],
             "14/22": ["14px", { lineHeight: "22px" }],
             "16/26": ["16px", { lineHeight: "26px" }],
             "20/30": ["20px", { lineHeight: "30px" }],

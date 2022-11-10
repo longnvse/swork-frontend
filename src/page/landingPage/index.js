@@ -6,7 +6,7 @@ const LandingPage = () => {
     return (
         <div>
             <Header />
-            <div className="max-w-[1260px] mx-auto"></div>
+            <div className="max-w-[1260px] mx-auto">body</div>
             <Footer />
         </div>
     );
