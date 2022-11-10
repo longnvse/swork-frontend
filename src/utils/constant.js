@@ -7,4 +7,5 @@ export const URIS = {
 
     ACCOUNT_INFO: "/account/info",
     ACCOUNT_SERCURITY: "/account/security",
+    LANDING_PAGE: "/landing-page",
 };

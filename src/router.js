@@ -12,6 +12,7 @@ import CommonSider from "./components/common/layout/sider/Sider";
 import AccountSidebar from "./components/common/layout/sider/AccountSidebar";
 import AccountInfo from "./page/accountInfo";
 import AccountSecurity from "./page/accountSecurity";
+import LandingPage from "./page/landingPage";
 
 const Routers = (props) => {
     return (
@@ -31,6 +32,7 @@ const Routers = (props) => {
                 </Route>
                 <Route path={URIS.LOGIN} element={<LoginPage />} />
                 <Route path={URIS.SIGN_UP} element={<SignUpPage />} />
+                <Route path={URIS.LANDING_PAGE} element={<LandingPage />} />
                 <Route
                     path={URIS.RESET_PASSWORD}
                     element={<ResetPasswordPage />}
