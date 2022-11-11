@@ -31,6 +31,11 @@ function CommonSider({children}) {
                 }
             ]
         },
+        {
+            label: <Link to={"/project"}>Dự án</Link>,
+            key: "project",
+            icon: <BiBuildings style={{fontSize: 20}}/>,
+        }
     ]
 
     return (
