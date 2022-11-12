@@ -31,6 +31,18 @@
     }
 }
 
+.ant-input {
+    border: 0;
+    border-bottom: 2px solid #e6e6e6;
+}
+.ant-input:hover {
+    border-bottom: 2px solid #5fbfff;
+}
+.ant-input:focus {
+    border-bottom: 2px solid #5fbfff;
+    box-shadow: none;
+}
+
 .ant-input-affix-wrapper {
     border-radius: var(--border-radius-small);
 }
@@ -48,7 +60,6 @@
         &-active {
             border-radius: 16px;
             justify-content: center;
-
         }
 
         &-ellipsis {
