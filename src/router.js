@@ -54,7 +54,7 @@ const Routers = (props) => {
                 >
                     <Route path={URIS.ACCOUNT_INFO} element={<AccountInfo />} />
                     <Route
-                        path={URIS.ACCOUNT_SERCURITY}
+                        path={URIS.ACCOUNT_SECURITY}
                         element={<AccountSecurity />}
                     />
                     <Route path={URIS.DASHBOARD} element={<Dashboard />} />
