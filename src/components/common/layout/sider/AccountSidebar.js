@@ -18,8 +18,8 @@ function AccountSidebar({ children }) {
             icon: <VscAccount style={{ fontSize: 20 }} />,
         },
         {
-            label: <Link to={URIS.ACCOUNT_SERCURITY}>Bảo mật</Link>,
-            key: URIS.ACCOUNT_SERCURITY,
+            label: <Link to={URIS.ACCOUNT_SECURITY}>Bảo mật</Link>,
+            key: URIS.ACCOUNT_SECURITY,
             icon: <RiGitRepositoryPrivateLine style={{ fontSize: 20 }} />,
         },
     ];

@@ -52,7 +52,7 @@ const ProfileIcon = (props) => {
                 },
                 {
                     onClick: () => {
-                        navigate(URIS.ACCOUNT_SERCURITY);
+                        navigate(URIS.ACCOUNT_SECURITY);
                     },
                     label: "Bảo mật",
                     key: "account-security",

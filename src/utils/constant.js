@@ -8,6 +8,6 @@ export const URIS = {
     DEPARTMENT: "/department",
     ACCOUNT: "/account",
     ACCOUNT_INFO: "/account/info",
-    ACCOUNT_SERCURITY: "/account/security",
+    ACCOUNT_SECURITY: "/account/security",
     LANDING_PAGE: "/landing-page",
 };
