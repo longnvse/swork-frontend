@@ -4,6 +4,8 @@ import logo from "../../../../images/logo.png";
 import {Link, useSearchParams} from "react-router-dom";
 import {BiBuildings} from "react-icons/bi";
 import Sider from "antd/es/layout/Sider";
+import {URIS} from "../../../../utils/constant";
+import {ApartmentOutlined, UserOutlined} from "@ant-design/icons";
 
 function CommonSider({children}) {
     const [collapsed, setCollapsed] = useState(false);
@@ -15,7 +17,7 @@ function CommonSider({children}) {
 
     const items = [
         {
-            label: <Link to={"/business"}>Công ty/Doanh nghiệp</Link>,
+            label: "Công ty/Doanh nghiệp",
             key: "business",
             icon: <BiBuildings style={{fontSize: 20}}/>,
             children: [
@@ -30,6 +32,16 @@ function CommonSider({children}) {
                     icon: <BiBuildings/>,
                 }
             ]
+        },
+        {
+            label: <Link to={URIS.DEPARTMENT}>Quản lý phòng ban</Link>,
+            key: "department",
+            icon: <ApartmentOutlined style={{fontSize: 20}}/>
+        },
+        {
+            label: <Link to={URIS.ACCOUNT}>Quản lý tài khoản</Link>,
+            key: "account",
+            icon: <UserOutlined style={{fontSize: 20}}/>
         },
         {
             label: <Link to={"/project"}>Dự án</Link>,
@@ -65,7 +77,6 @@ function CommonSider({children}) {
                     style={{
                         backgroundColor: 'inherit'
                     }}
-                    defaultSelectedKeys={searchParams.getAll("menu")}
                 />
             </div>
         </Sider>

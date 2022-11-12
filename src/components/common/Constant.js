@@ -4,3 +4,4 @@ export const INFORMATION = "information";
 export const PENDING = "pending";
 export const ACTIVE = "active";
 export const INACTIVE = "inactive";
+export const DATE_FORMAT = "DD-MM-YYYY"

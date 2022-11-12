@@ -30,7 +30,7 @@ function* onLoginStartAsync(action) {
         }
     } catch (error) {
         yield put(loginError(error?.response?.data));
-        message.error("Sai tên người dùng hoặc mật khẩu. Vui lòng thử lại!");
+        message.error(error.response?.data?.detail ||"Sai tên người dùng hoặc mật khẩu. Vui lòng thử lại!");
     }
 }
 

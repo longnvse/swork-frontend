@@ -6,7 +6,7 @@ import CommonList from "../../common/list";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
 import BusinessForm from "./form";
 import {CheckOutlined, DeleteOutlined, EditOutlined, StopOutlined} from "@ant-design/icons";
-import {ACTIVE, INACTIVE, UPDATE, PENDING} from "../../common/Constant";
+import {ACTIVE, ADD, INACTIVE, PENDING, UPDATE} from "../../common/Constant";
 import {renderStatus} from "../../common/status";
 
 const BusinessList = props => {
@@ -23,7 +23,7 @@ const BusinessList = props => {
     }
 
 
-    const mapData = (item, index) => {
+    const mapData = (item) => {
         return {
             key: item.id,
             ...item,
@@ -50,10 +50,20 @@ const BusinessList = props => {
                             onConfirm={() => onConfirmDelete(item.id)}>
                     <Button type={"link"} disabled={item.status !== PENDING} icon={<DeleteOutlined/>}/>
                 </Popconfirm>
-            </div>,
-            index: index + 1
+            </div>
         }
     }
+
+    const buttonAdd = <ButtonDrawer
+        title={"Thêm mới công ty/Doanh nghiệp"}
+        formId={"business-form"}
+        mode={ADD}
+        buttonProps={{
+            value: "Thêm mới"
+        }}
+    >
+        <BusinessForm/>
+    </ButtonDrawer>
 
     return (
         <div>
@@ -61,6 +71,7 @@ const BusinessList = props => {
                 mapData={mapData}
                 load={getBusinessPages}
                 columns={columns}
+                buttonAdd={buttonAdd}
             />
         </div>
     );

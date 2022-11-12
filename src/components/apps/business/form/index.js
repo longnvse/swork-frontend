@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Form, Input, message, Typography} from "antd";
 import {addBusiness, getBusiness, updateBusiness} from "../../../../api/business/api";
 import FormItem from "antd/es/form/FormItem";
@@ -34,20 +34,8 @@ const BusinessForm = ({id}) => {
 
     }
 
-    const title = useCallback(
-        () => {
-            if (id) {
-                return "Cập nhật Công ty/Doanh nghiệp";
-            }
-
-            return "Thêm Công ty/Doanh nghiệp";
-        },
-        [id]);
-
-
     return (
         <>
-            <Typography.Title style={{fontSize: 18, marginBottom: 8}}>{title}</Typography.Title>
             <Form
                 onFinish={onFinish}
                 layout={"vertical"}
@@ -101,7 +89,7 @@ const BusinessForm = ({id}) => {
                         },
                         {
                             type: 'string',
-                            pattern: /^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,5}$/im,
+                            pattern: /^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4}$/im,
                             message: 'Sai định dạng số điện thoại!'
                         }
                     ]}

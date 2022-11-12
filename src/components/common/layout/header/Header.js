@@ -1,23 +1,31 @@
-import React from 'react';
-import {Col, Layout} from "antd";
+import React from "react";
+import {Col, Layout, Row} from "antd";
 import ProfileIcon from "./profile";
+import {IoMdNotificationsOutline} from "react-icons/io";
 
-const {Header} = Layout
+const {Header} = Layout;
 
-function CommonHeader() {
+function CommonHeader(props) {
+    const {title} = props;
     return (
         <Header
             className={"flex flex-row justify-between items-center"}
             style={{
-                background: '#57AAE5FF',
+                background: "#57AAE5FF",
                 padding: 0,
-                borderLeft: '1px solid inherit',
-            }}>
+                borderLeft: "1px solid inherit",
+            }}
+        >
             <Col>
-                <div className={"text__header pl-4"}>Danh sách công ty</div>
+                <div className={"text__header pl-4"}>{title}</div>
             </Col>
             <Col style={{paddingRight: 4}}>
-                <ProfileIcon/>
+                <Row className="flex items-center">
+                    <div className="app__header--item cursor-pointer flex items-center mr-2">
+                        <IoMdNotificationsOutline className="text-white w-6 h-6"/>
+                    </div>
+                    <ProfileIcon/>
+                </Row>
             </Col>
         </Header>
     );
