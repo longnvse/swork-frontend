@@ -1,6 +1,8 @@
-import {Button, Col, DatePicker, Form, Input, Row} from "antd";
+import {Col, DatePicker, Form, Input, InputNumber, Row, Select} from "antd";
 import React, {useEffect} from "react";
 import {getProject} from "../../../../api/project";
+import SelectAccount from "../../../common/select/account";
+import FormItem from "antd/es/form/FormItem";
 
 const ProjectForm = ({id}) => {
     const [form] = Form.useForm();
@@ -22,10 +24,10 @@ const ProjectForm = ({id}) => {
             form={form}
             onFinish={onFinish}
             layout={"vertical"}
-            style={{width: "70%"}}
+            style={{width: "100%"}}
         >
             <Row gutter={12}>
-                <Col span={3}>
+                <Col span={8}>
                     <Form.Item
                         name="code"
                         label="Mã dự án"
@@ -39,7 +41,7 @@ const ProjectForm = ({id}) => {
                         <Input placeholder="Mã dự án"/>
                     </Form.Item>
                 </Col>
-                <Col span={5}>
+                <Col span={16}>
                     <Form.Item
                         name="name"
                         label="Tên dự án"
@@ -54,8 +56,33 @@ const ProjectForm = ({id}) => {
                     </Form.Item>
                 </Col>
             </Row>
+            <FormItem
+                name={"progressType"}
+                label={"Cách tính tiến độ dự án"}
+                rules={[
+                    {
+                        required: true,
+                        message: "Chưa chọn cách tính tiến độ dự án",
+                    },
+                ]}
+            >
+                <Select
+                    dropdownMatchSelectWidth={false}
+                >
+                    <Select.Option
+                        value={"averageWorks"}
+                        title={"Theo bình quân % hoàn thành các công việc"}
+                        children={<>
+                            <b>Theo bình quân % hoàn thành các công việc</b>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Ví dụ dự án gồm 2 công việc A và B .</div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Công việc A yêu cầu thời gian thực hiện trong 4 ngày , tiến độ 40%</div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Công việc B yêu cầu thời gian thực hiện trong 6 ngày , tiến độ 50%</div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Tiến độ dự án là ((4*40+6*60)/(4*100+6*100))*100 = 46%</div>
+                        </>}/>
+                </Select>
+            </FormItem>
             <Row gutter={12}>
-                <Col span={4}>
+                <Col span={12}>
                     <Form.Item
                         name="startDate"
                         label="Thời gian bắt đầu"
@@ -69,7 +96,7 @@ const ProjectForm = ({id}) => {
                         <DatePicker className="w-full"/>
                     </Form.Item>
                 </Col>
-                <Col span={4}>
+                <Col span={12}>
                     <Form.Item
                         name="endDate"
                         label="Thời gian kết thúc"
@@ -84,83 +111,61 @@ const ProjectForm = ({id}) => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Row gutter={12}>
-                <Col span={8}>
-                    <Form.Item
-                        name="assignor"
-                        label="Người quản trị"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Chưa chọn người quản trị",
-                            },
-                        ]}
-                    >
-                        <Input placeholder="Chọn người quản trị"/>
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row gutter={12}>
-                <Col span={8}>
-                    <Form.Item
-                        name="assignee"
-                        label="Người thực hiện"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Chưa chọn người thực hiện",
-                            },
-                        ]}
-                    >
-                        <Input placeholder="Chọn người quản trị"/>
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row gutter={12}>
-                <Col span={8}>
-                    <Form.Item
-                        name="follower"
-                        label="Người theo dõi"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Chưa chọn người theo dõi",
-                            },
-                        ]}
-                    >
-                        <Input placeholder="Chọn người theo dõi"/>
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row gutter={12}>
-                <Col span={6}>
-                    <Form.Item
-                        name="budget"
-                        label="Ngân sách"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Chưa nhập ngân sách",
-                            },
-                        ]}
-                    >
-                        <Input placeholder="Nhập ngân sách"/>
-                    </Form.Item>
-                </Col>
-                <Col span={2}>
-                    <Form.Item name="unit" label="Đơn vị">
-                        <Input placeholder="VNĐ"/>
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row gutter={12}>
-                <Col span={8}>
-                    <Form.Item name="description" label="Mô tả">
-                        <Input.TextArea placeholder="Nhập mô tả"/>
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Button htmlType="submit">Submit</Button>
+            <Form.Item
+                name="assignor"
+                label="Người quản trị"
+                rules={[
+                    {
+                        required: true,
+                        message: "Chưa chọn người quản trị",
+                    },
+                ]}
+            >
+                <SelectAccount placeholder="Chọn người quản trị"/>
+            </Form.Item>
+            <Form.Item
+                name="assignee"
+                label="Người thực hiện"
+                rules={[
+                    {
+                        required: true,
+                        message: "Chưa chọn người thực hiện",
+                    },
+                ]}
+            >
+                <SelectAccount placeholder="Chọn người quản trị"/>
+            </Form.Item>
+            <Form.Item
+                name="follower"
+                label="Người theo dõi"
+                rules={[
+                    {
+                        required: true,
+                        message: "Chưa chọn người theo dõi",
+                    },
+                ]}
+            >
+                <SelectAccount placeholder="Chọn người theo dõi"/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="budget"
+                label="Ngân sách"
+                rules={[
+                    {
+                        required: true,
+                        message: "Chưa nhập ngân sách",
+                    },
+                ]}
+            >
+                <InputNumber className={"w-full"} addonAfter={"VNĐ"} controls={false} min={0}
+                             placeholder="Nhập ngân sách"/>
+            </Form.Item>
+
+            <Form.Item name="description" label="Mô tả">
+                <Input.TextArea placeholder="Nhập mô tả"/>
+            </Form.Item>
         </Form>
     );
 };

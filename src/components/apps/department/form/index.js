@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {Form, Input, message} from "antd";
 import FormItem from "antd/es/form/FormItem";
 import {addDepartment, getDepartment, updateDepartment} from "../../../../api/department/api";
+import SelectAccount from "../../../common/select/account";
 
 const DepartmentForm = ({id}) => {
     const [form] = Form.useForm();
@@ -57,6 +58,12 @@ const DepartmentForm = ({id}) => {
                     ]}
                 >
                     <Input placeholder={"Phòng hành chính"}/>
+                </FormItem>
+                <FormItem
+                    name={"accounts"}
+                    label={"Thành viên"}
+                >
+                    <SelectAccount placeholder={"Chọn thành viên"}/>
                 </FormItem>
             </Form>
         </>

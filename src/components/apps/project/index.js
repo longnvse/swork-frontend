@@ -5,7 +5,7 @@ import {deleteProject, getProjectPages} from "../../../api/project";
 import {Button, message, Popconfirm} from "antd";
 import {renderStatus} from "../../common/status";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
-import {PENDING, UPDATE} from "../../common/Constant";
+import {ADD, PENDING, UPDATE} from "../../common/Constant";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import ProjectForm from "./form";
 
@@ -44,12 +44,24 @@ function ProjectList(props) {
         };
     };
 
+    const buttonAdd = <ButtonDrawer
+        title={"Thêm mới dự án"}
+        formId={"project-form"}
+        mode={ADD}
+        buttonProps={{
+            value: "Thêm mới"
+        }}
+    >
+        <ProjectForm/>
+    </ButtonDrawer>
+
     return (
         <div>
             <CommonList
                 mapData={mapData}
                 load={getProjectPages}
                 columns={columns}
+                buttonAdd={buttonAdd}
             />
         </div>
     );

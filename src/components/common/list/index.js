@@ -84,14 +84,9 @@ function CommonList({mapData, buttonAdd = <></>, load, columns = [], isSelection
                 }}
                 pagination={{
                     defaultCurrent: 1,
-                    // hideOnSinglePage: true,
                     defaultPageSize: 10,
                     total: totalCount,
                     showTotal: (total) => `${total} kết quả`,
-                    onShowSizeChange: (current, size) => {
-                        console.log(current, size);
-                    },
-                    position: ["topRight"]
                 }}
             />
         </div>
