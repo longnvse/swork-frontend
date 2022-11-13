@@ -23,7 +23,7 @@ const BusinessList = props => {
     }
 
 
-    const mapData = (item, index) => {
+    const mapData = (item) => {
         return {
             key: item.id,
             ...item,
@@ -50,8 +50,7 @@ const BusinessList = props => {
                             onConfirm={() => onConfirmDelete(item.id)}>
                     <Button type={"link"} disabled={item.status !== PENDING} icon={<DeleteOutlined/>}/>
                 </Popconfirm>
-            </div>,
-            index: index + 1
+            </div>
         }
     }
 

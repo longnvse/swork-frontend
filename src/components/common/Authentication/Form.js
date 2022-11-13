@@ -1,7 +1,8 @@
-import { Button, Form, Input } from "antd";
+import {Button, Form, Input} from "antd";
 import React from "react";
-import { VscClose } from "react-icons/vsc";
+import {VscClose} from "react-icons/vsc";
 import classNames from "classnames/bind";
+import FormItem from "antd/es/form/FormItem";
 
 function FormAuthentication(props) {
     const {
@@ -20,7 +21,7 @@ function FormAuthentication(props) {
             className={
                 "w-full rounded-lg flex flex-col h-fit px-12 py-10 " + className
             }
-            style={{ border: "2px solid #57AAE5FF" }}
+            style={{border: "2px solid #57AAE5FF"}}
         >
             {!onClose && (
                 <img
@@ -51,31 +52,32 @@ function FormAuthentication(props) {
                     {fieldsData.map((field) => (
                         <Form.Item
                             key={field.name}
+                            className="text-14/22"
+                            name={field.name}
                             label={field.label}
-                            className="text-14/22 font-semibold mb-0"
+                            rules={[{
+                                required: true,
+                                message: "Vui lòng nhập ${label}"
+                            }, ...field.rules || []]}
                         >
-                            <Form.Item
-                                name={field.name}
-                                className="font-normal"
-                                rules={field.rules}
-                            >
-                                <InputType
-                                    placeholder={field.placeholder}
-                                    className="border-0 border-b-2 px-0"
-                                />
-                            </Form.Item>
+                            <InputType
+                                placeholder={field.placeholder}
+                                className="border-0 border-b-2 px-0 hover:shadow-none focus:shadow-none hover:border-r-0 focus:border-r-0"
+                            />
                         </Form.Item>
                     ))}
 
-                    <Button
-                        htmlType="submit"
-                        block
-                        className={
-                            "h-10 bg-primary text-white hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
-                        }
-                    >
-                        {buttonLabel}
-                    </Button>
+                    <FormItem>
+                        <Button
+                            htmlType="submit"
+                            block
+                            className={
+                                "h-10 bg-primary text-white hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
+                            }
+                        >
+                            {buttonLabel}
+                        </Button>
+                    </FormItem>
                 </Form>
             </div>
         </div>

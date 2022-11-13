@@ -42,6 +42,11 @@ function CommonSider({children}) {
             label: <Link to={URIS.ACCOUNT}>Quản lý tài khoản</Link>,
             key: "account",
             icon: <UserOutlined style={{fontSize: 20}}/>
+        },
+        {
+            label: <Link to={"/project"}>Dự án</Link>,
+            key: "project",
+            icon: <BiBuildings style={{fontSize: 20}}/>,
         }
     ]
 

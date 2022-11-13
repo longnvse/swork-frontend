@@ -6,45 +6,30 @@ const signUpFields = [
     {
         label: "Tên công ty",
         name: "companyName",
-        rules: [
-            {
-                required: true,
-                message: "Tên công ty là bắt buộc",
-            },
-        ],
         placeholder: "Tên công ty",
     },
     {
         label: "Email",
         name: "email",
-        rules: [
-            {
-                required: true,
-                message: "Email là bắt buộc",
-            },
-        ],
+        rules: [{
+            type: "email",
+            message: "Email không hợp lệ"
+        }],
         placeholder: "Email",
     },
     {
         label: "Số điện thoại",
         name: "phone",
-        rules: [
-            {
-                required: true,
-                message: "Số điện thoại là bắt buộc",
-            },
-        ],
         placeholder: "Số điện thoại",
+        rules: [{
+            type: 'string',
+            pattern: /^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4}$/im,
+            message: 'Số điện thoại không hợp lệ!'
+        }]
     },
     {
         label: "Địa chỉ",
         name: "address",
-        rules: [
-            {
-                required: true,
-                message: "Địa chỉ là bắt buộc",
-            },
-        ],
         placeholder: "Địa chỉ",
     },
 ];

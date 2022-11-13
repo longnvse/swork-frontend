@@ -3,13 +3,11 @@ import {Col, Input, Row, Table} from "antd";
 import PropTypes from "prop-types";
 import {debounce} from "lodash";
 import {FiSearch} from "react-icons/fi";
-import ButtonDrawer from "../button/ButtonDrawer";
-import BusinessForm from "../../apps/business/form";
-import {ADD} from "../Constant";
 import {useSelector} from "react-redux";
 
 function CommonList({mapData, buttonAdd = <></>, load, columns = [], isSelections = false}) {
-    const [params, setParams] = useState({});
+    const [params, setParams] = useState({page: 1, pageSize: 10});
+    const [totalCount, setTotalCount] = useState();
     const [data, setData] = useState([]);
     const {reload} = useSelector(state => state.commonReducer);
 
@@ -30,10 +28,22 @@ function CommonList({mapData, buttonAdd = <></>, load, columns = [], isSelection
 
     const fetchData = (params) => {
         load(params).then(response => {
-            setData(response.data?.items?.map(mapData));
+            setData(response.data?.items?.map((item, index) => ({
+                ...mapData(item),
+                index: (params.page - 1) * 10 + index + 1,
+            })));
+            setTotalCount(response.data?.totalCount);
         }).catch(err => {
             console.log(err)
         });
+    }
+
+    const onChangeTable = ({current, pageSize}, filters, sorter, extra) => {
+        setParams(prevState => ({
+            ...prevState,
+            page: current,
+            pageSize
+        }))
     }
 
 
@@ -60,6 +70,7 @@ function CommonList({mapData, buttonAdd = <></>, load, columns = [], isSelection
             <Table
                 columns={columns}
                 dataSource={data}
+                onChange={onChangeTable}
                 rowSelection={isSelections && {}}
                 onHeaderRow={() => {
                     return {
@@ -68,10 +79,14 @@ function CommonList({mapData, buttonAdd = <></>, load, columns = [], isSelection
                         }
                     }
                 }}
+                scroll={data?.length > 10 && {
+                    y: 650
+                }}
                 pagination={{
                     defaultCurrent: 1,
-                    hideOnSinglePage: true,
-                    defaultPageSize: 10
+                    defaultPageSize: 10,
+                    total: totalCount,
+                    showTotal: (total) => `${total} kết quả`,
                 }}
             />
         </div>

@@ -8,36 +8,18 @@ const changePasswordFields = [
         type: "password",
         label: "Mật khẩu cũ",
         name: "oldPassword",
-        rules: [
-            {
-                required: true,
-                message: "Mật khẩu cũ là bắt buộc",
-            },
-        ],
         placeholder: "Mật khẩu cũ",
     },
     {
         type: "password",
         label: "Mật khẩu mới",
         name: "newPassword",
-        rules: [
-            {
-                required: true,
-                message: "Mật khẩu mới là bắt buộc",
-            },
-        ],
         placeholder: "Mật khẩu mới",
     },
     {
         type: "password",
         label: "Xác nhận mật khẩu",
         name: "confirmPassword",
-        rules: [
-            {
-                required: true,
-                message: "Xác nhận mật khẩu là bắt buộc",
-            },
-        ],
         placeholder: "Xác nhận mật khẩu",
     },
 ];
