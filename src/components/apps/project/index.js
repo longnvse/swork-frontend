@@ -2,12 +2,13 @@ import React from "react";
 import CommonList from "../../common/list";
 import {columns} from "./common/columns";
 import {deleteProject, getProjectPages} from "../../../api/project";
-import {Button, message, Popconfirm} from "antd";
+import {Button, message, Popconfirm, Progress} from "antd";
 import {renderStatus} from "../../common/status";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
-import {ADD, PENDING, UPDATE} from "../../common/Constant";
+import {ADD, DATE_FORMAT, PENDING, UPDATE} from "../../common/Constant";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import ProjectForm from "./form";
+import moment from "moment";
 
 function ProjectList(props) {
     const onConfirmDelete = (id) => {
@@ -21,6 +22,9 @@ function ProjectList(props) {
             key: item.id,
             ...item,
             status: renderStatus(item.status),
+            startDate: moment(item.startDate).format(DATE_FORMAT),
+            endDate: moment(item.endDate).format(DATE_FORMAT),
+            progress: <Progress percent={item.progress} size="small"/>,
             action: <div className={"flex justify-evenly"}>
                 <ButtonDrawer
                     title={"Cập nhật dự án"}

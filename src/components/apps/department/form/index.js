@@ -60,7 +60,7 @@ const DepartmentForm = ({id}) => {
                     <Input placeholder={"Phòng hành chính"}/>
                 </FormItem>
                 <FormItem
-                    name={"accounts"}
+                    name={"members"}
                     label={"Thành viên"}
                 >
                     <SelectAccount placeholder={"Chọn thành viên"}/>

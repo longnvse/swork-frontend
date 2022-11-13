@@ -1,6 +1,6 @@
 import {SWAxios} from "../../system/axios";
 
-const url = "swork/project-rest/v1.0/project";
+const url = "swork/project-rest/v1.0/projects";
 
 export const getProjectPages = (params) => {
     return SWAxios.get(url, {params});

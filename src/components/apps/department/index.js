@@ -21,7 +21,7 @@ const DepartmentList = props => {
             key: item.id,
             index: index + 1,
             ...item,
-            quantityMember: item.accounts?.length || 0,
+            quantityMember: item.members?.length || 0,
             action: <div className={"flex justify-evenly"}>
                 <ButtonModal
                     formId={"department-form"}

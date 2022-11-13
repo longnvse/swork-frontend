@@ -1,8 +1,10 @@
-import {Col, DatePicker, Form, Input, InputNumber, Row, Select} from "antd";
+import {Col, Form, Input, InputNumber, message, Row, Select} from "antd";
 import React, {useEffect} from "react";
-import {getProject} from "../../../../api/project";
+import {addProject, getProject, updateProject} from "../../../../api/project";
 import SelectAccount from "../../../common/select/account";
 import FormItem from "antd/es/form/FormItem";
+import SWDatePicker from "../../../common/date";
+import moment from "moment";
 
 const ProjectForm = ({id}) => {
     const [form] = Form.useForm();
@@ -10,13 +12,31 @@ const ProjectForm = ({id}) => {
     useEffect(() => {
         if (id) {
             getProject(id).then(response => {
-                form.setFieldsValue(response?.data);
+                form.setFieldsValue({
+                    ...response?.data,
+                    startDate: moment(response.data.startDate),
+                    endDate: moment(response.data.endDate)
+                });
             })
         }
     }, [id]);
 
     const onFinish = (values) => {
         console.log(values);
+        if(!id){
+            addProject(values).then(() => {
+                message.success("Thêm dự án thành công!");
+            }).catch(error => {
+                message.error(error.response?.data?.detail || "Đã có lỗi xảy ra! Vui lòng thử lại.")
+            })
+        }else{
+            updateProject(id, values).then(() => {
+                message.success("Cập nhật dự án thành công!");
+            }).catch(error => {
+                message.error(error.response?.data?.detail || "Đã có lỗi xảy ra! Vui lòng thử lại.")
+            })
+        }
+
     };
 
     return (
@@ -24,6 +44,7 @@ const ProjectForm = ({id}) => {
             form={form}
             onFinish={onFinish}
             layout={"vertical"}
+            id={"project-form"}
             style={{width: "100%"}}
         >
             <Row gutter={12}>
@@ -74,10 +95,51 @@ const ProjectForm = ({id}) => {
                         title={"Theo bình quân % hoàn thành các công việc"}
                         children={<>
                             <b>Theo bình quân % hoàn thành các công việc</b>
-                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Ví dụ dự án gồm 2 công việc A và B .</div>
-                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Công việc A yêu cầu thời gian thực hiện trong 4 ngày , tiến độ 40%</div>
-                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Công việc B yêu cầu thời gian thực hiện trong 6 ngày , tiến độ 50%</div>
-                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Tiến độ dự án là ((4*40+6*60)/(4*100+6*100))*100 = 46%</div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Ví dụ dự án gồm 2 công việc A
+                                và B .
+                            </div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Công việc A tiến độ 40% , Công
+                                việc B tiến độ 60% .
+                            </div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Tiến độ của dự án là (40+60)/2
+                                = 50% .
+                            </div>
+                        </>}/>
+                    <Select.Option
+                        value={"proportionDate"}
+                        title={"Theo tỷ trọng ngày thực hiện"}
+                        children={<>
+                            <b>Theo tỷ trọng ngày thực hiện </b>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Ví dụ dự án gồm 2 công việc A
+                                và B .
+                            </div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Công việc A yêu cầu thời gian
+                                thực hiện trong 4 ngày , tiến độ 40%
+                            </div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Công việc B yêu cầu thời gian
+                                thực hiện trong 6 ngày , tiến độ 50%
+                            </div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Tiến độ dự án là
+                                ((4*40+6*60)/(4*100+6*100))*100 = 52%
+                            </div>
+                        </>}/>
+                    <Select.Option
+                        value={"proportionWorks"}
+                        title={"Theo tỷ trọng công việc"}
+                        children={<>
+                            <b>Theo tỷ trọng công việc </b>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Ví dụ dự án gồm 2 công việc A
+                                và B .
+                            </div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Công việc A có tỷ trọng là 40
+                                , tiến độ là 50%
+                            </div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Công việc B có tỷ trọng là 30
+                                , tiến độ là 40%
+                            </div>
+                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Tiến độ dự án là
+                                [(40*50)+(30*40)]/(40+30) = 45%
+                            </div>
                         </>}/>
                 </Select>
             </FormItem>
@@ -93,7 +155,7 @@ const ProjectForm = ({id}) => {
                             },
                         ]}
                     >
-                        <DatePicker className="w-full"/>
+                        <SWDatePicker className="w-full"/>
                     </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -107,12 +169,12 @@ const ProjectForm = ({id}) => {
                             },
                         ]}
                     >
-                        <DatePicker className="w-full"/>
+                        <SWDatePicker className="w-full"/>
                     </Form.Item>
                 </Col>
             </Row>
             <Form.Item
-                name="assignor"
+                name="manages"
                 label="Người quản trị"
                 rules={[
                     {
@@ -124,7 +186,7 @@ const ProjectForm = ({id}) => {
                 <SelectAccount placeholder="Chọn người quản trị"/>
             </Form.Item>
             <Form.Item
-                name="assignee"
+                name="handles"
                 label="Người thực hiện"
                 rules={[
                     {
@@ -133,10 +195,10 @@ const ProjectForm = ({id}) => {
                     },
                 ]}
             >
-                <SelectAccount placeholder="Chọn người quản trị"/>
+                <SelectAccount withExt={true} placeholder="Chọn người quản trị"/>
             </Form.Item>
             <Form.Item
-                name="follower"
+                name="participates"
                 label="Người theo dõi"
                 rules={[
                     {
@@ -145,7 +207,7 @@ const ProjectForm = ({id}) => {
                     },
                 ]}
             >
-                <SelectAccount placeholder="Chọn người theo dõi"/>
+                <SelectAccount withExt={true} placeholder="Chọn người theo dõi"/>
             </Form.Item>
 
 
