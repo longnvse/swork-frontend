@@ -1,8 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Col, Drawer, Row, Switch, Tooltip} from "antd";
+import {Button, Col, Drawer, Row, Spin, Switch, Tooltip} from "antd";
 import {ADD, UPDATE} from "../Constant";
 import {useDispatch, useSelector} from "react-redux";
 import {closeDrawer} from "../../../redux/actions/common/actions";
+import {LoadingOutlined} from "@ant-design/icons";
 
 const ButtonDrawer = ({
                           children = React.createElement("div"),
@@ -17,6 +18,8 @@ const ButtonDrawer = ({
     const [afterSubmit, setAfterSubmit] = useState(false);
     const {isCloseDrawer} = useSelector(state => state.commonReducer);
     const dispatch = useDispatch();
+    const {loading} = useSelector((state) => state.commonReducer);
+    const antIcon = <LoadingOutlined style={{fontSize: 24}} spin/>;
 
     const onOpen = () => {
         setOpen(true);
@@ -100,7 +103,13 @@ const ButtonDrawer = ({
                 </Tooltip> : null}
                 {...drawerProps}
             >
-                {React.cloneElement(children)}
+                <Spin
+                    className={"loading"}
+                    spinning={loading}
+                    indicator={antIcon}
+                >
+                    {React.cloneElement(children)}
+                </Spin>
             </Drawer>
         </div>
     );

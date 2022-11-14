@@ -5,3 +5,11 @@ export const PENDING = "pending";
 export const ACTIVE = "active";
 export const INACTIVE = "inactive";
 export const DATE_FORMAT = "DD-MM-YYYY"
+export const STATUS = {
+    "doing": "Đang hoạt động",
+    "inactive": "Dừng hoạt động",
+    "pending": "Chờ thực hiện",
+    "pause": "Tạm dừng",
+    "completed": "Đã hoàn thành",
+    "cancel": "Đã huỷ"
+}
