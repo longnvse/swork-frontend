@@ -78,7 +78,7 @@ Build_Prod:
     - develop
 
 Deploy Test:
-  stage: Deploy
+  stage: deploy
   tags:
     - backend
   image: ubuntu
@@ -102,7 +102,7 @@ Deploy Test:
     - develop
 
 Deploy Prod:
-  stage: Deploy
+  stage: deploy
   tags:
     - backend
   image: ubuntu
