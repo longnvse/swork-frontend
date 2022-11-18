@@ -75,7 +75,7 @@ Build_Prod:
     paths:
       - build_prod
   only:
-    - develop
+    - master
 
 Deploy Test:
   stage: deploy
