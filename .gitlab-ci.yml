@@ -1,0 +1,126 @@
+stages:
+  - install_deps
+  - build
+  - deploy
+
+Install Dependencies:
+  stage: install_deps
+  tags:
+    - backend
+  image: node:latest
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - node_modules/
+  script:
+    - npm install --progress=false
+  only:
+    - develop
+    - master
+    - /^release\/[0-9]+(?:.[0-9]+)+$/ # regular expression
+
+Build_Dev:
+  stage: build
+  tags:
+    - backend
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - node_modules/
+    policy: pull
+  before_script:
+    - export NODE_OPTIONS="--max-old-space-size=4096"
+  script:
+    - CI=false npm run build:dev
+    - pipeline_id=`echo "$CI_PIPELINE_ID"`
+    - main_version=`cat build/version`
+    - date_format=`echo $(date '+%Y%m%d')`
+    - 'version="${main_version}.${pipeline_id}.${date_format}"'
+    - echo $version > build/version
+    - mv build build_dev
+  artifacts:
+    name: build_dev
+    paths:
+      - build_dev
+  only:
+    - develop
+
+Build_Prod:
+  stage: build
+  tags:
+    - backend
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - node_modules/
+    policy: pull
+  before_script:
+    - export NODE_OPTIONS="--max-old-space-size=4096"
+  script:
+    - CI=false npm run build:prod
+    - pipeline_id=`echo "$CI_PIPELINE_ID"`
+    - main_version=`cat build/version`
+    - date_format=`echo $(date '+%Y%m%d')`
+    - 'version="${main_version}.${pipeline_id}.${date_format}"'
+    - echo $version > build/version
+    - mv build build_prod
+  artifacts:
+    name: build_prod
+    paths:
+      - build_prod
+  only:
+    - develop
+
+Deploy Test:
+  stage: Deploy
+  tags:
+    - backend
+  image: ubuntu
+  before_script:
+    - "command -v ssh-agent >/dev/null || ( apk add --update openssh )"
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $IPADDRESS_DEV >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - echo "Deploying to server"
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$IPADDRESS_DEV -p 22
+    - >-
+      rsync -avz --delete --progress -a -e "ssh -p 22" build_dev/
+      $SSH_USER@$IPADDRESS_DEV:/var/www/html/build_dev
+    - rm -rf build_dev
+    - echo "Deployed"
+  only:
+    - develop
+
+Deploy Prod:
+  stage: Deploy
+  tags:
+    - backend
+  image: ubuntu
+  before_script:
+    - "command -v ssh-agent >/dev/null || ( apk add --update openssh )"
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $IPADDRESS_PROD >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - echo "Deploying to server"
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$IPADDRESS_PROD -p 22
+    - >-
+      rsync -avz --delete --progress -a -e "ssh -p 22" build_prod/
+      $SSH_USER@$IPADDRESS_PROD:/var/www/html/build_prod
+    - rm -rf build_dev
+    - echo "Deployed"
+  only:
+    - master
