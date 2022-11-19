@@ -88,14 +88,14 @@ Deploy Test:
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - ssh-keyscan $IPADDRESS_DEV >> ~/.ssh/known_hosts
+    - ssh-keyscan $IPADDRESS_NGINX >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
     - echo "Deploying to server"
-    - ssh -o StrictHostKeyChecking=no $SSH_USER@$IPADDRESS_DEV -p 22
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$IPADDRESS_NGINX -p 22
     - >-
       rsync -avz --delete --progress -a -e "ssh -p 22" build_dev/
-      $SSH_USER@$IPADDRESS_DEV:/var/www/html/build_dev
+      $SSH_USER@$IPADDRESS_NGINX:/var/www/html/build_dev
     - rm -rf build_dev
     - echo "Deployed"
   only:
@@ -112,14 +112,14 @@ Deploy Prod:
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - ssh-keyscan $IPADDRESS_PROD >> ~/.ssh/known_hosts
+    - ssh-keyscan $IPADDRESS_NGINX >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
     - echo "Deploying to server"
-    - ssh -o StrictHostKeyChecking=no $SSH_USER@$IPADDRESS_PROD -p 22
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$IPADDRESS_NGINX -p 22
     - >-
       rsync -avz --delete --progress -a -e "ssh -p 22" build_prod/
-      $SSH_USER@$IPADDRESS_PROD:/var/www/html/build_prod
+      $SSH_USER@$IPADDRESS_NGINX:/var/www/html/build_prod
     - rm -rf build_dev
     - echo "Deployed"
   only:
