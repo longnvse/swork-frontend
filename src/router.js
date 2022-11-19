@@ -15,6 +15,7 @@ import AccountRouter from "./components/apps/account/router";
 import LoginPage from "./page/login";
 import RootPage from "./page";
 import ProjectRouter from "./components/apps/project/router";
+import {Button, Result} from "antd";
 
 const Routers = (props) => {
     return (
@@ -56,6 +57,12 @@ const Routers = (props) => {
                     />
                     <Route path={URIS.DASHBOARD} element={<Dashboard/>}/>
                 </Route>
+                <Route path={"/*"} element={<Result
+                    status="404"
+                    title="404"
+                    subTitle="Xin lỗi, Trang bạn cần không tồn tại."
+                    extra={<Button type="primary">Quay lại Trang chủ.</Button>}
+                />}/>
             </Routes>
         </BrowserRouter>
     );
