@@ -6,7 +6,7 @@ stages:
 Install Dependencies:
   stage: install_deps
   tags:
-    - backend
+    - frontend
   image: node:latest
   cache:
     key:
@@ -24,7 +24,7 @@ Install Dependencies:
 Build_Dev:
   stage: build
   tags:
-    - backend
+    - frontend
   cache:
     key:
       files:
@@ -52,7 +52,7 @@ Build_Dev:
 Build_Prod:
   stage: build
   tags:
-    - backend
+    - frontend
   cache:
     key:
       files:
@@ -80,7 +80,7 @@ Build_Prod:
 Deploy Test:
   stage: deploy
   tags:
-    - backend
+    - frontend
   image: ubuntu
   before_script:
     - "command -v ssh-agent >/dev/null || ( apk add --update openssh )"
@@ -104,7 +104,7 @@ Deploy Test:
 Deploy Prod:
   stage: deploy
   tags:
-    - backend
+    - frontend
   image: ubuntu
   before_script:
     - "command -v ssh-agent >/dev/null || ( apk add --update openssh )"
