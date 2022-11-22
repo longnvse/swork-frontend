@@ -1,54 +1,30 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Image, Menu} from "antd";
 import logo from "../../../../images/logo.png";
-import {Link, useSearchParams} from "react-router-dom";
-import {BiBuildings} from "react-icons/bi";
 import Sider from "antd/es/layout/Sider";
-import {URIS} from "../../../../utils/constant";
-import {ApartmentOutlined, UserOutlined} from "@ant-design/icons";
+import {SiderByPermission} from "../../sider";
+import {useSearchParams} from "react-router-dom";
 
-function CommonSider({children}) {
+function CommonSider({role, children}) {
     const [collapsed, setCollapsed] = useState(false);
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    useEffect(() => {
-        console.log(searchParams.getAll('menu'))
-    }, [searchParams]);
-
-    const items = [
-        {
-            label: "Công ty/Doanh nghiệp",
-            key: "business",
-            icon: <BiBuildings style={{fontSize: 20}}/>,
-            children: [
-                {
-                    label: <Link to={{pathname: "/business", search: "status=all"}}>Tất cả</Link>,
-                    key: "business-all",
-                    icon: <BiBuildings/>,
-                },
-                {
-                    label: <Link to={{pathname: "/business", search: "status=active"}}>Đang hoạt động</Link>,
-                    key: "business-active",
-                    icon: <BiBuildings/>,
-                }
-            ]
-        },
-        {
-            label: <Link to={URIS.DEPARTMENT}>Quản lý phòng ban</Link>,
-            key: "department",
-            icon: <ApartmentOutlined style={{fontSize: 20}}/>
-        },
-        {
-            label: <Link to={URIS.ACCOUNT}>Quản lý tài khoản</Link>,
-            key: "account",
-            icon: <UserOutlined style={{fontSize: 20}}/>
-        },
-        {
-            label: <Link to={"/project"}>Dự án</Link>,
-            key: "project",
-            icon: <BiBuildings style={{fontSize: 20}}/>,
+    const onOpenChange = (openKey) => {
+        if (!openKey[0]) {
+            searchParams.delete("open");
+            setSearchParams(searchParams, {replace: true});
+            return;
         }
-    ]
+        searchParams.set("open", openKey[0] || "");
+        setSearchParams(searchParams, {replace: true});
+    }
+
+    console.log(searchParams.toString());
+
+    const onSelect = ({key}) => {
+        searchParams.set("menu", key);
+        setSearchParams(searchParams, {replace: true});
+    }
 
     return (
         <Sider
@@ -73,10 +49,14 @@ function CommonSider({children}) {
                 {children}
                 <Menu
                     mode="inline"
-                    items={items}
+                    items={SiderByPermission[role] || []}
                     style={{
                         backgroundColor: 'inherit'
                     }}
+                    // onSelect={onSelect}
+                    onOpenChange={onOpenChange}
+                    defaultOpenKeys={searchParams.getAll("open")}
+                    defaultSelectedKeys={searchParams.getAll("menu")}
                 />
             </div>
         </Sider>

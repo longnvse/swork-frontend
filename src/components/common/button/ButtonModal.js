@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {closeDrawer} from "../../../redux/actions/common/actions";
 import {ADD, UPDATE} from "../Constant";
 
-const ButtonDrawer = ({
+const ButtonModal = ({
                           children = React.createElement("div"),
                           title = "",
                           formId = undefined,
@@ -65,6 +65,6 @@ const ButtonDrawer = ({
     );
 };
 
-ButtonDrawer.propTypes = {};
+ButtonModal.propTypes = {};
 
-export default ButtonDrawer;
+export default ButtonModal;

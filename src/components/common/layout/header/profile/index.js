@@ -1,12 +1,13 @@
 import React from "react";
-import { Avatar, Dropdown, Menu, Space } from "antd";
-import { KeyOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logoutStart } from "../../../../../redux/actions/login/actions";
-import { VscAccount } from "react-icons/vsc";
-import { RiGitRepositoryPrivateLine } from "react-icons/ri";
-import { URIS } from "../../../../../utils/constant";
+import {Avatar, Dropdown, Menu, Space} from "antd";
+import {KeyOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {logoutStart} from "../../../../../redux/actions/login/actions";
+import {VscAccount} from "react-icons/vsc";
+import {RiGitRepositoryPrivateLine} from "react-icons/ri";
+import {URIS} from "../../../../../utils/constant";
+import {getMe} from "../../../../../api/common";
 
 const ProfileIcon = (props) => {
     let navigate = useNavigate();
@@ -15,6 +16,60 @@ const ProfileIcon = (props) => {
     const handleOnLogout = () => {
         dispatch(logoutStart());
     };
+
+    const menuItems = [
+        {
+            onClick: () => {
+                navigate("/system/user/account");
+            },
+            label: (
+                <>
+                    <Space>
+                        <Avatar
+                            size={"large"}
+                            icon={<UserOutlined/>}
+                            style={{
+                                verticalAlign: "middle",
+                            }}
+                            // src={`${base_url}${portraitThumbnail}`}
+                        />
+                        {getMe().fullName}
+                    </Space>
+                </>
+            ),
+            key: "/avatar",
+        },
+        {
+            onClick: () => {
+                navigate(URIS.ACCOUNT_INFO);
+            },
+            label: "Thông tin cá nhân",
+            key: "account-info",
+            icon: <VscAccount/>,
+        },
+        {
+            onClick: () => {
+                navigate(URIS.ACCOUNT_SECURITY);
+            },
+            label: "Bảo mật",
+            key: "account-security",
+            icon: <RiGitRepositoryPrivateLine/>,
+        },
+        {
+            label: "Đổi mật khẩu",
+            key: "/change-password",
+            icon: <KeyOutlined/>,
+        },
+        {
+            label: "Đăng xuất",
+            key: "/logout",
+            icon: <LogoutOutlined/>,
+            style: {
+                borderTop: "1px solid #ccc",
+            },
+            onClick: handleOnLogout,
+        },
+    ];
 
     const menu = (
         <Menu
@@ -29,14 +84,13 @@ const ProfileIcon = (props) => {
                             <Space>
                                 <Avatar
                                     size={"large"}
-                                    icon={<UserOutlined />}
+                                    icon={<UserOutlined/>}
                                     style={{
                                         verticalAlign: "middle",
                                     }}
                                     // src={`${base_url}${portraitThumbnail}`}
                                 />
-                                {/*{getMe().fullName}*/}
-                                {"Nguyễn Văn A"}
+                                {getMe().fullName}
                             </Space>
                         </>
                     ),
@@ -48,7 +102,7 @@ const ProfileIcon = (props) => {
                     },
                     label: "Thông tin cá nhân",
                     key: "account-info",
-                    icon: <VscAccount />,
+                    icon: <VscAccount/>,
                 },
                 {
                     onClick: () => {
@@ -56,17 +110,17 @@ const ProfileIcon = (props) => {
                     },
                     label: "Bảo mật",
                     key: "account-security",
-                    icon: <RiGitRepositoryPrivateLine />,
+                    icon: <RiGitRepositoryPrivateLine/>,
                 },
                 {
                     label: "Đổi mật khẩu",
                     key: "/change-password",
-                    icon: <KeyOutlined />,
+                    icon: <KeyOutlined/>,
                 },
                 {
                     label: "Đăng xuất",
                     key: "/logout",
-                    icon: <LogoutOutlined />,
+                    icon: <LogoutOutlined/>,
                     style: {
                         borderTop: "1px solid #ccc",
                     },
@@ -87,7 +141,7 @@ const ProfileIcon = (props) => {
             >
                 <Avatar
                     size={"default"}
-                    icon={<UserOutlined />}
+                    icon={<UserOutlined/>}
                     // src={require("../../../../../images/avatar.png")}
                     // src={`${base_url}${portraitThumbnail}`}
                 />

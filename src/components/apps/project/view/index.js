@@ -5,38 +5,47 @@ import {getProject} from "../../../../api/project";
 import ProjectViewPhase from "./tabs/Phase";
 import ProjectViewResource from "./tabs/Resource";
 import ProjectViewWork from "./tabs/Work";
-import ProjectViewAttach from "./tabs/Attach";
+import {useParams} from "react-router-dom";
 
-const {TabPane} = Tabs;
-
-function ProjectView({id}) {
-    const [projectData, setProjectData] = useState({});
+function ProjectView(props) {
+    const [data, setData] = useState({});
+    const {id} = useParams();
 
     useEffect(() => {
         getProject(id).then(response => {
-            setProjectData(response?.data)
+            setData(response?.data)
         })
     }, [id])
 
+    const tabItems = [
+        {
+            label: "Chi tiết",
+            key: "general",
+            children: <ProjectViewGeneral data={data}/>
+        },
+        {
+            label: "Giai đoạn",
+            key: "phase",
+            children: <ProjectViewPhase projectId={data.id}/>
+        },
+        {
+            label: "Tài nguyên",
+            key: "resource",
+            children: <ProjectViewResource/>
+        },
+        {
+            label: "Công việc",
+            key: "work",
+            children: <ProjectViewWork/>
+        },
+
+    ]
+
     return (
         <div>
-            <Tabs defaultActiveKey={"general"}>
-                <TabPane tab={"Chi tiết giai đoạn"} tabKey={"general"}>
-                    <ProjectViewGeneral/>
-                </TabPane>
-                <TabPane tab={"Giai đoạn"} tabKey={"phase"}>
-                    <ProjectViewPhase/>
-                </TabPane>
-                <TabPane tab={"Tài nguyên"} tabKey={"resource"}>
-                    <ProjectViewResource/>
-                </TabPane>
-                <TabPane tab={"Công việc"} tabKey={"work"}>
-                    <ProjectViewWork/>
-                </TabPane>
-                <TabPane tab={"Đính kèm"} tabKey={"attach"}>
-                    <ProjectViewAttach/>
-                </TabPane>
-            </Tabs>
+            <Tabs
+                items={tabItems}
+            />
         </div>
     );
 }
