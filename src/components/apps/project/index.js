@@ -14,6 +14,8 @@ import {isReload} from "../../../redux/actions/common/actions";
 import ButtonTab from "../../common/button/ButtonTab";
 import {TbLayoutKanban} from "react-icons/tb";
 import {CiViewTimeline} from "react-icons/ci";
+import {Link} from "react-router-dom";
+import {URIS} from "../../../utils/constant";
 
 const status = ["pending", "doing", "completed", "pause", "cancel"];
 
@@ -43,6 +45,7 @@ function ProjectList(props) {
         return {
             key: item.id,
             ...item,
+            name: <Link to={`${URIS.VIEW_PROJECT}/${item.id}`}>{item.name}</Link>,
             status: renderStatus(item.status),
             startDate: moment(item.startDate).format(DATE_FORMAT),
             endDate: moment(item.endDate).format(DATE_FORMAT),
