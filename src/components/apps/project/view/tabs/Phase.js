@@ -1,14 +1,14 @@
 import React from 'react';
 import CommonList from "../../../../common/list";
-import {getProjectPages} from "../../../../../api/project";
 import {columnPhase} from "../../common/columns";
+import {getPhasePages} from "../../../../../api/phase";
 
 function ProjectViewPhase({projectId}) {
 
     const load = (params) => {
         params.filter = `projectId eq '${projectId}'`;
 
-        return getProjectPages(params);
+        return getPhasePages(params);
     }
 
     const mapData = (item) => ({

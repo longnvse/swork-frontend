@@ -6,21 +6,21 @@ export const getPhasePages = (params) => {
     return SWAxios.get(url, {params});
 }
 
-export const getPhase = (projectId) => {
-    return SWAxios.get(`${url}/${projectId}`);
+export const getPhase = (phaseId) => {
+    return SWAxios.get(`${url}/${phaseId}`);
 }
 
 export const addPhase = (values) => {
     return SWAxios.post(url, values);
 }
 
-export const updatePhase = (projectId, values) => {
-    return SWAxios.put(`${url}/${projectId}`, values);
+export const updatePhase = (phaseId, values) => {
+    return SWAxios.put(`${url}/${phaseId}`, values);
 }
 
-export const deletePhase = (projectId) => {
-    return SWAxios.delete(`${url}/${projectId}`);
+export const deletePhase = (phaseId) => {
+    return SWAxios.delete(`${url}/${phaseId}`);
 }
-export const approvalPhase = (projectId, status) => {
-    return SWAxios.put(`${url}/approval/${projectId}`, {}, {params: {status}});
+export const approvalPhase = (phaseId, status) => {
+    return SWAxios.put(`${url}/approval/${phaseId}`, {}, {params: {status}});
 }
