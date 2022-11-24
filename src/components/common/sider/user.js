@@ -10,8 +10,8 @@ export const UserSider = [
         icon: <BiBuildings style={{fontSize: 20}}/>,
     },
     {
-        label: <Link to={"/phase"}>Công việc</Link>,
+        label: <Link to={"/work"}>Công việc</Link>,
         key: "work",
         icon: <MdWorkOutline style={{fontSize: 20}}/>,
-    },
-]
+    }
+];

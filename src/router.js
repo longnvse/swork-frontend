@@ -17,8 +17,6 @@ import {RouteByPermission} from "./components/common/router";
 const Routers = ({role}) => {
     const mapRoute = (item) => <Route key={item.id} {...item} />;
 
-    console.log(RouteByPermission[role])
-
     return (
         <BrowserRouter>
             <Routes>

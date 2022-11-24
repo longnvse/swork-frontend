@@ -22,6 +22,7 @@ const status = ["pending", "doing", "completed", "pause", "cancel"];
 function ProjectList(props) {
     const [filter, setFilter] = useState(null);
     const dispatch = useDispatch();
+
     const onConfirmDelete = (id) => {
         deleteProject(id).then(value => {
             message.success("Xoá thành công!");
