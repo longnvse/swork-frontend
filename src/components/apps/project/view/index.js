@@ -6,6 +6,7 @@ import ProjectViewPhase from "./tabs/Phase";
 import ProjectViewResource from "./tabs/Resource";
 import ProjectViewWork from "./tabs/Work";
 import {useParams} from "react-router-dom";
+import TeamList from "../../team";
 
 function ProjectView(props) {
     const [data, setData] = useState({});
@@ -29,6 +30,11 @@ function ProjectView(props) {
             children: <ProjectViewPhase projectId={data.id}/>
         },
         {
+            label: "Đội nhóm",
+            key: "team",
+            children: <TeamList projectId={data.id}/>
+        },
+        {
             label: "Tài nguyên",
             key: "resource",
             children: <ProjectViewResource/>
@@ -37,8 +43,7 @@ function ProjectView(props) {
             label: "Công việc",
             key: "work",
             children: <ProjectViewWork/>
-        },
-
+        }
     ]
 
     return (

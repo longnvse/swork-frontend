@@ -8,6 +8,7 @@ const UserRouter = createRoutesFromElements(
     <>
         <Route path={URIS.PROJECT} element={<ProjectRouter />} />
         <Route path={URIS.PHASE} element={<PhaseRouter />} />
+        <Route path={URIS.WORK} element={<PhaseRouter />} />
     </>,
 );
 

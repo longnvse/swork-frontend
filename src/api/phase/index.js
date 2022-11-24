@@ -2,15 +2,15 @@ import {SWAxios} from "../../system/axios";
 
 const url = "swork/phase-rest/v1.0/phases";
 
-export const getPhasePages = (params) => {
-    return SWAxios.get(url, {params});
+export const getPhasePages = (projectId, params) => {
+    return SWAxios.get(`${url}/list/${projectId}`, {params});
 }
 
 export const getPhase = (phaseId) => {
     return SWAxios.get(`${url}/${phaseId}`);
 }
 
-export const addPhase = (values) => {
+export const addPhase = ( values) => {
     return SWAxios.post(url, values);
 }
 
