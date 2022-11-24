@@ -1,10 +1,5 @@
 export const columns = [
     {
-        title: 'STT',
-        dataIndex: 'index',
-        width: '5%'
-    },
-    {
         title: 'Tên tài nguyên',
         dataIndex: 'name'
     },
