@@ -28,7 +28,20 @@ body {
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+        monospace;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-track {
+    background-color: #fffdfd;
+}
+::-webkit-scrollbar-thumb {
+    background-color: lightgray;
+    border-radius: 5px;
 }
 
 //================= IMPORT ===========================//
