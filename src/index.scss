@@ -31,19 +31,6 @@ code {
         monospace;
 }
 
-::-webkit-scrollbar {
-    width: 6px;
-    background-color: #f5f5f5;
-    border-radius: 5px;
-}
-::-webkit-scrollbar-track {
-    background-color: #fffdfd;
-}
-::-webkit-scrollbar-thumb {
-    background-color: lightgray;
-    border-radius: 5px;
-}
-
 //================= IMPORT ===========================//
 @import "./scss/common";
 @import "./scss/page";
