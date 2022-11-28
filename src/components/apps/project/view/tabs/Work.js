@@ -16,6 +16,7 @@ import { ADD, INACTIVE, UPDATE } from "../../../../common/Constant";
 import WorkForm from "../../../work/form";
 import { deleteWork, getWorkPages } from "../../../../../api/work";
 import { columnsWork } from "../../../work/common/columns";
+import { Link } from "react-router-dom";
 
 function ProjectViewWork(props) {
     const [dataSources, setDataSources] = useState([]);
@@ -45,7 +46,11 @@ function ProjectViewWork(props) {
             return {
                 key: item.id,
                 ...item,
-                name: item?.name,
+                name: (
+                    <Link to={`/project/view-work/${item?.id}`}>
+                        {item?.name}
+                    </Link>
+                ),
                 progress: <Progress progress={item?.progress} />,
                 admin: item?.admin,
                 status: item?.status,
@@ -64,7 +69,7 @@ function ProjectViewWork(props) {
                                 value: null,
                             }}
                         >
-                            <WorkForm />
+                            <WorkForm workId={item?.id} />
                         </ButtonDrawer>
                         <Popconfirm
                             disabled={item.status !== INACTIVE}
@@ -93,6 +98,9 @@ function ProjectViewWork(props) {
                         mode={ADD}
                         buttonProps={{
                             value: "Thêm mới",
+                        }}
+                        drawerProps={{
+                            width: 500,
                         }}
                     >
                         <WorkForm />

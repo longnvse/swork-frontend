@@ -58,7 +58,7 @@ function ProjectViewResource(props) {
                                 value: null,
                             }}
                         >
-                            <ResourceForm />
+                            <ResourceForm resourceId={item?.id} />
                         </ButtonDrawer>
                         <Popconfirm
                             disabled={item.status !== INACTIVE}

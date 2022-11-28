@@ -42,7 +42,8 @@
             background-color: var(--ant-primary-color);
             border-color: var(--ant-primary-color);
 
-            &:hover, :focus {
+            &:hover,
+            :focus {
                 & a {
                     color: white;
                 }
@@ -51,7 +52,8 @@
             & a {
                 color: white;
 
-                &:hover, :focus {
+                &:hover,
+                :focus {
                     color: white;
                 }
             }
@@ -60,5 +62,18 @@
         &-ellipsis {
             margin-right: 20px !important;
         }
+    }
+}
+
+.work-form {
+    .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+        padding: 0;
+    }
+
+    .ant-collapse-ghost
+        > .ant-collapse-item
+        > .ant-collapse-content
+        > .ant-collapse-content-box {
+        padding: 0;
     }
 }
