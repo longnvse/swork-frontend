@@ -2,6 +2,7 @@ import {Link} from "react-router-dom";
 import {BiBuildings} from "react-icons/bi";
 import React from "react";
 import {MdWorkOutline} from "react-icons/md";
+import {GiWoodPile} from "react-icons/gi";
 
 export const UserSider = [
     {
@@ -10,8 +11,14 @@ export const UserSider = [
         icon: <BiBuildings style={{fontSize: 20}}/>,
     },
     {
-        label: <Link to={"/phase"}>Công việc</Link>,
+        label: <Link to={"/work"}>Công việc</Link>,
         key: "work",
         icon: <MdWorkOutline style={{fontSize: 20}}/>,
     },
-]
+    {
+        label: <Link to={"/resource-type"}>Nguồn tài nguyên</Link>,
+        key: "resource-type",
+        icon: <GiWoodPile style={{fontSize: 20}}/>,
+    },
+
+];

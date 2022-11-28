@@ -3,7 +3,7 @@ import {Select} from "antd";
 import {getAccountPages} from "../../../api/account/api";
 import {SearchOutlined} from "@ant-design/icons";
 
-const SelectAccount = ({value = [], onChange, placeholder, withExt = false}) => {
+const SelectAccount = ({value = [], onChange, placeholder, simple = false, withExt = false}) => {
     const [accounts, setAccounts] = useState([]);
     const [options, setOptions] = useState([]);
     const [values, setValues] = useState([]);
@@ -19,7 +19,11 @@ const SelectAccount = ({value = [], onChange, placeholder, withExt = false}) => 
     }, [accounts])
 
     useEffect(() => {
-        setValues(value.map(item => item.memberId));
+        if (!simple) {
+            setValues(value.map(item => item.memberId));
+        } else {
+            setValues(value);
+        }
     }, [value]);
 
 
@@ -39,9 +43,14 @@ const SelectAccount = ({value = [], onChange, placeholder, withExt = false}) => 
 
             return;
         }
-        onChange(value.map(item => ({
-            memberId: item
-        })));
+        if (!simple) {
+            onChange(value.map(item => ({
+                memberId: item
+            })));
+        } else {
+            onChange(value);
+        }
+
     }
 
     return (

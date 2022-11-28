@@ -17,8 +17,6 @@ import {RouteByPermission} from "./components/common/router";
 const Routers = ({role}) => {
     const mapRoute = (item) => <Route key={item.id} {...item} />;
 
-    console.log(RouteByPermission[role])
-
     return (
         <BrowserRouter>
             <Routes>
@@ -32,11 +30,7 @@ const Routers = ({role}) => {
                         />
                     }
                 >
-                    {/*<Route path={URIS.BUSINESS} element={<BusinessRouter/>}/>*/}
-                    {/*<Route path={URIS.DEPARTMENT} element={<DepartmentRouter/>}/>*/}
-                    {/*<Route path={URIS.ACCOUNT} element={<AccountRouter/>}/>*/}
                     <Route key={"3"} path={URIS.DASHBOARD} element={<Dashboard/>}/>
-                    {/*<Route path={URIS.PROJECT} element={<ProjectRouter/>}/>*/}
                     {RouteByPermission[role]?.map(mapRoute) || <></>}
                 </Route>
                 <Route key={"4"} path={URIS.LOGIN} element={<LoginPage/>}/>

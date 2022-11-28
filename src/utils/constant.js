@@ -12,4 +12,8 @@ export const URIS = {
     LANDING_PAGE: "/landing-page",
     PROJECT: "/project/*",
     VIEW_PROJECT: "/project/view",
+    PHASE: "/phase/*",
+    WORK: "/work/*",
+    RESOURCE_TYPE: "/resource-type/*",
+    VIEW_PHASE: "/phase/view",
 };
