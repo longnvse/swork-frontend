@@ -1,29 +1,71 @@
-import { Collapse, Descriptions, Tabs } from "antd";
-import React from "react";
+import { Col, Collapse, Row, Tabs } from "antd";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getPhase } from "../../../../api/phase";
+import SWDescription from "../../../common/description";
+import { renderStatus } from "../../../common/status";
 import ProjectViewResource from "../../project/view/tabs/Resource";
 import ProjectViewWork from "../../project/view/tabs/Work";
 import TeamList from "../../team";
+import { viewPhaseFirstColumns, viewPhaseSecondColumns } from "./columns";
 
 const PhaseView = () => {
+    const { id } = useParams();
+    const [phaseData, setPhaseData] = useState({});
+    const dateFormat = "DD/MM/YYYY";
+
+    const mapData = (data) => {
+        return {
+            firstColumn: {
+                name: data?.name,
+                phaseManages: data?.phaseManages?.map((phaseManage, index) => {
+                    return <span key={index}>{phaseManage?.accountName}</span>;
+                }),
+                status: renderStatus(data?.status),
+                date: `${moment(data?.startDate).format(dateFormat)} - ${moment(
+                    data?.endDate,
+                ).format(dateFormat)}`,
+            },
+            secondColum: {
+                projectName: (
+                    <Link to={`/project/view/${data?.projectId}`}>
+                        {data?.projectName}
+                    </Link>
+                ),
+                status: renderStatus(data?.status),
+                description: data?.description,
+            },
+        };
+    };
+
+    useEffect(() => {
+        if (id) {
+            getPhase(id).then((response) => {
+                setPhaseData(mapData(response?.data));
+            });
+        }
+    }, [id]);
+
     return (
         <Tabs type="card" defaultActiveKey="general">
             <Tabs.TabPane key="general" tab="Thông tin chung">
-                <Descriptions bordered column={2}>
-                    <Descriptions.Item label="Tên giai đoạn">
-                        Giai doan 1
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Dự án">Du an 1</Descriptions.Item>
-                    <Descriptions.Item label="Người quản trị">
-                        Nguyen Viet Long
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Trạng thái">
-                        Dang hoat dong
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Thời gian">
-                        28/11/2022 - 30/11/2022
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Mô tả">Mo ta</Descriptions.Item>
-                </Descriptions>
+                <Row gutter={12}>
+                    <Col span={12}>
+                        <SWDescription
+                            span={1}
+                            dataSource={phaseData?.firstColumn}
+                            columns={viewPhaseFirstColumns}
+                        />
+                    </Col>
+                    <Col span={12}>
+                        <SWDescription
+                            span={1}
+                            dataSource={phaseData?.secondColum}
+                            columns={viewPhaseSecondColumns}
+                        />
+                    </Col>
+                </Row>
                 <Collapse defaultActiveKey={"work"} className="mt-3">
                     <Collapse.Panel header="Công việc" key={"work"}>
                         <ProjectViewWork />

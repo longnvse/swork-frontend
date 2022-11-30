@@ -11,18 +11,21 @@ import {
     getResourcePages,
 } from "../../../../../api/resource/resource";
 
-function ProjectViewResource(props) {
+function ProjectViewResource({ resouceData }) {
     const [dataSources, setDataSources] = useState([]);
 
     useEffect(() => {
-        getResourcePages().then((response) => {
-            setDataSources(mapData(response?.data?.items));
-        });
-    }, []);
+        if (!resouceData) {
+            getResourcePages().then((response) => {
+                setDataSources(mapData(response?.data?.items));
+            });
+        }
+        setDataSources(resouceData);
+    }, [resouceData]);
 
     const onConfirmDelete = (id) => {
         deleteResource(id)
-            .then((value) => {
+            .then(() => {
                 message.success("Xoá thành công!");
             })
             .catch((err) => {
@@ -39,12 +42,12 @@ function ProjectViewResource(props) {
             return {
                 key: item.id,
                 ...item,
-                name: item?.name,
+                name: item?.resourceTypeName,
                 quantity: item?.quantity,
                 totalAmount: item?.totalAmount,
-                team: item?.team,
-                parent: item?.parent,
-                date: item?.date,
+                team: item?.teamName,
+                parent: item?.parentName,
+                date: item?.dateResource,
                 creator: item?.creator,
                 action: (
                     <div className={"flex justify-evenly"}>

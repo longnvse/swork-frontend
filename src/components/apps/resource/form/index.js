@@ -74,7 +74,7 @@ const ResourceForm = ({ resourceId }) => {
             <Row gutter={12} wrap>
                 <Col span={24}>
                     <Form.Item
-                        name="resourceName"
+                        name="resourceTypeName"
                         label="Tên tài nguyên"
                         rules={[
                             {
@@ -88,7 +88,7 @@ const ResourceForm = ({ resourceId }) => {
                 </Col>
                 <Col span={24}>
                     <Form.Item name="unit" label="Đơn vị">
-                        <InputNumber placeholder="Đơn vị" className="w-full" />
+                        <Input placeholder="Đơn vị" className="w-full" />
                     </Form.Item>
                 </Col>
                 <Col span={24}>
@@ -109,7 +109,7 @@ const ResourceForm = ({ resourceId }) => {
                     </Form.Item>
                 </Col>
                 <Col span={24}>
-                    <Form.Item name="date" label="Ngày">
+                    <Form.Item name="dateResource" label="Ngày">
                         <DatePicker
                             format={"DD/MM/YYYY"}
                             className="w-full"

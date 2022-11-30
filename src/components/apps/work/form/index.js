@@ -4,18 +4,15 @@ import {
     DatePicker,
     Form,
     Input,
-    InputNumber,
     message,
     Row,
     Select,
 } from "antd";
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { addWork, getWork, updateWork } from "../../../../api/work";
 import SelectAccount from "../../../common/select/account";
 
-const WorkForm = ({ workId }) => {
-    const { id } = useParams();
+const WorkForm = ({ workId, phaseId, projectId }) => {
     const [form] = Form.useForm();
     const priorities = [
         {
@@ -56,7 +53,6 @@ const WorkForm = ({ workId }) => {
                     message.error("Cập nhật công việc thất bại!");
                 });
         }
-        console.log("jtadd", values);
     };
 
     return (
@@ -138,7 +134,7 @@ const WorkForm = ({ workId }) => {
                                 <SelectAccount />
                             </Form.Item>
                         </Col>
-                        <Col span={24}>
+                        {/* <Col span={24}>
                             <Form.Item name="priority" label="Độ ưu tiên">
                                 <Select
                                     options={priorities}
@@ -146,7 +142,7 @@ const WorkForm = ({ workId }) => {
                                     placeholder="Độ ưu tiên"
                                 />
                             </Form.Item>
-                        </Col>
+                        </Col> */}
                         <Col span={24}>
                             <Form.Item name="description" label="Mô tả">
                                 <Input.TextArea
