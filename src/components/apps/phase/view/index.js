@@ -68,7 +68,10 @@ const PhaseView = () => {
                 </Row>
                 <Collapse defaultActiveKey={"work"} className="mt-3">
                     <Collapse.Panel header="Công việc" key={"work"}>
-                        <ProjectViewWork />
+                        <ProjectViewWork
+                            projectId={phaseData?.projectId}
+                            phaseId={id}
+                        />
                     </Collapse.Panel>
                 </Collapse>
             </Tabs.TabPane>

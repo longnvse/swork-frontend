@@ -18,14 +18,16 @@ import { deleteWork, getWorkPages } from "../../../../../api/work";
 import { columnsWork } from "../../../work/common/columns";
 import { Link } from "react-router-dom";
 
-function ProjectViewWork(props) {
+function ProjectViewWork({ projectId, phaseId }) {
     const [dataSources, setDataSources] = useState([]);
 
     useEffect(() => {
-        getWorkPages().then((response) => {
-            setDataSources(mapData(response?.data?.items));
-        });
-    }, []);
+        getWorkPages({ projectId: projectId, phaseId: phaseId }).then(
+            (response) => {
+                setDataSources(mapData(response?.data?.items));
+            },
+        );
+    }, [projectId, phaseId]);
 
     const onConfirmDelete = (id) => {
         deleteWork(id)

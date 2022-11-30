@@ -1,53 +1,77 @@
 import { Checkbox, Col, Descriptions, Progress, Row } from "antd";
-import React from "react";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getWork } from "../../../../../api/work";
+import SWDescription from "../../../../common/description";
+import { renderStatus } from "../../../../common/status";
+import { viewWorkFirstColumn, viewWorkSecondColumn } from "../columns";
 
 const ViewWorkGeneral = () => {
+    const { id } = useParams();
+    const dateFormat = "DD/MM/YYYY";
+    const [workData, setWorkData] = useState({});
+
+    const mapData = (data) => {
+        return {
+            firstColumn: {
+                name: data?.name,
+                status: renderStatus(data?.status),
+                handles: data?.handles?.map((handle, index) => {
+                    return <span key={index}>{handle?.memberName}</span>;
+                }),
+                manages: data?.manages.map((manage, index) => {
+                    return <span key={index}>{manage?.memberName}</span>;
+                }),
+                participates: data?.participates.map((participate, index) => {
+                    return <span key={index}>{participate?.memberName}</span>;
+                }),
+                date: `${moment(data?.startDate).format(dateFormat)} - ${moment(
+                    data?.endDate,
+                ).format(dateFormat)}`,
+            },
+            secondColumn: {
+                progress: <Progress percent={data?.progress} />,
+                project: (
+                    <Link to={`/project/view/${data?.projectId}`}>
+                        {data?.projectName}
+                    </Link>
+                ),
+                phase: (
+                    <Link to={`/project/view-phase/${data?.phaseId}`}>
+                        {data?.phaseName}
+                    </Link>
+                ),
+                checklists: data?.checklists,
+                description: data?.description,
+            },
+            ...data,
+        };
+    };
+
+    useEffect(() => {
+        if (id) {
+            getWork(id).then((response) => {
+                setWorkData(mapData(response?.data));
+            });
+        }
+    }, [id]);
+
     return (
         <Row gutter={12}>
             <Col span={12}>
-                <Descriptions bordered column={1}>
-                    <Descriptions.Item label="Tên công việc">
-                        Công việc ngày 28-11
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Trạng thái">
-                        Đang thực hiện
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Người thực hiện">
-                        Nguyen Viet Long
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Người quản lý">
-                        Nguyen Viet Long
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Người theo dõi">
-                        Nguyen Viet Long
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Thời gian thực tế">
-                        28/11/2022
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Thời gian dự kiến">
-                        28/11/2022 - 29/11/2022
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Mô tả">Mo ta</Descriptions.Item>
-                </Descriptions>
+                <SWDescription
+                    span={1}
+                    dataSource={workData?.firstColumn}
+                    columns={viewWorkFirstColumn}
+                />
             </Col>
             <Col span={12}>
-                <Descriptions bordered column={1}>
-                    <Descriptions.Item label="Ưu tiên">Cao</Descriptions.Item>
-                    <Descriptions.Item label="Tiến độ">
-                        <Progress percent={50} />
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Dự án">Du an 1</Descriptions.Item>
-                    <Descriptions.Item label="Giai đoạn">
-                        Giai doan 1
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Công việc cha">
-                        Cong viec cha 1
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Đầu việc công việc">
-                        <Checkbox>Dau viec 1</Checkbox>
-                        <Checkbox>Dau viec 2</Checkbox>
-                    </Descriptions.Item>
-                </Descriptions>
+                <SWDescription
+                    span={1}
+                    dataSource={workData?.secondColumn}
+                    columns={viewWorkSecondColumn}
+                />
             </Col>
         </Row>
     );

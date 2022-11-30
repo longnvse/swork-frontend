@@ -8,12 +8,24 @@ import {
     Row,
     Select,
 } from "antd";
-import React, { useEffect } from "react";
-import { addWork, getWork, updateWork } from "../../../../api/work";
+import React, { useEffect, useState } from "react";
+import { getPhasePages } from "../../../../api/phase";
+import { getProjectPages } from "../../../../api/project";
+import {
+    addWork,
+    getWork,
+    updateWork,
+    getWorkPages,
+} from "../../../../api/work";
 import SelectAccount from "../../../common/select/account";
 
 const WorkForm = ({ workId, phaseId, projectId }) => {
     const [form] = Form.useForm();
+    const [projectData, setProjectData] = useState([]);
+    const [projectChoosed, setProjectChoosed] = useState(0);
+    const [showPhase, setShowPhase] = useState(false);
+    const [phaseData, setPhaseData] = useState([]);
+    const [workData, setWorkData] = useState([]);
     const priorities = [
         {
             label: "Cao",
@@ -29,11 +41,46 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
         },
     ];
 
+    const mapDataForOptions = (data) => {
+        return data?.map((option) => {
+            return {
+                label: option?.name,
+                value: option?.id,
+            };
+        });
+    };
+
     useEffect(() => {
-        getWork(workId).then((response) => {
-            form.setFieldsValue(response?.data);
+        if (workId) {
+            getWork(workId).then((response) => {
+                form.setFieldsValue(response?.data);
+            });
+        }
+
+        getProjectPages().then((response) => {
+            setProjectData(mapDataForOptions(response?.data?.items));
         });
     }, [workId]);
+
+    const onChangeProject = (e) => {
+        if (e) {
+            setShowPhase(true);
+            setProjectChoosed(e);
+            getPhasePages(e).then((response) => {
+                setPhaseData(mapDataForOptions(response?.data?.items));
+            });
+        }
+    };
+
+    const onChangePhase = (e) => {
+        if (e) {
+            getWorkPages({ projectId: projectChoosed, phaseId: e }).then(
+                (response) => {
+                    setWorkData(mapDataForOptions(response?.data?.items));
+                },
+            );
+        }
+    };
 
     const onFinish = (values) => {
         if (!workId) {
@@ -134,15 +181,6 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                 <SelectAccount />
                             </Form.Item>
                         </Col>
-                        {/* <Col span={24}>
-                            <Form.Item name="priority" label="Độ ưu tiên">
-                                <Select
-                                    options={priorities}
-                                    className="w-full"
-                                    placeholder="Độ ưu tiên"
-                                />
-                            </Form.Item>
-                        </Col> */}
                         <Col span={24}>
                             <Form.Item name="description" label="Mô tả">
                                 <Input.TextArea
@@ -244,38 +282,37 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                 <Select
                                     className="w-full"
                                     placeholder="Chọn dự án"
-                                >
-                                    <Select.Option value="du an 1">
-                                        Du an 1
-                                    </Select.Option>
-                                </Select>
+                                    defaultValue={projectId}
+                                    options={projectData}
+                                    onChange={onChangeProject}
+                                    onClear={() => setShowPhase(false)}
+                                    onDeselect={() => setShowPhase(false)}
+                                    allowClear
+                                />
                             </Form.Item>
                         </Col>
+                        {showPhase ? (
+                            <Col span={24}>
+                                <Form.Item label="Giai đoạn" name="phaseId">
+                                    <Select
+                                        className="w-full"
+                                        placeholder="Chọn giai đoạn"
+                                        defaultValue={phaseId}
+                                        options={phaseData}
+                                        onChange={onChangePhase}
+                                        allowClear
+                                    />
+                                </Form.Item>
+                            </Col>
+                        ) : null}
                         <Col span={24}>
-                            <Form.Item label="Giai đoạn" name="phaseId">
-                                <Select
-                                    className="w-full"
-                                    placeholder="Chọn giai đoạn"
-                                >
-                                    <Select.Option value="giai doan 1">
-                                        Giai doan 1
-                                    </Select.Option>
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                        <Col span={24}>
-                            <Form.Item
-                                label="Công việc cha"
-                                name="parentTaskId"
-                            >
+                            <Form.Item label="Công việc cha" name="parentId">
                                 <Select
                                     className="w-full"
                                     placeholder="Chọn công việc cha"
-                                >
-                                    <Select.Option value="cong viec 1">
-                                        Cong viec 1
-                                    </Select.Option>
-                                </Select>
+                                    options={workData}
+                                    allowClear
+                                />
                             </Form.Item>
                         </Col>
                     </Row>

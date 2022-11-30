@@ -22,7 +22,10 @@ const ViewWork = () => {
                 <ViewWorkGeneral />
                 <Collapse className="mt-3" defaultActiveKey={"work"}>
                     <Collapse.Panel header="Công việc" key={"work"}>
-                        <ProjectViewWork />
+                        <ProjectViewWork
+                            projectId={workData?.projectId}
+                            phaseId={workData?.phaseId}
+                        />
                     </Collapse.Panel>
                 </Collapse>
             </Tabs.TabPane>
