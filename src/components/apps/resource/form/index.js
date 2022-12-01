@@ -17,7 +17,7 @@ import {
 } from "../../../../api/resource/resource";
 import { getTeamPages } from "../../../../api/team";
 
-const ResourceForm = ({ resourceId }) => {
+const ResourceForm = ({ resourceId, projectId, phaseId }) => {
     const { id } = useParams();
     const [form] = Form.useForm();
     const [teams, setTeams] = useState([]);
@@ -43,6 +43,12 @@ const ResourceForm = ({ resourceId }) => {
     }, [resourceId]);
 
     const onFinish = (values) => {
+        values = {
+            ...values,
+            projectId: projectId,
+            phaseId: phaseId,
+        };
+
         if (!resourceId) {
             addResource(values)
                 .then(() => {
