@@ -66,8 +66,6 @@ const ResourceForm = ({ resourceId, projectId, phaseId }) => {
                     message.error("Cập nhật tài nguyên thất bại!");
                 });
         }
-
-        console.log("jtadd", values);
     };
 
     return (
