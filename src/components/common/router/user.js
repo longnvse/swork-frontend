@@ -3,7 +3,7 @@ import {createRoutesFromElements, Route} from "react-router-dom";
 import {URIS} from "../../../utils/constant";
 import PhaseRouter from "../../apps/phase/router";
 import ProjectRouter from "../../apps/project/router";
-import ResourceTypeRouter from "../../apps/resource-type/router";
+import ResourceTypeRouter from "../../apps/resource/router";
 
 const UserRouter = createRoutesFromElements(
     <>

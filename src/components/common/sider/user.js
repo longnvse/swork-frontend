@@ -16,8 +16,8 @@ export const UserSider = [
         icon: <MdWorkOutline style={{fontSize: 20}}/>,
     },
     {
-        label: <Link to={"/resource-type"}>Nguồn tài nguyên</Link>,
-        key: "resource-type",
+        label: <Link to={"/resource"}>Nguồn tài nguyên</Link>,
+        key: "resource",
         icon: <GiWoodPile style={{fontSize: 20}}/>,
     },
 

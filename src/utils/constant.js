@@ -14,6 +14,6 @@ export const URIS = {
     VIEW_PROJECT: "/project/view",
     PHASE: "/phase/*",
     WORK: "/work/*",
-    RESOURCE_TYPE: "/resource-type/*",
+    RESOURCE_TYPE: "/resource/*",
     VIEW_PHASE: "/phase/view",
 };
