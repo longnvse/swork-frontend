@@ -1,24 +1,11 @@
-import {
-    Col,
-    DatePicker,
-    Form,
-    Input,
-    InputNumber,
-    message,
-    Row,
-    Select,
-} from "antd";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import {
-    addResource,
-    getResource,
-    updateResource,
-} from "../../../../api/resource/resource";
-import { getTeamPages } from "../../../../api/team";
+import {Col, DatePicker, Form, Input, InputNumber, message, Row, Select,} from "antd";
+import React, {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {addResource, getResource, updateResource,} from "../../../../api/resource/resource";
+import {getTeamPages} from "../../../../api/team";
 
-const ResourceForm = ({ resourceId }) => {
-    const { id } = useParams();
+const ResourceForm = ({resourceId}) => {
+    const {id} = useParams();
     const [form] = Form.useForm();
     const [teams, setTeams] = useState([]);
 
@@ -27,7 +14,7 @@ const ResourceForm = ({ resourceId }) => {
         return data?.map((item) => {
             return {
                 label: item?.name,
-                value: item?.id,
+                value: item?.id
             };
         });
     };
@@ -60,8 +47,6 @@ const ResourceForm = ({ resourceId }) => {
                     message.error("Cập nhật tài nguyên thất bại!");
                 });
         }
-
-        console.log("jtadd", values);
     };
 
     return (
@@ -83,12 +68,12 @@ const ResourceForm = ({ resourceId }) => {
                             },
                         ]}
                     >
-                        <Input placeholder="Tên tài nguyên" />
+                        <Input placeholder="Tên tài nguyên"/>
                     </Form.Item>
                 </Col>
                 <Col span={24}>
                     <Form.Item name="unit" label="Đơn vị">
-                        <Input placeholder="Đơn vị" className="w-full" />
+                        <Input placeholder="Đơn vị" className="w-full"/>
                     </Form.Item>
                 </Col>
                 <Col span={24}>

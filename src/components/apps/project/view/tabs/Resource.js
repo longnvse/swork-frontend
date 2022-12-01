@@ -11,17 +11,17 @@ import {
     getResourcePages,
 } from "../../../../../api/resource/resource";
 
-function ProjectViewResource({ resouceData }) {
+function ProjectViewResource({ resourceData }) {
     const [dataSources, setDataSources] = useState([]);
 
     useEffect(() => {
-        if (!resouceData) {
+        if (!resourceData) {
             getResourcePages().then((response) => {
                 setDataSources(mapData(response?.data?.items));
             });
         }
-        setDataSources(resouceData);
-    }, [resouceData]);
+        setDataSources(resourceData);
+    }, [resourceData]);
 
     const onConfirmDelete = (id) => {
         deleteResource(id)

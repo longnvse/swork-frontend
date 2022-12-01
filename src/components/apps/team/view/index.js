@@ -86,7 +86,7 @@ const TeamView = () => {
             </Row>
             <div className="mt-3">
                 <h3>Tài nguyên</h3>
-                <ProjectViewResource resouceData={teamData?.resources} />
+                <ProjectViewResource resourceData={teamData?.resources} />
             </div>
         </>
     );

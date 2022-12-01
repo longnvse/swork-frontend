@@ -1,17 +1,17 @@
-import { SWAxios } from "../../system/axios";
+import {SWAxios} from "../../system/axios";
 
 const url = "swork/resource-rest/v1.0/resources";
 
 export const getResourcePages = (params) => {
-    return SWAxios.get(url, { params: { page: 1, pageSize: 1000, ...params } });
+    return SWAxios.get(url, {params: {page: 1, pageSize: 1000, ...params}});
 };
 
 export const getResource = (resourceId) => {
     return SWAxios.get(`${url}/${resourceId}`);
 };
 
-export const addResource = (values) => {
-    return SWAxios.post(url, values);
+export const addResource = (projectId, phaseId, workId, values) => {
+    return SWAxios.post(url, values, {params: {projectId, phaseId, workId}});
 };
 
 export const updateResource = (resourceId, values) => {
