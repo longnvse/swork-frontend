@@ -1,43 +1,54 @@
-import React, {useEffect} from "react";
-import {Col, Form, Input, message, Row, Select} from "antd";
+import React, { useEffect } from "react";
+import { Col, Form, Input, message, Row, Select } from "antd";
 import moment from "moment/moment";
 import FormItem from "antd/es/form/FormItem";
 import SWDatePicker from "../../../common/date";
 import SelectAccount from "../../../common/select/account";
-import {addPhase, getPhase, updatePhase} from "../../../../api/phase";
+import { addPhase, getPhase, updatePhase } from "../../../../api/phase";
 
-const PhaseForm = ({projectId, id}) => {
+const PhaseForm = ({ projectId, id }) => {
     const [form] = Form.useForm();
 
     useEffect(() => {
         if (id) {
-            getPhase(id).then(response => {
+            getPhase(id).then((response) => {
                 form.setFieldsValue({
                     ...response?.data,
                     startDate: moment(response.data.startDate),
                     endDate: moment(response.data.endDate),
-                    manages: response.data.phaseManages.map(item => item.accountId)
+                    manages: response.data.phaseManages.map(
+                        (item) => item.accountId,
+                    ),
                 });
-            })
+            });
         }
     }, [id]);
 
     const onFinish = (values) => {
         values.projectId = projectId;
         if (!id) {
-            addPhase(values).then(() => {
-                message.success("Thêm giai đoạn thành công!");
-            }).catch(error => {
-                message.error(error.response?.data?.detail || "Đã có lỗi xảy ra! Vui lòng thử lại.")
-            })
+            addPhase(values)
+                .then(() => {
+                    message.success("Thêm giai đoạn thành công!");
+                })
+                .catch((error) => {
+                    message.error(
+                        error.response?.data?.detail ||
+                            "Đã có lỗi xảy ra! Vui lòng thử lại.",
+                    );
+                });
         } else {
-            updatePhase(id, values).then(() => {
-                message.success("Cập nhật giai đoạn thành công!");
-            }).catch(error => {
-                message.error(error.response?.data?.detail || "Đã có lỗi xảy ra! Vui lòng thử lại.")
-            })
+            updatePhase(id, values)
+                .then(() => {
+                    message.success("Cập nhật giai đoạn thành công!");
+                })
+                .catch((error) => {
+                    message.error(
+                        error.response?.data?.detail ||
+                            "Đã có lỗi xảy ra! Vui lòng thử lại.",
+                    );
+                });
         }
-
     };
 
     return (
@@ -46,7 +57,7 @@ const PhaseForm = ({projectId, id}) => {
             onFinish={onFinish}
             layout={"vertical"}
             id={"phase-form"}
-            style={{width: "100%"}}
+            style={{ width: "100%" }}
         >
             <Form.Item
                 name="name"
@@ -58,7 +69,7 @@ const PhaseForm = ({projectId, id}) => {
                     },
                 ]}
             >
-                <Input placeholder="Tên giai đoạn"/>
+                <Input placeholder="Tên giai đoạn" />
             </Form.Item>
             <FormItem
                 name={"manages"}
@@ -70,7 +81,7 @@ const PhaseForm = ({projectId, id}) => {
                     },
                 ]}
             >
-                <SelectAccount simple={true}/>
+                <SelectAccount simple={true} />
             </FormItem>
             <Row gutter={12}>
                 <Col span={12}>
@@ -84,7 +95,7 @@ const PhaseForm = ({projectId, id}) => {
                             },
                         ]}
                     >
-                        <SWDatePicker className="w-full"/>
+                        <SWDatePicker className="w-full" />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -98,28 +109,22 @@ const PhaseForm = ({projectId, id}) => {
                             },
                         ]}
                     >
-                        <SWDatePicker className="w-full"/>
+                        <SWDatePicker className="w-full" />
                     </Form.Item>
                 </Col>
             </Row>
-            <Form.Item
-                name="status"
-                label="Trạng thái"
-                initialValue={"active"}
-            >
+            <Form.Item name="status" label="Trạng thái" initialValue={"active"}>
                 <Select
                     placeholder={"Chọn trạng thái"}
                     options={[
-                        {label: "Đang hoạt động", value: "active"},
-                        {label: "Chờ hoạt động", value: "inactive"},
+                        { label: "Đang hoạt động", value: "active" },
+                        { label: "Chờ hoạt động", value: "inactive" },
                     ]}
                 />
             </Form.Item>
 
-            <Form.Item
-                name="description"
-                label="Mô tả">
-                <Input.TextArea placeholder="Nhập mô tả"/>
+            <Form.Item name="description" label="Mô tả">
+                <Input.TextArea placeholder="Nhập mô tả" />
             </Form.Item>
         </Form>
     );
