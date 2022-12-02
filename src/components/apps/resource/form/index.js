@@ -17,7 +17,7 @@ import {
 } from "../../../../api/resource/resource";
 import { getTeamPages } from "../../../../api/team";
 
-const ResourceForm = ({ resourceId, projectId, phaseId }) => {
+const ResourceForm = ({ resourceId, projectId, phaseId, workId, teamId }) => {
     const { id } = useParams();
     const [form] = Form.useForm();
     const [teams, setTeams] = useState([]);
@@ -42,15 +42,15 @@ const ResourceForm = ({ resourceId, projectId, phaseId }) => {
         });
     }, [resourceId]);
 
-    const onFinish = (values) => {
-        values = {
-            ...values,
-            projectId: projectId,
-            phaseId: phaseId,
-        };
+    useEffect(() => {
+        if (teamId) {
+            form.setFieldValue({ teamId: teamId });
+        }
+    }, [teamId]);
 
+    const onFinish = (values) => {
         if (!resourceId) {
-            addResource(values)
+            addResource(projectId, phaseId, workId, values)
                 .then(() => {
                     message.success("Thêm tài nguyên thành công!");
                 })
@@ -66,6 +66,8 @@ const ResourceForm = ({ resourceId, projectId, phaseId }) => {
                     message.error("Cập nhật tài nguyên thất bại!");
                 });
         }
+
+        console.log("jtadd", values);
     };
 
     return (
@@ -96,7 +98,7 @@ const ResourceForm = ({ resourceId, projectId, phaseId }) => {
                     </Form.Item>
                 </Col>
                 <Col span={24}>
-                    <Form.Item name="teamId" label="Đội nhóm">
+                    <Form.Item name="teamId" label="Đội nhóm" disabled={teamId}>
                         <Select
                             options={teams}
                             className="w-full"
