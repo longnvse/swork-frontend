@@ -25,6 +25,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
     const [projectChoosed, setProjectChoosed] = useState(0);
     const [showPhase, setShowPhase] = useState(false);
     const [phaseData, setPhaseData] = useState([]);
+    const [phaseChoosed, setPhaseChoosed] = useState(0);
     const [workData, setWorkData] = useState([]);
     const priorities = [
         {
@@ -74,6 +75,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
 
     const onChangePhase = (e) => {
         if (e) {
+            setPhaseChoosed(e);
             getWorkPages({ projectId: projectChoosed, phaseId: e }).then(
                 (response) => {
                     setWorkData(mapDataForOptions(response?.data?.items));
@@ -83,6 +85,12 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
     };
 
     const onFinish = (values) => {
+        values = {
+            ...values,
+            projectId: values?.projectId || projectId || projectChoosed,
+            phaseId: values?.phaseId || phaseId || phaseChoosed,
+        };
+
         if (!workId) {
             addWork(values)
                 .then(() => {

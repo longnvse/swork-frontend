@@ -11,7 +11,7 @@ import {
     getResourcePages,
 } from "../../../../../api/resource/resource";
 
-function ProjectViewResource({ resourceData }) {
+function ProjectViewResource({ resourceData, projectId, phaseId, teamId }) {
     const [dataSources, setDataSources] = useState([]);
 
     useEffect(() => {
@@ -61,7 +61,12 @@ function ProjectViewResource({ resourceData }) {
                                 value: null,
                             }}
                         >
-                            <ResourceForm resourceId={item?.id} />
+                            <ResourceForm
+                                resourceId={item?.id}
+                                projectId={projectId}
+                                phaseId={phaseId}
+                                teamId={teamId}
+                            />
                         </ButtonDrawer>
                         <Popconfirm
                             disabled={item.status !== INACTIVE}
@@ -92,7 +97,11 @@ function ProjectViewResource({ resourceData }) {
                             value: "Thêm mới",
                         }}
                     >
-                        <ResourceForm />
+                        <ResourceForm
+                            projectId={projectId}
+                            phaseId={phaseId}
+                            teamId={teamId}
+                        />
                     </ButtonDrawer>
                 </Col>
                 <Col span={6}>

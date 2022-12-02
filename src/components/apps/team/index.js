@@ -53,6 +53,9 @@ const TeamList = ({ projectId, phaseId }) => {
             name: (
                 <Link to={`/project/view-team/${item?.id}`}>{item?.name}</Link>
             ),
+            manages: item.admins.map((admin) => (
+                <span>{admin.memberName}</span>
+            )),
             quantityMembers: countMembers(item),
             inoutcoming: `${item.totalIncoming}/${item.totalSpending}`,
             parent: item.projectName || item.phaseName || "",
