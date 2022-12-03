@@ -84,6 +84,10 @@ function ProjectViewResource({resourceData, projectId, phaseId, teamId}) {
         });
     };
 
+    const onChangeTable = () => {
+
+    }
+
     return (
         <div>
             <Row gutter={12} className={"mb-4"}>
@@ -107,7 +111,7 @@ function ProjectViewResource({resourceData, projectId, phaseId, teamId}) {
                     <Input prefix={<FiSearch/>}/>
                 </Col>
             </Row>
-            <Table dataSource={dataSources} columns={columnsResource}/>
+            <Table dataSource={dataSources} columns={columnsResource} onChange={onChangeTable}/>
         </div>
     );
 }
