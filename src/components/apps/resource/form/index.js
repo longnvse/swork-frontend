@@ -1,24 +1,13 @@
-import {
-    Col,
-    DatePicker,
-    Form,
-    Input,
-    InputNumber,
-    message,
-    Row,
-    Select,
-} from "antd";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import {
-    addResource,
-    getResource,
-    updateResource,
-} from "../../../../api/resource/resource";
-import { getTeamPages } from "../../../../api/team";
+import {Col, DatePicker, Form, Input, InputNumber, message, Row, Select,} from "antd";
+import React, {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {addResource, getResource, updateResource,} from "../../../../api/resource/resource";
+import {getTeamPages} from "../../../../api/team";
+import moment from "moment";
+import {DATE_FORMAT} from "../../../common/Constant";
 
-const ResourceForm = ({ resourceId }) => {
-    const { id } = useParams();
+const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
+    const {id} = useParams();
     const [form] = Form.useForm();
     const [teams, setTeams] = useState([]);
 
@@ -38,13 +27,22 @@ const ResourceForm = ({ resourceId }) => {
         });
 
         getResource(resourceId).then((response) => {
-            form.setFieldsValue(response?.data);
+            form.setFieldsValue({
+                ...response?.data,
+                dateResource: response.data.dateResource && moment(response?.data?.dateResource)
+            });
         });
     }, [resourceId]);
 
+    useEffect(() => {
+        if (teamId) {
+            form.setFieldValue({teamId: teamId});
+        }
+    }, [teamId]);
+
     const onFinish = (values) => {
         if (!resourceId) {
-            addResource(values)
+            addResource(projectId, phaseId, workId, values)
                 .then(() => {
                     message.success("Thêm tài nguyên thành công!");
                 })
@@ -83,16 +81,16 @@ const ResourceForm = ({ resourceId }) => {
                             },
                         ]}
                     >
-                        <Input placeholder="Tên tài nguyên" />
+                        <Input placeholder="Tên tài nguyên"/>
                     </Form.Item>
                 </Col>
                 <Col span={24}>
                     <Form.Item name="unit" label="Đơn vị">
-                        <Input placeholder="Đơn vị" className="w-full" />
+                        <Input placeholder="Đơn vị" className="w-full"/>
                     </Form.Item>
                 </Col>
                 <Col span={24}>
-                    <Form.Item name="teamId" label="Đội nhóm">
+                    <Form.Item name="teamId" label="Đội nhóm" disabled={teamId}>
                         <Select
                             options={teams}
                             className="w-full"

@@ -29,7 +29,7 @@ const SelectAccount = ({value = [], onChange, placeholder, simple = false, withE
 
     const mapOption = (item) => ({
         value: item.id,
-        label: item.fullName,
+        label: item.fullName || item.email,
         ext: item.externalReferenceCode
     })
 

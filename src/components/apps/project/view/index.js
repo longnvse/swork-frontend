@@ -37,18 +37,18 @@ function ProjectView(props) {
         {
             label: "Tài nguyên",
             key: "resource",
-            children: <ProjectViewResource />,
+            children: <ProjectViewResource projectId={data.id || id} />,
         },
         {
             label: "Công việc",
             key: "work",
-            children: <ProjectViewWork projectId={id} phaseId={0} />,
+            children: <ProjectViewWork projectId={data.id || id} phaseId={0} />,
         },
     ];
 
     return (
         <div>
-            <Tabs items={tabItems} />
+            <Tabs  items={tabItems} destroyInactiveTabPane={true} />
         </div>
     );
 }

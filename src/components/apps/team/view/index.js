@@ -63,8 +63,6 @@ const TeamView = () => {
         }
     }, [id]);
 
-    console.log("jtadd", teamData);
-
     return (
         <>
             <h3>Thông tin chung</h3>
@@ -86,7 +84,10 @@ const TeamView = () => {
             </Row>
             <div className="mt-3">
                 <h3>Tài nguyên</h3>
-                <ProjectViewResource resouceData={teamData?.resources} />
+                <ProjectViewResource
+                    resourceData={teamData?.resources}
+                    teamId={id || teamData?.id}
+                />
             </div>
         </>
     );
