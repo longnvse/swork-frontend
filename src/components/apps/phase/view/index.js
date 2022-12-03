@@ -3,6 +3,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getPhase } from "../../../../api/phase";
+import { DATE_FORMAT } from "../../../common/Constant";
 import SWDescription from "../../../common/description";
 import { renderStatus } from "../../../common/status";
 import ProjectViewResource from "../../project/view/tabs/Resource";
@@ -13,7 +14,6 @@ import { viewPhaseFirstColumns, viewPhaseSecondColumns } from "./columns";
 const PhaseView = () => {
     const { id } = useParams();
     const [phaseData, setPhaseData] = useState({});
-    const dateFormat = "DD/MM/YYYY";
 
     const mapData = (data) => {
         return {
@@ -23,9 +23,9 @@ const PhaseView = () => {
                     return <span key={index}>{phaseManage?.accountName}</span>;
                 }),
                 status: renderStatus(data?.status),
-                date: `${moment(data?.startDate).format(dateFormat)} - ${moment(
-                    data?.endDate,
-                ).format(dateFormat)}`,
+                date: `${moment(data?.startDate).format(
+                    DATE_FORMAT,
+                )} - ${moment(data?.endDate).format(DATE_FORMAT)}`,
             },
             secondColum: {
                 projectName: (
