@@ -1,18 +1,19 @@
 import React from 'react';
 import {Button} from "antd";
 
-const ButtonTab = props => {
+const ButtonTab = ({icon, title, buttonProps}) => {
     return (
         <Button
-            icon={props.icon}
+            icon={icon}
             className={"flex flex-col items-center justify-center h-fit w-fit border-0" +
                 " btn--tab"}
             style={{
                 fontSize: 10,
                 lineHeight: '16px'
             }}
+            {...buttonProps}
         >
-            {props.title || "Button"}
+            {title || "Button"}
         </Button>
     );
 };

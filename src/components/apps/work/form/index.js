@@ -1,25 +1,12 @@
-import {
-    Col,
-    Collapse,
-    DatePicker,
-    Form,
-    Input,
-    message,
-    Row,
-    Select,
-} from "antd";
-import React, { useEffect, useState } from "react";
-import { getPhasePages } from "../../../../api/phase";
-import { getProjectPages } from "../../../../api/project";
-import {
-    addWork,
-    getWork,
-    updateWork,
-    getWorkPages,
-} from "../../../../api/work";
+import {Col, Collapse, DatePicker, Form, Input, InputNumber, message, Row, Select,} from "antd";
+import React, {useEffect, useState} from "react";
+import {getPhasePages} from "../../../../api/phase";
+import {getProjectPages} from "../../../../api/project";
+import {addWork, getWork, getWorkPages, updateWork,} from "../../../../api/work";
 import SelectAccount from "../../../common/select/account";
+import moment from "moment";
 
-const WorkForm = ({ workId, phaseId, projectId }) => {
+const WorkForm = ({workId, phaseId, projectId}) => {
     const [form] = Form.useForm();
     const [projectData, setProjectData] = useState([]);
     const [projectChoosed, setProjectChoosed] = useState(0);
@@ -27,21 +14,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
     const [phaseData, setPhaseData] = useState([]);
     const [phaseChoosed, setPhaseChoosed] = useState(0);
     const [workData, setWorkData] = useState([]);
-    const priorities = [
-        {
-            label: "Cao",
-            value: "high",
-        },
-        {
-            label: "Trung bình",
-            value: "medium",
-        },
-        {
-            label: "Thấp",
-            value: "low",
-        },
-    ];
-
+    const [progressType, setProgressType] = useState();
     const mapDataForOptions = (data) => {
         return data?.map((option) => {
             return {
@@ -54,7 +27,12 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
     useEffect(() => {
         if (workId) {
             getWork(workId).then((response) => {
-                form.setFieldsValue(response?.data);
+                form.setFieldsValue({
+                    ...response?.data,
+                    startDate: response.data?.startDate && moment(response.data?.startDate),
+                    endDate: response.data?.endDate && moment(response.data?.endDate),
+                });
+                setProgressType(response.data?.progressType);
             });
         }
 
@@ -76,13 +54,17 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
     const onChangePhase = (e) => {
         if (e) {
             setPhaseChoosed(e);
-            getWorkPages({ projectId: projectChoosed, phaseId: e }).then(
+            getWorkPages({projectId: projectChoosed, phaseId: e}).then(
                 (response) => {
                     setWorkData(mapDataForOptions(response?.data?.items));
                 },
             );
         }
     };
+
+    const onChangeProgressType = (value) => {
+        setProgressType(value);
+    }
 
     const onFinish = (values) => {
         values = {
@@ -132,7 +114,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                     },
                                 ]}
                             >
-                                <Input placeholder="Tên công việc" />
+                                <Input placeholder="Tên công việc"/>
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -173,12 +155,12 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                         </Col>
                         <Col span={24}>
                             <Form.Item name="handles" label="Người thực hiện">
-                                <SelectAccount />
+                                <SelectAccount/>
                             </Form.Item>
                         </Col>
                         <Col span={24}>
                             <Form.Item name="manages" label="Người quản trị">
-                                <SelectAccount />
+                                <SelectAccount/>
                             </Form.Item>
                         </Col>
                         <Col span={24}>
@@ -186,7 +168,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                 name="participates"
                                 label="Người theo dõi/phối hợp thực hiện"
                             >
-                                <SelectAccount />
+                                <SelectAccount/>
                             </Form.Item>
                         </Col>
                         <Col span={24}>
@@ -212,15 +194,15 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                     },
                                 ]}
                             >
-                                <Select placeholder="Chọn cách tính tiến độ">
-                                    <Select.Option value="byUpdated">
+                                <Select placeholder="Chọn cách tính tiến độ" onChange={onChangeProgressType}>
+                                    <Select.Option value="manual">
                                         <b>Theo % người dùng tự cập nhật</b>
                                         <div className="ml-3">
                                             Người dùng tự nhập % hoàn thành công
                                             việc
                                         </div>
                                     </Select.Option>
-                                    <Select.Option value="byTask">
+                                    <Select.Option value="byAmount">
                                         <b>
                                             Theo tỷ lệ hoàn thành khối lượng
                                             công việc
@@ -261,7 +243,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                             </div>
                                         </div>
                                     </Select.Option>
-                                    <Select.Option value="byChildrenTask">
+                                    <Select.Option value="byProportion">
                                         <b>Theo tỷ trọng công việc con</b>
                                         <div className="ml-3">
                                             <div>
@@ -285,6 +267,41 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                 </Select>
                             </Form.Item>
                         </Col>
+                        {progressType === 'byAmount' &&
+                            <>
+                                <Col span={17}>
+                                    <Form.Item
+                                        name={"incompleteAmount"}
+                                        label={"Khối lượng cần hoàn thành"}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Vui lòng nhập khối lượng cần hoàn thành!"
+                                            }
+                                        ]}
+                                    >
+                                        <InputNumber
+                                            placeholder={"100"}
+                                            className={"w-full"}
+                                            controls={false}/>
+                                    </Form.Item>
+                                </Col>
+                                <Col span={7}>
+                                    <Form.Item
+                                        name={"unit"}
+                                        label={"Đơn vị"}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Vui lòng nhập đơn vi đo khối lượng!"
+                                            }
+                                        ]}
+                                    >
+                                        <Input placeholder={"Chiếc"}/>
+                                    </Form.Item>
+                                </Col>
+                            </>
+                        }
                         <Col span={24}>
                             <Form.Item label="Dự án" name="projectId">
                                 <Select

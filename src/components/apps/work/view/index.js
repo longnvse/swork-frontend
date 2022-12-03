@@ -1,25 +1,55 @@
-import { Collapse, Tabs } from "antd";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getWork } from "../../../../api/work";
+import {Col, Collapse, Row, Tabs} from "antd";
+import React, {useEffect, useMemo, useState} from "react";
+import {useParams} from "react-router-dom";
+import {getWork} from "../../../../api/work";
 import ProjectViewWork from "../../project/view/tabs/Work";
 import ViewWorkGeneral from "./item/General";
+import ButtonStatus from "../common/button-status";
+import ReportProgressModal from "../report-progress";
+import {useSelector} from "react-redux";
 
 const ViewWork = () => {
-    const { id } = useParams();
-    const [workData, setWorkData] = useState({});
+    const {id} = useParams();
+    const [workData, setWorkData] = useState();
+    const {reload} = useSelector(state => state.commonReducer);
 
     useEffect(() => {
         getWork(id).then((response) => {
-            console.log("jtadd", response?.data);
             setWorkData(response?.data);
         });
     }, [id]);
 
+    useEffect(() => {
+        if (reload) {
+            getWork(id).then((response) => {
+                setWorkData(response?.data);
+            });
+        }
+    }, [reload]);
+
+
+    const tabExtra = useMemo(() => {
+        console.log(workData);
+        return (
+            <Row gutter={8}>
+                <Col>
+                    <ButtonStatus workId={id} status={workData?.status}/>
+                </Col>
+                <Col>
+                    <ReportProgressModal workId={id} progressType={workData?.progressType}/>
+                </Col>
+            </Row>
+        )
+    }, [workData]);
+
+
     return (
-        <Tabs defaultActiveKey="general" type="card">
+        <Tabs
+            defaultActiveKey="general"
+            tabBarExtraContent={tabExtra}
+        >
             <Tabs.TabPane key={"general"} tab="Thông tin chung">
-                <ViewWorkGeneral />
+                <ViewWorkGeneral data={workData}/>
                 <Collapse className="mt-3" defaultActiveKey={"work"}>
                     <Collapse.Panel header="Công việc" key={"work"}>
                         <ProjectViewWork

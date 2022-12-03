@@ -1,18 +1,18 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, message, Popconfirm, Progress, Table } from "antd";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { deleteWork, getWorkPages } from "../../../../api/work";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {Button, message, Popconfirm, Progress, Table} from "antd";
+import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
+import {deleteWork, getWorkPages} from "../../../../api/work";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import { INACTIVE } from "../../../common/Constant";
-import { columnsWork } from "../common/columns";
+import {INACTIVE, UPDATE} from "../../../common/Constant";
+import {columnsWork} from "../common/columns";
 import WorkForm from "../form";
 
-const WorkList = ({ projectId, phaseId }) => {
+const WorkList = ({projectId, phaseId}) => {
     const [dataSources, setDataSources] = useState([]);
 
     useEffect(() => {
-        getWorkPages({ projectId: projectId, phaseId: phaseId }).then(
+        getWorkPages({projectId: projectId, phaseId: phaseId}).then(
             (response) => {
                 setDataSources(mapData(response?.data?.items));
             },
@@ -27,7 +27,7 @@ const WorkList = ({ projectId, phaseId }) => {
             .catch((err) => {
                 message.error(
                     err.response?.data?.detail ||
-                        "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
+                    "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
                 );
             });
     };
@@ -43,7 +43,7 @@ const WorkList = ({ projectId, phaseId }) => {
                         {item?.name}
                     </Link>
                 ),
-                progress: <Progress progress={item?.progress} />,
+                progress: <Progress percent={item?.progress}/>,
                 admin: item?.admin,
                 status: item?.status,
                 priority: item?.priority,
@@ -56,12 +56,12 @@ const WorkList = ({ projectId, phaseId }) => {
                             formId={"work-form"}
                             mode={UPDATE}
                             buttonProps={{
-                                icon: <EditOutlined />,
+                                icon: <EditOutlined/>,
                                 type: "link",
                                 value: null,
                             }}
                         >
-                            <WorkForm workId={item?.id} />
+                            <WorkForm workId={item?.id}/>
                         </ButtonDrawer>
                         <Popconfirm
                             disabled={item.status !== INACTIVE}
@@ -71,7 +71,7 @@ const WorkList = ({ projectId, phaseId }) => {
                             <Button
                                 type={"link"}
                                 disabled={item.status !== INACTIVE}
-                                icon={<DeleteOutlined />}
+                                icon={<DeleteOutlined/>}
                             />
                         </Popconfirm>
                     </div>
@@ -82,7 +82,7 @@ const WorkList = ({ projectId, phaseId }) => {
 
     return (
         <div>
-            <Table dataSource={dataSources} columns={columnsWork} />
+            <Table dataSource={dataSources} columns={columnsWork}/>
         </div>
     );
 };
