@@ -85,7 +85,7 @@ function CommonList({mapData, buttonAdd = <></>, load, columns = [], isSelection
                 pagination={{
                     defaultCurrent: 1,
                     defaultPageSize: 10,
-                    total: totalCount,
+                    total: totalCount + 100,
                     showTotal: (total) => `${total} kết quả`,
                 }}
             />
