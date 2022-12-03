@@ -1,13 +1,13 @@
 import React from "react";
-import {Avatar, Dropdown, Menu, Space} from "antd";
-import {KeyOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {logoutStart} from "../../../../../redux/actions/login/actions";
-import {VscAccount} from "react-icons/vsc";
-import {RiGitRepositoryPrivateLine} from "react-icons/ri";
-import {URIS} from "../../../../../utils/constant";
-import {getMe} from "../../../../../api/common";
+import { Avatar, Dropdown, Menu, Space } from "antd";
+import { KeyOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logoutStart } from "../../../../../redux/actions/login/actions";
+import { VscAccount } from "react-icons/vsc";
+import { RiGitRepositoryPrivateLine } from "react-icons/ri";
+import { URIS } from "../../../../../utils/constant";
+import { getMe } from "../../../../../api/common";
 
 const ProfileIcon = (props) => {
     let navigate = useNavigate();
@@ -27,7 +27,7 @@ const ProfileIcon = (props) => {
                     <Space>
                         <Avatar
                             size={"large"}
-                            icon={<UserOutlined/>}
+                            icon={<UserOutlined />}
                             style={{
                                 verticalAlign: "middle",
                             }}
@@ -45,7 +45,7 @@ const ProfileIcon = (props) => {
             },
             label: "Thông tin cá nhân",
             key: "account-info",
-            icon: <VscAccount/>,
+            icon: <VscAccount />,
         },
         {
             onClick: () => {
@@ -53,17 +53,17 @@ const ProfileIcon = (props) => {
             },
             label: "Bảo mật",
             key: "account-security",
-            icon: <RiGitRepositoryPrivateLine/>,
+            icon: <RiGitRepositoryPrivateLine />,
         },
         {
             label: "Đổi mật khẩu",
             key: "/change-password",
-            icon: <KeyOutlined/>,
+            icon: <KeyOutlined />,
         },
         {
             label: "Đăng xuất",
             key: "/logout",
-            icon: <LogoutOutlined/>,
+            icon: <LogoutOutlined />,
             style: {
                 borderTop: "1px solid #ccc",
             },
@@ -84,7 +84,7 @@ const ProfileIcon = (props) => {
                             <Space>
                                 <Avatar
                                     size={"large"}
-                                    icon={<UserOutlined/>}
+                                    icon={<UserOutlined />}
                                     style={{
                                         verticalAlign: "middle",
                                     }}
@@ -102,7 +102,7 @@ const ProfileIcon = (props) => {
                     },
                     label: "Thông tin cá nhân",
                     key: "account-info",
-                    icon: <VscAccount/>,
+                    icon: <VscAccount />,
                 },
                 {
                     onClick: () => {
@@ -110,17 +110,17 @@ const ProfileIcon = (props) => {
                     },
                     label: "Bảo mật",
                     key: "account-security",
-                    icon: <RiGitRepositoryPrivateLine/>,
+                    icon: <RiGitRepositoryPrivateLine />,
                 },
                 {
                     label: "Đổi mật khẩu",
                     key: "/change-password",
-                    icon: <KeyOutlined/>,
+                    icon: <KeyOutlined />,
                 },
                 {
                     label: "Đăng xuất",
                     key: "/logout",
-                    icon: <LogoutOutlined/>,
+                    icon: <LogoutOutlined />,
                     style: {
                         borderTop: "1px solid #ccc",
                     },
@@ -132,16 +132,10 @@ const ProfileIcon = (props) => {
 
     return (
         <Dropdown overlay={menu} trigger={["click"]} placement={"bottomRight"}>
-            <div
-                style={{
-                    padding: 10,
-                    marginRight: 8,
-                }}
-                className={"cursor-pointer float-right app__header--item"}
-            >
+            <div className={"cursor-pointer float-right app__header--item"}>
                 <Avatar
                     size={"default"}
-                    icon={<UserOutlined/>}
+                    icon={<UserOutlined />}
                     // src={require("../../../../../images/avatar.png")}
                     // src={`${base_url}${portraitThumbnail}`}
                 />

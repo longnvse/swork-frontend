@@ -1,12 +1,13 @@
 import React from "react";
-import {Col, Layout, Row} from "antd";
+import { Col, Input, Layout, Row } from "antd";
 import ProfileIcon from "./profile";
-import {IoMdNotificationsOutline} from "react-icons/io";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { FiSearch } from "react-icons/fi";
 
-const {Header} = Layout;
+const { Header } = Layout;
 
 function CommonHeader(props) {
-    const {title} = props;
+    const { title } = props;
     return (
         <Header
             className={"flex flex-row justify-between items-center"}
@@ -16,17 +17,22 @@ function CommonHeader(props) {
                 borderLeft: "1px solid inherit",
             }}
         >
-            <Col>
+            <div className="flex items-center justify-between w-full">
                 <div className={"text__header pl-4"}>{title}</div>
-            </Col>
-            <Col style={{paddingRight: 4}}>
-                <Row className="flex items-center">
-                    <div className="app__header--item cursor-pointer flex items-center mr-2">
-                        <IoMdNotificationsOutline className="text-white w-6 h-6"/>
+                <div className="mr-2">
+                    <div className="flex items-center">
+                        <Input
+                            prefix={<FiSearch />}
+                            className="mr-4"
+                            placeholder="Tìm kiếm"
+                        />
+                        <div className="app__header--item cursor-pointer flex items-center mr-2">
+                            <IoMdNotificationsOutline className="text-white w-6 h-6" />
+                        </div>
+                        <ProfileIcon />
                     </div>
-                    <ProfileIcon/>
-                </Row>
-            </Col>
+                </div>
+            </div>
         </Header>
     );
 }

@@ -4,8 +4,8 @@ import BusinessList from "./index";
 
 const BusinessRouter = props => {
     return (
-        <Routes path={""}>
-            <Route index element={<BusinessList/>}/>
+        <Routes path={"/"}>
+            <Route path={"/:status"} element={<BusinessList/>}/>
         </Routes>
     );
 };

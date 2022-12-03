@@ -1,14 +1,14 @@
-import {Button, Col, message, Popconfirm, Progress, Row, Table,} from "antd";
-import React, {useEffect, useState} from "react";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {ADD, INACTIVE, UPDATE} from "../../../../common/Constant";
-import WorkForm from "../../../work/form";
-import {deleteWork, getWorkPages} from "../../../../../api/work";
-import {columnsWork} from "../../../work/common/columns";
+import {Button, message, Popconfirm, Progress, Table} from "antd";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
+import {deleteWork, getWorkPages} from "../../../../api/work";
+import ButtonDrawer from "../../../common/button/ButtonDrawer";
+import {INACTIVE, UPDATE} from "../../../common/Constant";
+import {columnsWork} from "../common/columns";
+import WorkForm from "../form";
 
-function ProjectViewWork({projectId, phaseId}) {
+const WorkList = ({projectId, phaseId}) => {
     const [dataSources, setDataSources] = useState([]);
 
     useEffect(() => {
@@ -26,7 +26,7 @@ function ProjectViewWork({projectId, phaseId}) {
             })
             .catch((err) => {
                 message.error(
-                    err.response?.data?.detail || err.response?.data?.title ||
+                    err.response?.data?.detail ||
                     "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
                 );
             });
@@ -82,26 +82,9 @@ function ProjectViewWork({projectId, phaseId}) {
 
     return (
         <div>
-            <Row gutter={12} className={"mb-4"}>
-                <Col>
-                    <ButtonDrawer
-                        title={"Thêm mới công việc"}
-                        formId={"work-form"}
-                        mode={ADD}
-                        buttonProps={{
-                            value: "Thêm mới",
-                        }}
-                        drawerProps={{
-                            width: 500,
-                        }}
-                    >
-                        <WorkForm/>
-                    </ButtonDrawer>
-                </Col>
-            </Row>
             <Table dataSource={dataSources} columns={columnsWork}/>
         </div>
     );
-}
+};
 
-export default ProjectViewWork;
+export default WorkList;
