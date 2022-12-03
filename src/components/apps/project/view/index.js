@@ -48,7 +48,7 @@ function ProjectView(props) {
 
     return (
         <div>
-            <Tabs  items={tabItems} destroyInactiveTabPane={true} />
+            <Tabs items={tabItems} destroyInactiveTabPane={true} />
         </div>
     );
 }
