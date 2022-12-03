@@ -15,7 +15,7 @@ function ProjectViewResource({resourceData, projectId, phaseId, teamId}) {
     const {reload} = useSelector(state => state.commonReducer);
     useEffect(() => {
         if (!resourceData) {
-            getResourcePages({projectId, phaseId}).then((response) => {
+            getResourcePages({projectId: projectId, phaseId: phaseId}).then((response) => {
                 setDataSources(mapData(response?.data?.items));
             });
         }
