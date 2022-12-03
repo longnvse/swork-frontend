@@ -1,27 +1,26 @@
-import { Col, Input, Popconfirm, Row, Table, Button, message } from "antd";
-import React, { useState, useEffect } from "react";
-import { FiSearch } from "react-icons/fi";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {Button, Col, Input, message, Popconfirm, Row, Table} from "antd";
+import React, {useEffect, useState} from "react";
+import {FiSearch} from "react-icons/fi";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import { ADD, INACTIVE, UPDATE } from "../../../../common/Constant";
+import {ADD, DATE_FORMAT, INACTIVE, UPDATE} from "../../../../common/Constant";
 import ResourceForm from "../../../resource/form";
-import { columnsResource } from "../../../resource/common/columns";
-import {
-    deleteResource,
-    getResourcePages,
-} from "../../../../../api/resource/resource";
+import {columnsResource} from "../../../resource/common/columns";
+import {deleteResource, getResourcePages,} from "../../../../../api/resource/resource";
+import {useSelector} from "react-redux";
+import moment from "moment";
 
-function ProjectViewResource({ resourceData, projectId, phaseId, teamId }) {
+function ProjectViewResource({resourceData, projectId, phaseId, teamId}) {
     const [dataSources, setDataSources] = useState([]);
-
+    const {reload} = useSelector(state => state.commonReducer);
     useEffect(() => {
         if (!resourceData) {
-            getResourcePages().then((response) => {
+            getResourcePages({projectId, phaseId}).then((response) => {
                 setDataSources(mapData(response?.data?.items));
             });
         }
         setDataSources(resourceData);
-    }, [resourceData]);
+    }, [resourceData, reload]);
 
     const onConfirmDelete = (id) => {
         deleteResource(id)
@@ -31,7 +30,7 @@ function ProjectViewResource({ resourceData, projectId, phaseId, teamId }) {
             .catch((err) => {
                 message.error(
                     err.response?.data?.detail ||
-                        "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
+                    "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
                 );
             });
     };
@@ -47,7 +46,7 @@ function ProjectViewResource({ resourceData, projectId, phaseId, teamId }) {
                 totalAmount: item?.totalAmount,
                 team: item?.teamName,
                 parent: item?.parentName,
-                date: item?.dateResource,
+                date: item?.dateResource && moment(item.dateResource).format(DATE_FORMAT),
                 creator: item?.creator,
                 action: (
                     <div className={"flex justify-evenly"}>
@@ -56,7 +55,7 @@ function ProjectViewResource({ resourceData, projectId, phaseId, teamId }) {
                             formId={"resource-form"}
                             mode={UPDATE}
                             buttonProps={{
-                                icon: <EditOutlined />,
+                                icon: <EditOutlined/>,
                                 type: "link",
                                 value: null,
                             }}
@@ -76,7 +75,7 @@ function ProjectViewResource({ resourceData, projectId, phaseId, teamId }) {
                             <Button
                                 type={"link"}
                                 disabled={item.status !== INACTIVE}
-                                icon={<DeleteOutlined />}
+                                icon={<DeleteOutlined/>}
                             />
                         </Popconfirm>
                     </div>
@@ -105,10 +104,10 @@ function ProjectViewResource({ resourceData, projectId, phaseId, teamId }) {
                     </ButtonDrawer>
                 </Col>
                 <Col span={6}>
-                    <Input prefix={<FiSearch />} />
+                    <Input prefix={<FiSearch/>}/>
                 </Col>
             </Row>
-            <Table dataSource={dataSources} columns={columnsResource} />
+            <Table dataSource={dataSources} columns={columnsResource}/>
         </div>
     );
 }
