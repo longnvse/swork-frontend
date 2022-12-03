@@ -48,7 +48,7 @@ const PhaseView = () => {
     }, [id]);
 
     return (
-        <Tabs type="card" defaultActiveKey="general">
+        <Tabs type="line" defaultActiveKey="general">
             <Tabs.TabPane key="general" tab="Thông tin chung">
                 <Row gutter={12}>
                     <Col span={12}>

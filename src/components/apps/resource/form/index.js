@@ -33,18 +33,24 @@ const ResourceForm = ({ resourceId, projectId, phaseId, workId, teamId }) => {
     };
 
     useEffect(() => {
-        getTeamPages(projectId).then((response) => {
-            setTeams(mapDataTeams(response?.data?.items));
-        });
-
-        getResource(resourceId).then((response) => {
-            form.setFieldsValue({
-                ...response?.data,
-                dateResource:
-                    response.data.dateResource &&
-                    moment(response?.data?.dateResource),
+        if (projectId) {
+            getTeamPages(projectId).then((response) => {
+                setTeams(mapDataTeams(response?.data?.items));
             });
-        });
+        }
+    }, [projectId]);
+
+    useEffect(() => {
+        if (resourceId) {
+            getResource(resourceId).then((response) => {
+                form.setFieldsValue({
+                    ...response?.data,
+                    dateResource:
+                        response.data.dateResource &&
+                        moment(response?.data?.dateResource),
+                });
+            });
+        }
     }, [resourceId]);
 
     useEffect(() => {
@@ -120,7 +126,7 @@ const ResourceForm = ({ resourceId, projectId, phaseId, workId, teamId }) => {
                 <Col span={24}>
                     <Form.Item name="dateResource" label="Ngày">
                         <DatePicker
-                            format={"DD/MM/YYYY"}
+                            format={DATE_FORMAT}
                             className="w-full"
                             placeholder="Ngày"
                         />
