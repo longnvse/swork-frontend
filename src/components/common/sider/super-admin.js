@@ -9,17 +9,17 @@ export const SuperAdminSider = [
         icon: <BiBuildings style={{fontSize: 20}}/>,
         children: [
             {
-                label: <Link to={{pathname: "/business", search: "status=all"}}>Tất cả</Link>,
+                label: <Link to={{pathname: "/business/all"}}>Tất cả</Link>,
                 key: "business-all",
                 icon: <BiBuildings/>,
             },
             {
-                label: <Link to={{pathname: "/business", search: "status=active"}}>Đang hoạt động</Link>,
+                label: <Link to={{pathname: "/business/active"}}>Đang hoạt động</Link>,
                 key: "business-active",
                 icon: <BiBuildings/>,
             },
             {
-                label: <Link to={{pathname: "/business", search: "status=inactive"}}>Dừng hoạt động</Link>,
+                label: <Link to={{pathname: "/business/inactive"}}>Dừng hoạt động</Link>,
                 key: "business-inactive",
                 icon: <BiBuildings/>,
             }

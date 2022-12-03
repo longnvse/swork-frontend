@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Tabs } from "antd";
+import React, {useEffect, useState} from "react";
+import {Tabs} from "antd";
 import ProjectViewGeneral from "./tabs/General";
-import { getProject } from "../../../../api/project";
+import {getProject} from "../../../../api/project";
 import ProjectViewPhase from "./tabs/Phase";
 import ProjectViewResource from "./tabs/Resource";
 import ProjectViewWork from "./tabs/Work";
-import { useParams } from "react-router-dom";
+import {useParams} from "react-router-dom";
 import TeamList from "../../team";
 
 function ProjectView(props) {
     const [data, setData] = useState({});
-    const { id } = useParams();
+    const {id} = useParams();
 
     useEffect(() => {
         getProject(id).then((response) => {
@@ -22,33 +22,33 @@ function ProjectView(props) {
         {
             label: "Chi tiết",
             key: "general",
-            children: <ProjectViewGeneral data={data} />,
+            children: <ProjectViewGeneral data={data}/>,
         },
         {
             label: "Giai đoạn",
             key: "phase",
-            children: <ProjectViewPhase projectId={data.id} />,
+            children: <ProjectViewPhase projectId={data.id}/>,
         },
         {
             label: "Đội nhóm",
             key: "team",
-            children: <TeamList projectId={data.id} />,
+            children: <TeamList projectId={data.id}/>,
         },
         {
             label: "Tài nguyên",
             key: "resource",
-            children: <ProjectViewResource projectId={data.id || id} />,
+            children: <ProjectViewResource projectId={data.id || id}/>,
         },
         {
             label: "Công việc",
             key: "work",
-            children: <ProjectViewWork projectId={data.id || id} phaseId={0} />,
+            children: <ProjectViewWork projectId={data.id || id}/>,
         },
     ];
 
     return (
         <div>
-            <Tabs  items={tabItems} destroyInactiveTabPane={true} />
+            <Tabs items={tabItems} destroyInactiveTabPane={true}/>
         </div>
     );
 }
