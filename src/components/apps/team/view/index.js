@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getTeam } from "../../../../api/team";
 import SWDescription from "../../../common/description";
 import ProjectViewResource from "../../project/view/tabs/Resource";
+import ResourceList from "../../resource/list";
 import { viewTeamFirstColumns, viewTeamSecondColumns } from "./columns";
 
 const TeamView = () => {
@@ -65,7 +66,7 @@ const TeamView = () => {
 
     return (
         <>
-            <h3>Thông tin chung</h3>
+            <h3 className="mb-3">Thông tin chung</h3>
             <Row gutter={12}>
                 <Col span={12}>
                     <SWDescription
@@ -83,8 +84,8 @@ const TeamView = () => {
                 </Col>
             </Row>
             <div className="mt-3">
-                <h3>Tài nguyên</h3>
-                <ProjectViewResource
+                <h3 className="mb-3">Tài nguyên</h3>
+                <ResourceList
                     resourceData={teamData?.resources}
                     teamId={id || teamData?.id}
                 />
