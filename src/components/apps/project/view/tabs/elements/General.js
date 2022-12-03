@@ -3,6 +3,7 @@ import moment from "moment";
 import React, { useMemo } from "react";
 import ButtonDrawer from "../../../../../common/button/ButtonDrawer";
 import { UPDATE } from "../../../../../common/Constant";
+import { convertMoney } from "../../../../../common/convert";
 import { renderStatus } from "../../../../../common/status";
 import ProjectForm from "../../../form";
 
@@ -53,7 +54,7 @@ const ProjectViewGeneral = ({ data }) => {
                 <Col span={8} className={"font-bold"}>
                     Ngân sách:
                 </Col>
-                <Col span={16}>{`${data.budget} VNĐ`}</Col>
+                <Col span={16}>{`${convertMoney(data.budget)} VNĐ`}</Col>
             </Row>
             <Row className={"p-[17px]"}>
                 <Col span={8} className={"font-bold"}>
