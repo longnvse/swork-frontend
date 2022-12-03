@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from "react";
-import {Tabs} from "antd";
+import React, { useEffect, useState } from "react";
+import { Tabs } from "antd";
 import ProjectViewGeneral from "./tabs/General";
-import {getProject} from "../../../../api/project";
+import { getProject } from "../../../../api/project";
 import ProjectViewPhase from "./tabs/Phase";
 import ProjectViewResource from "./tabs/Resource";
 import ProjectViewWork from "./tabs/Work";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import TeamList from "../../team";
 
 function ProjectView(props) {
     const [data, setData] = useState({});
-    const {id} = useParams();
+    const { id } = useParams();
 
     useEffect(() => {
         getProject(id).then((response) => {
@@ -48,7 +48,7 @@ function ProjectView(props) {
 
     return (
         <div>
-            <Tabs items={tabItems} destroyInactiveTabPane={true}/>
+            <Tabs  items={tabItems} destroyInactiveTabPane={true} />
         </div>
     );
 }
