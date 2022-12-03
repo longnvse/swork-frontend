@@ -18,13 +18,13 @@
     }
 }
 
-.ant-input-affix-wrapper {
-    border-radius: var(--border-radius-small);
-}
-
-.ant-input {
-    border-radius: var(--border-radius-small);
-}
+//.ant-input-affix-wrapper {
+//    border-radius: var(--border-radius-small);
+//}
+//
+//.ant-input {
+//    border-radius: var(--border-radius-small);
+//}
 
 .ant-form-item-label {
     font-weight: 500;
@@ -33,28 +33,28 @@
 .ant-pagination {
     & * {
         border-color: #ffffff !important;
-        border-radius: 16px;
+        border-radius: 16px !important;
     }
 
     &-item {
         &-active {
-            border-radius: 16px;
-            background-color: var(--ant-primary-color);
-            border-color: var(--ant-primary-color);
+            border-radius: 16px !important;
+            background-color: var(--ant-primary-color) !important;
+            border-color: var(--ant-primary-color) !important;
 
             &:hover,
             :focus {
                 & a {
-                    color: white;
+                    color: white !important;
                 }
             }
 
             & a {
-                color: white;
+                color: white !important;
 
                 &:hover,
                 :focus {
-                    color: white;
+                    color: white !important;
                 }
             }
         }
