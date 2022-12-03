@@ -1,24 +1,21 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, message, Popconfirm, Table } from "antd";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {Button, message, Popconfirm, Table} from "antd";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import {
-    deleteResource,
-    getResourcePages,
-} from "../../../../api/resource/resource";
+import React, {useEffect, useState} from "react";
+import {useSelector} from "react-redux";
+import {deleteResource, getResourcePages,} from "../../../../api/resource/resource";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import { DATE_FORMAT, INACTIVE, UPDATE } from "../../../common/Constant";
-import { columnsResource } from "../common/columns";
+import {DATE_FORMAT, INACTIVE, UPDATE} from "../../../common/Constant";
+import {columnsResource} from "../common/columns";
 import ResourceForm from "../form";
 
-const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
+const ResourceList = ({resourceData, projectId, phaseId, teamId}) => {
     const [dataSources, setDataSources] = useState([]);
-    const { reload } = useSelector((state) => state.commonReducer);
+    const {reload} = useSelector((state) => state.commonReducer);
 
     useEffect(() => {
         if (!resourceData) {
-            getResourcePages({ projectId: projectId, phaseId: phaseId }).then(
+            getResourcePages({projectId: projectId, phaseId: phaseId}).then(
                 (response) => {
                     setDataSources(mapData(response?.data?.items));
                 },
@@ -34,8 +31,8 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
             })
             .catch((err) => {
                 message.error(
-                    err.response?.data?.detail ||
-                        "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
+                    err.response?.data?.detail || err.response?.data?.title ||
+                    "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
                 );
             });
     };
@@ -62,7 +59,7 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
                             formId={"resource-form"}
                             mode={UPDATE}
                             buttonProps={{
-                                icon: <EditOutlined />,
+                                icon: <EditOutlined/>,
                                 type: "link",
                                 value: null,
                             }}
@@ -82,7 +79,7 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
                             <Button
                                 type={"link"}
                                 disabled={item.status !== INACTIVE}
-                                icon={<DeleteOutlined />}
+                                icon={<DeleteOutlined/>}
                             />
                         </Popconfirm>
                     </div>
