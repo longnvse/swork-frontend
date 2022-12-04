@@ -78,16 +78,16 @@ const WorkForm = ({workId, phaseId, projectId}) => {
                 .then(() => {
                     message.success("Thêm công việc thành công!");
                 })
-                .catch(() => {
-                    message.error("Thêm công việc thất bại!");
+                .catch((err) => {
+                    message.error(err.response?.data?.detail || err.response?.data?.title || "Thêm công việc thất bại!");
                 });
         } else {
             updateWork(workId, values)
                 .then(() => {
                     message.success("Cập nhật công việc thành công!");
                 })
-                .catch(() => {
-                    message.error("Cập nhật công việc thất bại!");
+                .catch((err) => {
+                    message.error(err.response?.data?.detail || err.response?.data?.title || "Cập nhật công việc thất bại!");
                 });
         }
     };

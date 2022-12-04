@@ -1,12 +1,12 @@
-import React, { useMemo } from "react";
-import { Col, Divider, Progress, Row } from "antd";
-import { renderStatus } from "../../../../common/status";
-import { UPDATE } from "../../../../common/Constant";
+import React, {useMemo} from "react";
+import {Col, Divider, Progress, Row} from "antd";
+import {renderStatus} from "../../../../common/status";
+import {UPDATE} from "../../../../common/Constant";
 import ProjectForm from "../../form";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
 import moment from "moment";
 
-function ProjectViewGeneral({ data }) {
+function ProjectViewGeneral({data}) {
     const dayDiffTime = useMemo(() => {
         return moment(data.endDate).diff(moment(data.startDate), "day");
     }, [data.startDate, data.endDate]);
@@ -30,10 +30,10 @@ function ProjectViewGeneral({ data }) {
                 <Row className={"p-[17px] justify-between"}>
                     <Col span={3}>Tiến độ:</Col>
                     <Col span={20}>
-                        <Progress percent={data.progress} />
+                        <Progress percent={data.progress}/>
                     </Col>
                 </Row>
-                <Divider style={{ fontSize: 14 }} orientation="left">
+                <Divider style={{fontSize: 14}} orientation="left">
                     Chi tiết
                 </Divider>
                 <Row className={"p-[17px]"}>
@@ -93,7 +93,7 @@ function ProjectViewGeneral({ data }) {
                             value: "Cập nhật",
                         }}
                     >
-                        <ProjectForm id={data.id} />
+                        <ProjectForm id={data.id}/>
                     </ButtonDrawer>
                 </Row>
             </Col>
