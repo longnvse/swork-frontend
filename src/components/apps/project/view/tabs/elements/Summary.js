@@ -17,7 +17,7 @@ const ProjectViewSummary = ({ data, teamData, phaseData }) => {
     return (
         <div
             className={
-                "rounded-[8px] border-solid border-[1px] border-[#ccc] p-6 flex items-center justify-between"
+                "rounded-[8px] border-solid border-[1px] border-[#ccc] p-6 flex items-center justify-between w-full"
             }
         >
             <div className="flex items-center">

@@ -7,9 +7,12 @@ import WorkForm from "../../../work/form";
 import {deleteWork, getWorkPages} from "../../../../../api/work";
 import {columnsWork} from "../../../work/common/columns";
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {renderStatusWork} from "../../../../common/status/status-work";
 
 function ProjectViewWork({projectId, phaseId}) {
     const [dataSources, setDataSources] = useState([]);
+    const {reload} = useSelector(state => state.commonReducer);
 
     useEffect(() => {
         getWorkPages({projectId: projectId, phaseId: phaseId}).then(
@@ -17,7 +20,7 @@ function ProjectViewWork({projectId, phaseId}) {
                 setDataSources(mapData(response?.data?.items));
             },
         );
-    }, [projectId, phaseId]);
+    }, [projectId, phaseId, reload]);
 
     const onConfirmDelete = (id) => {
         deleteWork(id)
@@ -45,7 +48,7 @@ function ProjectViewWork({projectId, phaseId}) {
                 ),
                 progress: <Progress percent={item?.progress}/>,
                 admin: item?.admin,
-                status: item?.status,
+                status: renderStatusWork(item?.status),
                 priority: item?.priority,
                 intendTime: item?.intendTime,
                 deadline: item?.deadline,

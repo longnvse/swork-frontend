@@ -4,6 +4,8 @@ export const INFORMATION = "information";
 export const PENDING = "pending";
 export const ACTIVE = "active";
 export const INACTIVE = "inactive";
+export const DENIED = "denied";
+export const COMPLETED = "completed";
 export const DATE_FORMAT = "DD-MM-YYYY"
 export const STATUS = {
     "doing": "Đang hoạt động",

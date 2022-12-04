@@ -1,24 +1,11 @@
-import {
-    Col,
-    DatePicker,
-    Form,
-    Input,
-    InputNumber,
-    message,
-    Row,
-    Select,
-} from "antd";
-import React, { useEffect, useState } from "react";
-import {
-    addResource,
-    getResource,
-    updateResource,
-} from "../../../../api/resource/resource";
-import { getTeamPages } from "../../../../api/team";
+import {Col, DatePicker, Form, Input, InputNumber, message, Row, Select,} from "antd";
+import React, {useEffect, useState} from "react";
+import {addResource, getResource, updateResource,} from "../../../../api/resource/resource";
+import {getTeamPages} from "../../../../api/team";
 import moment from "moment";
-import { DATE_FORMAT } from "../../../common/Constant";
+import {DATE_FORMAT} from "../../../common/Constant";
 
-const ResourceForm = ({ resourceId, projectId, phaseId, workId, teamId }) => {
+const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
     const [form] = Form.useForm();
     const [teams, setTeams] = useState([]);
 
@@ -34,11 +21,11 @@ const ResourceForm = ({ resourceId, projectId, phaseId, workId, teamId }) => {
 
     useEffect(() => {
         if (projectId) {
-            getTeamPages(projectId).then((response) => {
+            getTeamPages({projectId, phaseId, params: {page: 1, pageSize: 10000}}).then((response) => {
                 setTeams(mapDataTeams(response?.data?.items));
             });
         }
-    }, [projectId]);
+    }, [projectId, phaseId]);
 
     useEffect(() => {
         if (resourceId) {
@@ -55,7 +42,7 @@ const ResourceForm = ({ resourceId, projectId, phaseId, workId, teamId }) => {
 
     useEffect(() => {
         if (teamId) {
-            form.setFieldValue({ teamId: teamId });
+            form.setFieldValue({teamId: teamId});
         }
     }, [teamId]);
 
@@ -98,12 +85,12 @@ const ResourceForm = ({ resourceId, projectId, phaseId, workId, teamId }) => {
                             },
                         ]}
                     >
-                        <Input placeholder="Tên tài nguyên" />
+                        <Input placeholder="Tên tài nguyên"/>
                     </Form.Item>
                 </Col>
                 <Col span={24}>
                     <Form.Item name="unit" label="Đơn vị">
-                        <Input placeholder="Đơn vị" className="w-full" />
+                        <Input placeholder="Đơn vị" className="w-full"/>
                     </Form.Item>
                 </Col>
                 <Col span={24}>
