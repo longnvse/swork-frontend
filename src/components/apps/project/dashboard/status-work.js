@@ -32,7 +32,7 @@ const DashboardStatusWork = props => {
             formatter: "{b} : ({d}%)"
         },
         legend: {
-            top: '21%',
+            top: '30%',
             left: 'center',
             orient: 'vertical',
             icon: "circle"
