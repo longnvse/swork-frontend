@@ -1,12 +1,27 @@
-import {Col, Collapse, DatePicker, Form, Input, InputNumber, message, Row, Select,} from "antd";
-import React, {useEffect, useState} from "react";
-import {getPhasePages} from "../../../../api/phase";
-import {getProjectPages} from "../../../../api/project";
-import {addWork, getWork, getWorkPages, updateWork,} from "../../../../api/work";
+import {
+    Col,
+    Collapse,
+    DatePicker,
+    Form,
+    Input,
+    InputNumber,
+    message,
+    Row,
+    Select,
+} from "antd";
+import React, { useEffect, useState } from "react";
+import { getPhasePages } from "../../../../api/phase";
+import { getProjectPages } from "../../../../api/project";
+import {
+    addWork,
+    getWork,
+    getWorkPages,
+    updateWork,
+} from "../../../../api/work";
 import SelectAccount from "../../../common/select/account";
 import moment from "moment";
 
-const WorkForm = ({workId, phaseId, projectId}) => {
+const WorkForm = ({ workId, phaseId, projectId }) => {
     const [form] = Form.useForm();
     const [projectData, setProjectData] = useState([]);
     const [projectChoosed, setProjectChoosed] = useState(0);
@@ -29,8 +44,12 @@ const WorkForm = ({workId, phaseId, projectId}) => {
             getWork(workId).then((response) => {
                 form.setFieldsValue({
                     ...response?.data,
-                    startDate: response.data?.startDate && moment(response.data?.startDate),
-                    endDate: response.data?.endDate && moment(response.data?.endDate),
+                    startDate:
+                        response.data?.startDate &&
+                        moment(response.data?.startDate),
+                    endDate:
+                        response.data?.endDate &&
+                        moment(response.data?.endDate),
                 });
                 setProgressType(response.data?.progressType);
             });
@@ -54,7 +73,7 @@ const WorkForm = ({workId, phaseId, projectId}) => {
     const onChangePhase = (e) => {
         if (e) {
             setPhaseChoosed(e);
-            getWorkPages({projectId: projectChoosed, phaseId: e}).then(
+            getWorkPages({ projectId: projectChoosed, phaseId: e }).then(
                 (response) => {
                     setWorkData(mapDataForOptions(response?.data?.items));
                 },
@@ -64,7 +83,7 @@ const WorkForm = ({workId, phaseId, projectId}) => {
 
     const onChangeProgressType = (value) => {
         setProgressType(value);
-    }
+    };
 
     const onFinish = (values) => {
         values = {
@@ -79,7 +98,11 @@ const WorkForm = ({workId, phaseId, projectId}) => {
                     message.success("Thêm công việc thành công!");
                 })
                 .catch((err) => {
-                    message.error(err.response?.data?.detail || err.response?.data?.title || "Thêm công việc thất bại!");
+                    message.error(
+                        err.response?.data?.detail ||
+                            err.response?.data?.title ||
+                            "Thêm công việc thất bại!",
+                    );
                 });
         } else {
             updateWork(workId, values)
@@ -87,7 +110,11 @@ const WorkForm = ({workId, phaseId, projectId}) => {
                     message.success("Cập nhật công việc thành công!");
                 })
                 .catch((err) => {
-                    message.error(err.response?.data?.detail || err.response?.data?.title || "Cập nhật công việc thất bại!");
+                    message.error(
+                        err.response?.data?.detail ||
+                            err.response?.data?.title ||
+                            "Cập nhật công việc thất bại!",
+                    );
                 });
         }
     };
@@ -114,7 +141,7 @@ const WorkForm = ({workId, phaseId, projectId}) => {
                                     },
                                 ]}
                             >
-                                <Input placeholder="Tên công việc"/>
+                                <Input placeholder="Tên công việc" />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -155,12 +182,12 @@ const WorkForm = ({workId, phaseId, projectId}) => {
                         </Col>
                         <Col span={24}>
                             <Form.Item name="handles" label="Người thực hiện">
-                                <SelectAccount/>
+                                <SelectAccount />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
                             <Form.Item name="manages" label="Người quản trị">
-                                <SelectAccount/>
+                                <SelectAccount />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
@@ -168,7 +195,7 @@ const WorkForm = ({workId, phaseId, projectId}) => {
                                 name="participates"
                                 label="Người theo dõi/phối hợp thực hiện"
                             >
-                                <SelectAccount/>
+                                <SelectAccount />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
@@ -193,8 +220,12 @@ const WorkForm = ({workId, phaseId, projectId}) => {
                                         message: "Chưa chọn cách tính tiến độ",
                                     },
                                 ]}
+                                initialValue="manual"
                             >
-                                <Select placeholder="Chọn cách tính tiến độ" onChange={onChangeProgressType}>
+                                <Select
+                                    placeholder="Chọn cách tính tiến độ"
+                                    onChange={onChangeProgressType}
+                                >
                                     <Select.Option value="manual">
                                         <b>Theo % người dùng tự cập nhật</b>
                                         <div className="ml-3">
@@ -267,7 +298,7 @@ const WorkForm = ({workId, phaseId, projectId}) => {
                                 </Select>
                             </Form.Item>
                         </Col>
-                        {progressType === 'byAmount' &&
+                        {progressType === "byAmount" && (
                             <>
                                 <Col span={17}>
                                     <Form.Item
@@ -276,14 +307,16 @@ const WorkForm = ({workId, phaseId, projectId}) => {
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Vui lòng nhập khối lượng cần hoàn thành!"
-                                            }
+                                                message:
+                                                    "Vui lòng nhập khối lượng cần hoàn thành!",
+                                            },
                                         ]}
                                     >
                                         <InputNumber
                                             placeholder={"100"}
                                             className={"w-full"}
-                                            controls={false}/>
+                                            controls={false}
+                                        />
                                     </Form.Item>
                                 </Col>
                                 <Col span={7}>
@@ -293,15 +326,16 @@ const WorkForm = ({workId, phaseId, projectId}) => {
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Vui lòng nhập đơn vi đo khối lượng!"
-                                            }
+                                                message:
+                                                    "Vui lòng nhập đơn vi đo khối lượng!",
+                                            },
                                         ]}
                                     >
-                                        <Input placeholder={"Chiếc"}/>
+                                        <Input placeholder={"Chiếc"} />
                                     </Form.Item>
                                 </Col>
                             </>
-                        }
+                        )}
                         <Col span={24}>
                             <Form.Item label="Dự án" name="projectId">
                                 <Select
