@@ -1,14 +1,13 @@
-import { Checkbox, Col, Descriptions, Progress, Row } from "antd";
+import {Col, Progress, Row} from "antd";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { getWork } from "../../../../../api/work";
+import React, {useEffect, useState} from "react";
+import {Link, useParams} from "react-router-dom";
 import SWDescription from "../../../../common/description";
-import { renderStatus } from "../../../../common/status";
-import { viewWorkFirstColumn, viewWorkSecondColumn } from "../columns";
+import {viewWorkFirstColumn, viewWorkSecondColumn} from "../columns";
+import {renderStatusWork} from "../../../../common/status/status-work";
 
-const ViewWorkGeneral = () => {
-    const { id } = useParams();
+const ViewWorkGeneral = ({data}) => {
+    const {id} = useParams();
     const dateFormat = "DD/MM/YYYY";
     const [workData, setWorkData] = useState({});
 
@@ -16,7 +15,7 @@ const ViewWorkGeneral = () => {
         return {
             firstColumn: {
                 name: data?.name,
-                status: renderStatus(data?.status),
+                status: renderStatusWork(data?.status),
                 handles: data?.handles?.map((handle, index) => {
                     return <span key={index}>{handle?.memberName}</span>;
                 }),
@@ -31,7 +30,7 @@ const ViewWorkGeneral = () => {
                 ).format(dateFormat)}`,
             },
             secondColumn: {
-                progress: <Progress percent={data?.progress} />,
+                progress: <Progress percent={data?.progress}/>,
                 project: (
                     <Link to={`/project/view/${data?.projectId}`}>
                         {data?.projectName}
@@ -50,12 +49,8 @@ const ViewWorkGeneral = () => {
     };
 
     useEffect(() => {
-        if (id) {
-            getWork(id).then((response) => {
-                setWorkData(mapData(response?.data));
-            });
-        }
-    }, [id]);
+        setWorkData(mapData(data));
+    }, [data]);
 
     return (
         <Row gutter={12}>

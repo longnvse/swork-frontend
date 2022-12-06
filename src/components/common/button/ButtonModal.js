@@ -5,13 +5,13 @@ import {closeDrawer} from "../../../redux/actions/common/actions";
 import {ADD, UPDATE} from "../Constant";
 
 const ButtonModal = ({
-                          children = React.createElement("div"),
-                          title = "",
-                          formId = undefined,
-                          mode = "",
-                          modalProps = {},
-                          buttonProps = {}
-                      }) => {
+                         children = React.createElement("div"),
+                         title = "",
+                         formId = undefined,
+                         mode = "",
+                         modalProps = {},
+                         buttonProps = {}
+                     }) => {
     const [open, setOpen] = useState(false);
     const {isCloseDrawer} = useSelector(state => state.commonReducer);
     const dispatch = useDispatch();

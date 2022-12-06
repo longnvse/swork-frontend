@@ -1,18 +1,15 @@
-import {Button, Col, message, Popconfirm, Progress, Row, Table,} from "antd";
-import React, {useEffect, useState} from "react";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {ADD, INACTIVE, UPDATE} from "../../../../common/Constant";
-import WorkForm from "../../../work/form";
-import {deleteWork, getWorkPages} from "../../../../../api/work";
-import {columnsWork} from "../../../work/common/columns";
+import {Button, message, Popconfirm, Progress, Table} from "antd";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {renderStatusWork} from "../../../../common/status/status-work";
+import {deleteWork, getWorkPages} from "../../../../api/work";
+import ButtonDrawer from "../../../common/button/ButtonDrawer";
+import {INACTIVE, UPDATE} from "../../../common/Constant";
+import {columnsWork} from "../common/columns";
+import WorkForm from "../form";
 
-function ProjectViewWork({projectId, phaseId}) {
+const WorkList = ({projectId, phaseId}) => {
     const [dataSources, setDataSources] = useState([]);
-    const {reload} = useSelector(state => state.commonReducer);
 
     useEffect(() => {
         getWorkPages({projectId: projectId, phaseId: phaseId}).then(
@@ -20,7 +17,7 @@ function ProjectViewWork({projectId, phaseId}) {
                 setDataSources(mapData(response?.data?.items));
             },
         );
-    }, [projectId, phaseId, reload]);
+    }, [projectId, phaseId]);
 
     const onConfirmDelete = (id) => {
         deleteWork(id)
@@ -29,7 +26,7 @@ function ProjectViewWork({projectId, phaseId}) {
             })
             .catch((err) => {
                 message.error(
-                    err.response?.data?.detail || err.response?.data?.title ||
+                    err.response?.data?.detail ||
                     "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
                 );
             });
@@ -48,7 +45,7 @@ function ProjectViewWork({projectId, phaseId}) {
                 ),
                 progress: <Progress percent={item?.progress}/>,
                 admin: item?.admin,
-                status: renderStatusWork(item?.status),
+                status: item?.status,
                 priority: item?.priority,
                 intendTime: item?.intendTime,
                 deadline: item?.deadline,
@@ -85,26 +82,9 @@ function ProjectViewWork({projectId, phaseId}) {
 
     return (
         <div>
-            <Row gutter={12} className={"mb-4"}>
-                <Col>
-                    <ButtonDrawer
-                        title={"Thêm mới công việc"}
-                        formId={"work-form"}
-                        mode={ADD}
-                        buttonProps={{
-                            value: "Thêm mới",
-                        }}
-                        drawerProps={{
-                            width: 500,
-                        }}
-                    >
-                        <WorkForm/>
-                    </ButtonDrawer>
-                </Col>
-            </Row>
             <Table dataSource={dataSources} columns={columnsWork}/>
         </div>
     );
-}
+};
 
-export default ProjectViewWork;
+export default WorkList;

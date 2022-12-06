@@ -1,90 +1,12 @@
-import { Col, Input, Popconfirm, Row, Table, Button, message } from "antd";
-import React, { useState, useEffect } from "react";
-import { FiSearch } from "react-icons/fi";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {Col, Input, Row} from "antd";
+import React from "react";
+import {FiSearch} from "react-icons/fi";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import { ADD, INACTIVE, UPDATE } from "../../../../common/Constant";
+import {ADD} from "../../../../common/Constant";
 import ResourceForm from "../../../resource/form";
-import { columnsResource } from "../../../resource/common/columns";
-import {
-    deleteResource,
-    getResourcePages,
-} from "../../../../../api/resource/resource";
+import ResourceList from "../../../resource/list";
 
-function ProjectViewResource({ resourceData, projectId, phaseId, teamId }) {
-    const [dataSources, setDataSources] = useState([]);
-
-    useEffect(() => {
-        if (!resourceData) {
-            getResourcePages().then((response) => {
-                setDataSources(mapData(response?.data?.items));
-            });
-        }
-        setDataSources(resourceData);
-    }, [resourceData]);
-
-    const onConfirmDelete = (id) => {
-        deleteResource(id)
-            .then(() => {
-                message.success("Xoá thành công!");
-            })
-            .catch((err) => {
-                message.error(
-                    err.response?.data?.detail ||
-                        "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
-                );
-            });
-    };
-
-    const mapData = (data) => {
-        if (data?.length <= 0) return [];
-        return data?.map((item) => {
-            return {
-                key: item.id,
-                ...item,
-                name: item?.resourceTypeName,
-                quantity: item?.quantity,
-                totalAmount: item?.totalAmount,
-                team: item?.teamName,
-                parent: item?.parentName,
-                date: item?.dateResource,
-                creator: item?.creator,
-                action: (
-                    <div className={"flex justify-evenly"}>
-                        <ButtonDrawer
-                            title={"Cập nhật tài nguyên"}
-                            formId={"resource-form"}
-                            mode={UPDATE}
-                            buttonProps={{
-                                icon: <EditOutlined />,
-                                type: "link",
-                                value: null,
-                            }}
-                        >
-                            <ResourceForm
-                                resourceId={item?.id}
-                                projectId={projectId}
-                                phaseId={phaseId}
-                                teamId={teamId}
-                            />
-                        </ButtonDrawer>
-                        <Popconfirm
-                            disabled={item.status !== INACTIVE}
-                            title={"Chắc chắn chứ!"}
-                            onConfirm={() => onConfirmDelete(item.id)}
-                        >
-                            <Button
-                                type={"link"}
-                                disabled={item.status !== INACTIVE}
-                                icon={<DeleteOutlined />}
-                            />
-                        </Popconfirm>
-                    </div>
-                ),
-            };
-        });
-    };
-
+function ProjectViewResource({projectId, phaseId, teamId}) {
     return (
         <div>
             <Row gutter={12} className={"mb-4"}>
@@ -105,10 +27,10 @@ function ProjectViewResource({ resourceData, projectId, phaseId, teamId }) {
                     </ButtonDrawer>
                 </Col>
                 <Col span={6}>
-                    <Input prefix={<FiSearch />} />
+                    <Input prefix={<FiSearch/>}/>
                 </Col>
             </Row>
-            <Table dataSource={dataSources} columns={columnsResource} />
+            <ResourceList projectId={projectId}/>
         </div>
     );
 }

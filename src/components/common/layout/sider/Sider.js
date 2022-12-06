@@ -1,30 +1,33 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Image, Menu} from "antd";
 import logo from "../../../../images/logo.png";
 import Sider from "antd/es/layout/Sider";
 import {SiderByPermission} from "../../sider";
-import {useSearchParams} from "react-router-dom";
 
 function CommonSider({role, children}) {
     const [collapsed, setCollapsed] = useState(false);
-    const [searchParams, setSearchParams] = useSearchParams();
 
-    const onOpenChange = (openKey) => {
-        if (!openKey[0]) {
-            searchParams.delete("open");
-            setSearchParams(searchParams, {replace: true});
-            return;
+    const getDefaultOpenKeys = useMemo(() => window.location.pathname.split("/").filter(value => {
+        if (!value) {
+            return false;
         }
-        searchParams.set("open", openKey[0] || "");
-        setSearchParams(searchParams, {replace: true});
-    }
 
-    console.log(searchParams.toString());
+        if (!Number(value)) {
+            return true;
+        }
+    }), []);
 
-    const onSelect = ({key}) => {
-        searchParams.set("menu", key);
-        setSearchParams(searchParams, {replace: true});
-    }
+    const getDefaultSelectedKeys = useMemo(() => {
+        return window.location.pathname.split("/").filter(value => {
+            if (!value) {
+                return false;
+            }
+
+            if (!Number(value)) {
+                return true;
+            }
+        }).join("-");
+    }, [])
 
     return (
         <Sider
@@ -53,10 +56,8 @@ function CommonSider({role, children}) {
                     style={{
                         backgroundColor: 'inherit'
                     }}
-                    // onSelect={onSelect}
-                    onOpenChange={onOpenChange}
-                    defaultOpenKeys={searchParams.getAll("open")}
-                    defaultSelectedKeys={searchParams.getAll("menu")}
+                    defaultOpenKeys={getDefaultOpenKeys}
+                    defaultSelectedKeys={[...getDefaultOpenKeys, getDefaultSelectedKeys]}
                 />
             </div>
         </Sider>

@@ -89,6 +89,8 @@ const ProjectForm = ({id}) => {
             >
                 <Select
                     dropdownMatchSelectWidth={false}
+                    defaultValue={"averageWorks"}
+                    placeholder={"Chọn cách tính tiến độ dự án"}
                 >
                     <Select.Option
                         value={"averageWorks"}
@@ -121,24 +123,6 @@ const ProjectForm = ({id}) => {
                             </div>
                             <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Tiến độ dự án là
                                 ((4*40+6*60)/(4*100+6*100))*100 = 52%
-                            </div>
-                        </>}/>
-                    <Select.Option
-                        value={"proportionWorks"}
-                        title={"Theo tỷ trọng công việc"}
-                        children={<>
-                            <b>Theo tỷ trọng công việc </b>
-                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Ví dụ dự án gồm 2 công việc A
-                                và B .
-                            </div>
-                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Công việc A có tỷ trọng là 40
-                                , tiến độ là 50%
-                            </div>
-                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Công việc B có tỷ trọng là 30
-                                , tiến độ là 40%
-                            </div>
-                            <div style={{color: 'rgb(119, 119, 119)', fontSize: '0.9em'}}>Tiến độ dự án là
-                                [(40*50)+(30*40)]/(40+30) = 45%
                             </div>
                         </>}/>
                 </Select>

@@ -1,20 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Tabs } from "antd";
-import ProjectViewGeneral from "./tabs/General";
 import { getProject } from "../../../../api/project";
 import ProjectViewPhase from "./tabs/Phase";
 import ProjectViewResource from "./tabs/Resource";
 import ProjectViewWork from "./tabs/Work";
 import { useParams } from "react-router-dom";
 import TeamList from "../../team";
+import ProjectViewDetail from "./tabs/Project";
+import { getTeamPages } from "../../../../api/team";
+import { getPhasePages } from "../../../../api/phase";
 
 function ProjectView(props) {
     const [data, setData] = useState({});
     const { id } = useParams();
+    const [teamData, setTeamData] = useState([]);
+    const [phaseData, setPhaseData] = useState([]);
 
     useEffect(() => {
         getProject(id).then((response) => {
             setData(response?.data);
+        });
+
+        getTeamPages({ projectId: id }).then((response) => {
+            setTeamData(response?.data.items);
+        });
+
+        getPhasePages(id).then((response) => {
+            setPhaseData(response?.data.items);
         });
     }, [id]);
 
@@ -22,7 +34,13 @@ function ProjectView(props) {
         {
             label: "Chi tiết",
             key: "general",
-            children: <ProjectViewGeneral data={data} />,
+            children: (
+                <ProjectViewDetail
+                    data={data}
+                    teamData={teamData}
+                    phaseData={phaseData}
+                />
+            ),
         },
         {
             label: "Giai đoạn",
@@ -48,7 +66,7 @@ function ProjectView(props) {
 
     return (
         <div>
-            <Tabs items={tabItems} />
+            <Tabs items={tabItems} destroyInactiveTabPane={true} />
         </div>
     );
 }

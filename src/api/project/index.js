@@ -1,6 +1,7 @@
 import {SWAxios} from "../../system/axios";
 
 const url = "swork/project-rest/v1.0/projects";
+const urlChart = "swork/project-rest/v1.0/charts";
 
 export const getProjectPages = (params) => {
     return SWAxios.get(url, {params});
@@ -23,4 +24,12 @@ export const deleteProject = (projectId) => {
 }
 export const approvalProject = (projectId, status) => {
     return SWAxios.put(`${url}/approval/${projectId}`, {}, {params: {status}});
+}
+
+export async function getDashboardProgressPhase(projectId) {
+    return SWAxios.get(`${url}`);
+}
+
+export async function getDashboardStatusWork(projectId) {
+    return SWAxios.get(`${urlChart}/dashboard-status-work`, {params: {projectId}});
 }

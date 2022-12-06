@@ -4,6 +4,7 @@ import {
     DatePicker,
     Form,
     Input,
+    InputNumber,
     message,
     Row,
     Select,
@@ -14,10 +15,11 @@ import { getProjectPages } from "../../../../api/project";
 import {
     addWork,
     getWork,
-    updateWork,
     getWorkPages,
+    updateWork,
 } from "../../../../api/work";
 import SelectAccount from "../../../common/select/account";
+import moment from "moment";
 
 const WorkForm = ({ workId, phaseId, projectId }) => {
     const [form] = Form.useForm();
@@ -27,21 +29,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
     const [phaseData, setPhaseData] = useState([]);
     const [phaseChoosed, setPhaseChoosed] = useState(0);
     const [workData, setWorkData] = useState([]);
-    const priorities = [
-        {
-            label: "Cao",
-            value: "high",
-        },
-        {
-            label: "Trung bình",
-            value: "medium",
-        },
-        {
-            label: "Thấp",
-            value: "low",
-        },
-    ];
-
+    const [progressType, setProgressType] = useState();
     const mapDataForOptions = (data) => {
         return data?.map((option) => {
             return {
@@ -54,7 +42,16 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
     useEffect(() => {
         if (workId) {
             getWork(workId).then((response) => {
-                form.setFieldsValue(response?.data);
+                form.setFieldsValue({
+                    ...response?.data,
+                    startDate:
+                        response.data?.startDate &&
+                        moment(response.data?.startDate),
+                    endDate:
+                        response.data?.endDate &&
+                        moment(response.data?.endDate),
+                });
+                setProgressType(response.data?.progressType);
             });
         }
 
@@ -84,6 +81,10 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
         }
     };
 
+    const onChangeProgressType = (value) => {
+        setProgressType(value);
+    };
+
     const onFinish = (values) => {
         values = {
             ...values,
@@ -96,16 +97,24 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                 .then(() => {
                     message.success("Thêm công việc thành công!");
                 })
-                .catch(() => {
-                    message.error("Thêm công việc thất bại!");
+                .catch((err) => {
+                    message.error(
+                        err.response?.data?.detail ||
+                            err.response?.data?.title ||
+                            "Thêm công việc thất bại!",
+                    );
                 });
         } else {
             updateWork(workId, values)
                 .then(() => {
                     message.success("Cập nhật công việc thành công!");
                 })
-                .catch(() => {
-                    message.error("Cập nhật công việc thất bại!");
+                .catch((err) => {
+                    message.error(
+                        err.response?.data?.detail ||
+                            err.response?.data?.title ||
+                            "Cập nhật công việc thất bại!",
+                    );
                 });
         }
     };
@@ -213,7 +222,10 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                 ]}
                                 initialValue="manual"
                             >
-                                <Select placeholder="Chọn cách tính tiến độ">
+                                <Select
+                                    placeholder="Chọn cách tính tiến độ"
+                                    onChange={onChangeProgressType}
+                                >
                                     <Select.Option value="manual">
                                         <b>Theo % người dùng tự cập nhật</b>
                                         <div className="ml-3">
@@ -286,6 +298,44 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                 </Select>
                             </Form.Item>
                         </Col>
+                        {progressType === "byAmount" && (
+                            <>
+                                <Col span={17}>
+                                    <Form.Item
+                                        name={"incompleteAmount"}
+                                        label={"Khối lượng cần hoàn thành"}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    "Vui lòng nhập khối lượng cần hoàn thành!",
+                                            },
+                                        ]}
+                                    >
+                                        <InputNumber
+                                            placeholder={"100"}
+                                            className={"w-full"}
+                                            controls={false}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={7}>
+                                    <Form.Item
+                                        name={"unit"}
+                                        label={"Đơn vị"}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    "Vui lòng nhập đơn vi đo khối lượng!",
+                                            },
+                                        ]}
+                                    >
+                                        <Input placeholder={"Chiếc"} />
+                                    </Form.Item>
+                                </Col>
+                            </>
+                        )}
                         <Col span={24}>
                             <Form.Item label="Dự án" name="projectId">
                                 <Select
