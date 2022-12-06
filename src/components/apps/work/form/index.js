@@ -182,7 +182,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                         </Col>
                         <Col span={24}>
                             <Form.Item name="handles" label="Người thực hiện">
-                                <SelectAccount />
+                                <SelectAccount withExt={true}/>
                             </Form.Item>
                         </Col>
                         <Col span={24}>
@@ -195,7 +195,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                 name="participates"
                                 label="Người theo dõi/phối hợp thực hiện"
                             >
-                                <SelectAccount />
+                                <SelectAccount withExt={true}/>
                             </Form.Item>
                         </Col>
                         <Col span={24}>
