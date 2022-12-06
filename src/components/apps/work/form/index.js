@@ -211,16 +211,17 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                         message: "Chưa chọn cách tính tiến độ",
                                     },
                                 ]}
+                                initialValue="manual"
                             >
                                 <Select placeholder="Chọn cách tính tiến độ">
-                                    <Select.Option value="byUpdated">
+                                    <Select.Option value="manual">
                                         <b>Theo % người dùng tự cập nhật</b>
                                         <div className="ml-3">
                                             Người dùng tự nhập % hoàn thành công
                                             việc
                                         </div>
                                     </Select.Option>
-                                    <Select.Option value="byTask">
+                                    <Select.Option value="byAmount">
                                         <b>
                                             Theo tỷ lệ hoàn thành khối lượng
                                             công việc
@@ -261,7 +262,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                             </div>
                                         </div>
                                     </Select.Option>
-                                    <Select.Option value="byChildrenTask">
+                                    <Select.Option value="byProportion">
                                         <b>Theo tỷ trọng công việc con</b>
                                         <div className="ml-3">
                                             <div>
