@@ -1,15 +1,17 @@
-import React from 'react';
-import {Button} from "antd";
+import React from "react";
+import { Button } from "antd";
 
-const ButtonTab = ({icon, title, buttonProps}) => {
+const ButtonTab = ({ icon, title, buttonProps }) => {
     return (
         <Button
             icon={icon}
-            className={"flex flex-col items-center justify-center h-fit w-fit border-0" +
-                " btn--tab"}
+            className={
+                "flex flex-col items-center justify-center h-fit w-fit border-0" +
+                " btn--tab"
+            }
             style={{
                 fontSize: 10,
-                lineHeight: '16px'
+                lineHeight: "16px",
             }}
             {...buttonProps}
         >

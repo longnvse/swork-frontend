@@ -9,6 +9,8 @@ import TeamList from "../../team";
 import ProjectViewDetail from "./tabs/Project";
 import { getTeamPages } from "../../../../api/team";
 import { getPhasePages } from "../../../../api/phase";
+import ButtonTab from "../../../common/button/ButtonTab";
+import { PlusOutlined } from "@ant-design/icons";
 
 function ProjectView(props) {
     const [data, setData] = useState({});
@@ -66,7 +68,16 @@ function ProjectView(props) {
 
     return (
         <div>
-            <Tabs items={tabItems} destroyInactiveTabPane={true} />
+            <Tabs
+                items={tabItems}
+                destroyInactiveTabPane={true}
+                tabBarExtraContent={
+                    <ButtonTab
+                        title={"Thêm mới"}
+                        icon={<PlusOutlined style={{ fontSize: "16px" }} />}
+                    />
+                }
+            />
         </div>
     );
 }

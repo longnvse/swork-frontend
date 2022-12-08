@@ -1,21 +1,21 @@
-import {Button, Col, message, Popconfirm, Progress, Row, Table,} from "antd";
-import React, {useEffect, useState} from "react";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import { Button, Col, message, Popconfirm, Progress, Row, Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {ADD, INACTIVE, UPDATE} from "../../../../common/Constant";
+import { ADD, INACTIVE, UPDATE } from "../../../../common/Constant";
 import WorkForm from "../../../work/form";
-import {deleteWork, getWorkPages} from "../../../../../api/work";
-import {columnsWork} from "../../../work/common/columns";
-import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {renderStatusWork} from "../../../../common/status/status-work";
+import { deleteWork, getWorkPages } from "../../../../../api/work";
+import { columnsWork } from "../../../work/common/columns";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { renderStatusWork } from "../../../../common/status/status-work";
 
-function ProjectViewWork({projectId, phaseId}) {
+function ProjectViewWork({ projectId, phaseId }) {
     const [dataSources, setDataSources] = useState([]);
-    const {reload} = useSelector(state => state.commonReducer);
+    const { reload } = useSelector((state) => state.commonReducer);
 
     useEffect(() => {
-        getWorkPages({projectId: projectId, phaseId: phaseId}).then(
+        getWorkPages({ projectId: projectId, phaseId: phaseId }).then(
             (response) => {
                 setDataSources(mapData(response?.data?.items));
             },
@@ -29,8 +29,9 @@ function ProjectViewWork({projectId, phaseId}) {
             })
             .catch((err) => {
                 message.error(
-                    err.response?.data?.detail || err.response?.data?.title ||
-                    "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
+                    err.response?.data?.detail ||
+                        err.response?.data?.title ||
+                        "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
                 );
             });
     };
@@ -46,7 +47,7 @@ function ProjectViewWork({projectId, phaseId}) {
                         {item?.name}
                     </Link>
                 ),
-                progress: <Progress percent={item?.progress}/>,
+                progress: <Progress percent={item?.progress} />,
                 admin: item?.admin,
                 status: renderStatusWork(item?.status),
                 priority: item?.priority,
@@ -59,12 +60,16 @@ function ProjectViewWork({projectId, phaseId}) {
                             formId={"work-form"}
                             mode={UPDATE}
                             buttonProps={{
-                                icon: <EditOutlined/>,
+                                icon: <EditOutlined />,
                                 type: "link",
                                 value: null,
                             }}
                         >
-                            <WorkForm workId={item?.id}/>
+                            <WorkForm
+                                projectId={projectId}
+                                workId={item?.id}
+                                phaseId={phaseId}
+                            />
                         </ButtonDrawer>
                         <Popconfirm
                             disabled={item.status !== INACTIVE}
@@ -74,7 +79,7 @@ function ProjectViewWork({projectId, phaseId}) {
                             <Button
                                 type={"link"}
                                 disabled={item.status !== INACTIVE}
-                                icon={<DeleteOutlined/>}
+                                icon={<DeleteOutlined />}
                             />
                         </Popconfirm>
                     </div>
@@ -98,11 +103,11 @@ function ProjectViewWork({projectId, phaseId}) {
                             width: 500,
                         }}
                     >
-                        <WorkForm/>
+                        <WorkForm projectId={projectId} phaseId={phaseId} />
                     </ButtonDrawer>
                 </Col>
             </Row>
-            <Table dataSource={dataSources} columns={columnsWork}/>
+            <Table dataSource={dataSources} columns={columnsWork} />
         </div>
     );
 }
