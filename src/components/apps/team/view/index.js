@@ -1,14 +1,14 @@
-import { Col, Row } from "antd";
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { getTeam } from "../../../../api/team";
+import {Col, Row} from "antd";
+import React, {useEffect, useState} from "react";
+import {Link, useParams} from "react-router-dom";
+import {getTeam} from "../../../../api/team";
 import SWDescription from "../../../common/description";
-import ProjectViewResource from "../../project/view/tabs/Resource";
 import ResourceList from "../../resource/list";
-import { viewTeamFirstColumns, viewTeamSecondColumns } from "./columns";
+import {viewTeamFirstColumns, viewTeamSecondColumns} from "./columns";
+import {countMembers} from "../index";
 
 const TeamView = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const [teamData, setTeamData] = useState({});
 
     const formatActive = (isActive) => {
@@ -45,7 +45,7 @@ const TeamView = () => {
                 members: data?.members?.map((member, index) => {
                     return <span key={index}>{member?.memberName}</span>;
                 }),
-                quantityMembers: data?.admins?.length + data?.members?.length,
+                quantityMembers: countMembers(data),
             },
             secondColumn: {
                 parent: checkRedirectParent(data),

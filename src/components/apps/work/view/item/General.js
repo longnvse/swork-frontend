@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import SWDescription from "../../../../common/description";
 import {viewWorkFirstColumn, viewWorkSecondColumn} from "../columns";
-import {renderStatusWork} from "../../../../common/status/status-work";
+import {renderStatus} from "../../../../common/status";
 
 const ViewWorkGeneral = ({data}) => {
     const {id} = useParams();
@@ -15,7 +15,7 @@ const ViewWorkGeneral = ({data}) => {
         return {
             firstColumn: {
                 name: data?.name,
-                status: renderStatusWork(data?.status),
+                status: renderStatus(data?.status),
                 handles: data?.handles?.map((handle, index) => {
                     return <span key={index}>{handle?.memberName}</span>;
                 }),

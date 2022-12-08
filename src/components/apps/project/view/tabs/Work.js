@@ -2,13 +2,13 @@ import {Button, Col, message, Popconfirm, Progress, Row, Table,} from "antd";
 import React, {useEffect, useState} from "react";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {ADD, INACTIVE, UPDATE} from "../../../../common/Constant";
+import {ADD, DENIED, UPDATE} from "../../../../common/Constant";
 import WorkForm from "../../../work/form";
 import {deleteWork, getWorkPages} from "../../../../../api/work";
 import {columnsWork} from "../../../work/common/columns";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {renderStatusWork} from "../../../../common/status/status-work";
+import {renderStatus} from "../../../../common/status";
 
 function ProjectViewWork({projectId, phaseId}) {
     const [dataSources, setDataSources] = useState([]);
@@ -38,6 +38,7 @@ function ProjectViewWork({projectId, phaseId}) {
     const mapData = (data) => {
         if (data?.length <= 0) return [];
         return data?.map((item) => {
+            console.log(item.status);
             return {
                 key: item.id,
                 ...item,
@@ -48,7 +49,7 @@ function ProjectViewWork({projectId, phaseId}) {
                 ),
                 progress: <Progress percent={item?.progress}/>,
                 admin: item?.admin,
-                status: renderStatusWork(item?.status),
+                status: renderStatus(item?.status),
                 priority: item?.priority,
                 intendTime: item?.intendTime,
                 deadline: item?.deadline,
@@ -67,13 +68,13 @@ function ProjectViewWork({projectId, phaseId}) {
                             <WorkForm workId={item?.id}/>
                         </ButtonDrawer>
                         <Popconfirm
-                            disabled={item.status !== INACTIVE}
+                            disabled={item.status !== DENIED}
                             title={"Chắc chắn chứ!"}
                             onConfirm={() => onConfirmDelete(item.id)}
                         >
                             <Button
                                 type={"link"}
-                                disabled={item.status !== INACTIVE}
+                                disabled={item.status !== DENIED}
                                 icon={<DeleteOutlined/>}
                             />
                         </Popconfirm>

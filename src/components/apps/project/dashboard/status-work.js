@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ReactEcharts from "echarts-for-react";
 import {getDashboardStatusWork} from "../../../../api/project";
-import {statusColor, statusString} from "../../../common/status/status-work";
+import {statusColor, statusString} from "../../../common/status";
 
 const DashboardStatusWork = props => {
     const [data, setData] = useState([])
@@ -32,7 +32,7 @@ const DashboardStatusWork = props => {
             formatter: "{b} : ({d}%)"
         },
         legend: {
-            top: '21%',
+            top: '30%',
             left: 'center',
             orient: 'vertical',
             icon: "circle"

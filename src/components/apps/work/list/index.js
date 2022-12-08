@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {deleteWork, getWorkPages} from "../../../../api/work";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import {INACTIVE, UPDATE} from "../../../common/Constant";
+import {DENIED, UPDATE} from "../../../common/Constant";
 import {columnsWork} from "../common/columns";
 import WorkForm from "../form";
 
@@ -64,13 +64,13 @@ const WorkList = ({projectId, phaseId}) => {
                             <WorkForm workId={item?.id}/>
                         </ButtonDrawer>
                         <Popconfirm
-                            disabled={item.status !== INACTIVE}
+                            disabled={item.status !== DENIED}
                             title={"Chắc chắn chứ!"}
                             onConfirm={() => onConfirmDelete(item.id)}
                         >
                             <Button
                                 type={"link"}
-                                disabled={item.status !== INACTIVE}
+                                disabled={item.status !== DENIED}
                                 icon={<DeleteOutlined/>}
                             />
                         </Popconfirm>
