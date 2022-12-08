@@ -2,10 +2,10 @@ import React, {useCallback, useEffect, useState} from "react";
 import CommonList from "../../common/list";
 import {columns} from "./common/columns";
 import {deleteProject, getProjectPages} from "../../../api/project";
-import {Button, Col, message, Popconfirm, Progress, Row, Tabs} from "antd";
+import {Button, Col, message, Popconfirm, Progress, Row, Tabs, Tooltip} from "antd";
 import {renderStatus} from "../../common/status";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
-import {ADD, DATE_FORMAT, PENDING, STATUS, UPDATE} from "../../common/Constant";
+import {ADD, DATE_FORMAT, DENIED, STATUS, UPDATE} from "../../common/Constant";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import ProjectForm from "./form";
 import moment from "moment";
@@ -17,7 +17,7 @@ import {CiViewTimeline} from "react-icons/ci";
 import {Link} from "react-router-dom";
 import {URIS} from "../../../utils/constant";
 
-const status = ["pending", "doing", "completed", "pause", "cancel"];
+const status = ["pending", "active", "completed", "inactive", "denied"];
 
 function ProjectList(props) {
     const [filter, setFilter] = useState(null);
@@ -64,10 +64,18 @@ function ProjectList(props) {
                 >
                     <ProjectForm id={item.id}/>
                 </ButtonDrawer>
-                <Popconfirm disabled={item.status !== PENDING}
-                            title={"Chắc chắn chứ!"}
-                            onConfirm={() => onConfirmDelete(item.id)}>
-                    <Button type={"link"} disabled={item.status !== PENDING} icon={<DeleteOutlined/>}/>
+                <Popconfirm
+                    disabled={item.status !== DENIED}
+                    title={"Chắc chắn chứ!"}
+                    onConfirm={() => onConfirmDelete(item.id)}
+                    autoAdjustOverflow={false}
+                >
+                    <Tooltip
+                        title={item.status !== DENIED ? "Dự án phải ở trạng thái Huỷ" : null}
+                        placement={"left"}
+                    >
+                        <Button type={"link"} disabled={item.status !== DENIED}
+                                icon={<DeleteOutlined/>}/></Tooltip>
                 </Popconfirm>
             </div>,
             index: index + 1

@@ -8,10 +8,9 @@ export const DENIED = "denied";
 export const COMPLETED = "completed";
 export const DATE_FORMAT = "DD-MM-YYYY"
 export const STATUS = {
-    "doing": "Đang hoạt động",
-    "inactive": "Dừng hoạt động",
+    "active": "Đang thực hiện",
+    "inactive": "Tạm dừng",
     "pending": "Chờ thực hiện",
-    "pause": "Tạm dừng",
-    "completed": "Đã hoàn thành",
-    "cancel": "Đã huỷ"
+    "completed": "Hoàn thành",
+    "denied": "Đã huỷ"
 }

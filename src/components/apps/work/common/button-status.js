@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Button, Dropdown, message} from "antd";
 import {PauseCircleOutlined, PlayCircleOutlined} from "@ant-design/icons";
-import {approvalWork} from "../../../../api/work";
 
-const ButtonStatus = ({workId, status}) => {
+const ButtonStatus = ({updateStatus, status}) => {
         const items = [
             {label: "Chờ thực hiện", key: "pending"},
             {label: "Đang thực hiện", key: "active"},
@@ -12,14 +11,8 @@ const ButtonStatus = ({workId, status}) => {
             {label: "Huỷ", key: "denied"},
         ]
 
-        useEffect(() => {
-            console.log("status", status);
-        }, [status]);
-
-
         const onSelectStatus = ({key}) => {
-            console.log(key)
-            approvalWork(workId, key).then(res => {
+            updateStatus(key).then(res => {
                 message.success("Cập nhật trạng thái thành công!");
             }).catch(err => {
                 message.error(err.response?.data?.detail || err.response?.data?.title || "Đã có lỗi xảy ra. Vui lòng thử lại!");

@@ -1,16 +1,16 @@
 import React from "react";
 import CommonList from "../../common/list";
-import { columns } from "./common/columns";
-import { ADD, DATE_FORMAT, UPDATE } from "../../common/Constant";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, message, Popconfirm } from "antd";
-import { deleteTeam, getTeamPages } from "../../../api/team";
+import {columns} from "./common/columns";
+import {ADD, DATE_FORMAT, UPDATE} from "../../common/Constant";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {Button, message, Popconfirm} from "antd";
+import {deleteTeam, getTeamPages} from "../../../api/team";
 import TeamForm from "./form";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
-const TeamList = ({ projectId, phaseId }) => {
+const TeamList = ({projectId, phaseId}) => {
     const onConfirmDelete = (id) => {
         deleteTeam(id)
             .then(() => {
@@ -19,31 +19,15 @@ const TeamList = ({ projectId, phaseId }) => {
             .catch((err) => {
                 message.error(
                     err.response?.data?.detail ||
-                        "Đã xảy ra lỗi. Vui lòng thử lại.",
+                    "Đã xảy ra lỗi. Vui lòng thử lại.",
                 );
             });
     };
 
     const load = (params) => {
-        return getTeamPages({ projectId, phaseId, params });
+        return getTeamPages({projectId, phaseId, params});
     };
 
-    const countMembers = (team) => {
-        const numberAdmins = team?.admins?.length || 0;
-
-        const numberMember =
-            team?.members?.filter((member) => {
-                if (member.memberId === 0) {
-                    return true;
-                }
-
-                return !team?.admins?.some(
-                    (admin) => admin.memberId === member.memberId,
-                );
-            }).length || 0;
-
-        return numberAdmins + numberMember;
-    };
 
     const mapData = (item, index) => {
         return {
@@ -71,7 +55,7 @@ const TeamList = ({ projectId, phaseId }) => {
                         mode={UPDATE}
                         title={"Cập nhập đội nhóm"}
                         buttonProps={{
-                            icon: <EditOutlined />,
+                            icon: <EditOutlined/>,
                             type: "link",
                             value: null,
                         }}
@@ -86,7 +70,7 @@ const TeamList = ({ projectId, phaseId }) => {
                         title={"Chắc chắn chứ!"}
                         onConfirm={() => onConfirmDelete(item.id)}
                     >
-                        <Button type={"link"} icon={<DeleteOutlined />} />
+                        <Button type={"link"} icon={<DeleteOutlined/>}/>
                     </Popconfirm>
                 </div>
             ),
@@ -102,7 +86,7 @@ const TeamList = ({ projectId, phaseId }) => {
                 value: "Thêm mới",
             }}
         >
-            <TeamForm projectId={projectId} phaseId={phaseId} />
+            <TeamForm projectId={projectId} phaseId={phaseId}/>
         </ButtonDrawer>
     );
 
@@ -116,6 +100,23 @@ const TeamList = ({ projectId, phaseId }) => {
             />
         </div>
     );
+};
+
+export const countMembers = (team) => {
+    const numberAdmins = team?.admins?.length || 0;
+
+    const numberMember =
+        team?.members?.filter((member) => {
+            if (member.memberId === 0) {
+                return true;
+            }
+
+            return !team?.admins?.some(
+                (admin) => admin.memberId === member.memberId,
+            );
+        }).length || 0;
+
+    return numberAdmins + numberMember;
 };
 
 export default TeamList;

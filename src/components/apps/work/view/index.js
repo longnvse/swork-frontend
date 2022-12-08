@@ -1,7 +1,7 @@
 import {Col, Collapse, Row, Tabs} from "antd";
 import React, {useEffect, useMemo, useState} from "react";
 import {useParams} from "react-router-dom";
-import {getWork} from "../../../../api/work";
+import {approvalWork, getWork} from "../../../../api/work";
 import ProjectViewWork from "../../project/view/tabs/Work";
 import ViewWorkGeneral from "./item/General";
 import ButtonStatus from "../common/button-status";
@@ -29,11 +29,10 @@ const ViewWork = () => {
 
 
     const tabExtra = useMemo(() => {
-        console.log(workData);
         return (
             <Row gutter={8}>
                 <Col>
-                    <ButtonStatus workId={id} status={workData?.status}/>
+                    <ButtonStatus status={workData?.status} updateStatus={(status) => approvalWork(id, status)}/>
                 </Col>
                 <Col>
                     <ReportProgressModal workId={id} progressType={workData?.progressType}/>

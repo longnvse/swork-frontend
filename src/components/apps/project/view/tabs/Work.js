@@ -8,7 +8,7 @@ import {deleteWork, getWorkPages} from "../../../../../api/work";
 import {columnsWork} from "../../../work/common/columns";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {renderStatusWork} from "../../../../common/status/status-work";
+import {renderStatus} from "../../../../common/status";
 
 function ProjectViewWork({projectId, phaseId}) {
     const [dataSources, setDataSources] = useState([]);
@@ -49,7 +49,7 @@ function ProjectViewWork({projectId, phaseId}) {
                 ),
                 progress: <Progress percent={item?.progress}/>,
                 admin: item?.admin,
-                status: renderStatusWork(item?.status),
+                status: renderStatus(item?.status),
                 priority: item?.priority,
                 intendTime: item?.intendTime,
                 deadline: item?.deadline,
