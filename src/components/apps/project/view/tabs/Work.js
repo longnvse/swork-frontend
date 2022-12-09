@@ -2,7 +2,7 @@ import {Button, Col, message, Popconfirm, Progress, Row, Table,} from "antd";
 import React, {useEffect, useState} from "react";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {ADD, DENIED, UPDATE} from "../../../../common/Constant";
+import {ADD, DENIED, message_error, UPDATE} from "../../../../common/Constant";
 import WorkForm from "../../../work/form";
 import {deleteWork, getWorkPages} from "../../../../../api/work";
 import {columnsWork} from "../../../work/common/columns";
@@ -27,12 +27,7 @@ function ProjectViewWork({projectId, phaseId}) {
             .then((value) => {
                 message.success("Xoá thành công!");
             })
-            .catch((err) => {
-                message.error(
-                    err.response?.data?.detail || err.response?.data?.title ||
-                    "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
-                );
-            });
+            .catch(message_error);
     };
 
     const mapData = (data) => {

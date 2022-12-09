@@ -1,3 +1,5 @@
+import {message} from "antd";
+
 export const ADD = "add";
 export const UPDATE = "update";
 export const INFORMATION = "information";
@@ -13,4 +15,11 @@ export const STATUS = {
     "pending": "Chờ thực hiện",
     "completed": "Hoàn thành",
     "denied": "Đã huỷ"
+}
+
+export const message_error = (error) => {
+    message.error(error.response?.data?.detail ||
+        error.response?.data?.title ||
+        "Đã có lỗi xảy ra vui lòng thử lại sau ít phút!");
+
 }

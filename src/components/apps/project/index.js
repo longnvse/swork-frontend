@@ -10,7 +10,7 @@ import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import ProjectForm from "./form";
 import dayjs from 'dayjs';
 import {useDispatch} from "react-redux";
-import {isReload} from "../../../redux/actions/common/actions";
+import {isReload, setHeader} from "../../../redux/actions/common/actions";
 import ButtonTab from "../../common/button/ButtonTab";
 import {TbLayoutKanban} from "react-icons/tb";
 import {CiViewTimeline} from "react-icons/ci";
@@ -25,7 +25,9 @@ function ProjectList(props) {
     const [filter, setFilter] = useState(null);
     const dispatch = useDispatch();
 
-    console.log(type);
+    useEffect(() => {
+        dispatch(setHeader("Danh sách dự án"))
+    }, [])
 
     const onConfirmDelete = (id) => {
         deleteProject(id).then(value => {

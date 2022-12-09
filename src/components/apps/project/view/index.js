@@ -13,12 +13,20 @@ import ButtonTab from "../../../common/button/ButtonTab";
 import {CiViewTimeline} from "react-icons/ci";
 import ButtonStatus from "../../work/common/button-status";
 import SWTabs from "../../../common/tabs";
+import {useDispatch} from "react-redux";
+import {setHeader} from "../../../../redux/actions/common/actions";
 
 function ProjectView(props) {
     const [data, setData] = useState({});
     const {id} = useParams();
     const [teamData, setTeamData] = useState([]);
     const [phaseData, setPhaseData] = useState([]);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setHeader("Chi tiết dự án"));
+    }, []);
+
 
     useEffect(() => {
         getProject(id).then((response) => {

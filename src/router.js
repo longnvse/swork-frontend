@@ -25,7 +25,6 @@ const Routers = ({role}) => {
                     key={"2"}
                     element={
                         <RootPage
-                            title="Danh sách công ty"
                             sidebar={<CommonSider role={role}/>}
                         />
                     }
@@ -44,7 +43,6 @@ const Routers = ({role}) => {
                     key={"7"}
                     element={
                         <RootPage
-                            title="Cài đặt tài khoản"
                             sidebar={<AccountSidebar/>}
                         />
                     }
@@ -60,7 +58,10 @@ const Routers = ({role}) => {
                     status="404"
                     title="404"
                     subTitle="Xin lỗi, Trang bạn cần không tồn tại."
-                    extra={<Button type="primary">Quay lại Trang chủ.</Button>}
+                    extra={<Button
+                        type={"primary"}
+                        onClick={() => window.location.href = "/project/all"}
+                    >Quay lại Trang chủ.</Button>}
                 />}/>
             </Routes>
         </BrowserRouter>

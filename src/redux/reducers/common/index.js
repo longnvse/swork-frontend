@@ -4,7 +4,8 @@ const initialState = {
     reload: false,
     isCloseDrawer: false,
     loading: true,
-    loadingKey: ""
+    loadingKey: "",
+    title: ""
 };
 
 const commonReducer = (state = initialState, action) => {
@@ -35,7 +36,11 @@ const commonReducer = (state = initialState, action) => {
             return {
                 ...state
             }
-
+        case commonTypes.SET_HEADER:
+            return {
+                ...state,
+                title: action.title
+            }
         default:
             return state;
     }
