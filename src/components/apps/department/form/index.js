@@ -3,6 +3,7 @@ import {Form, Input, message} from "antd";
 import FormItem from "antd/es/form/FormItem";
 import {addDepartment, getDepartment, updateDepartment} from "../../../../api/department/api";
 import SelectAccount from "../../../common/select/account";
+import {message_error} from "../../../common/Constant";
 
 const DepartmentForm = ({id}) => {
     const [form] = Form.useForm();
@@ -21,17 +22,11 @@ const DepartmentForm = ({id}) => {
             addDepartment(values).then(response => {
                 message.success("Tạo mới thành công!");
                 form.resetFields();
-            }).catch(error => {
-                console.log(error)
-                message.error(error?.response?.data?.detail || "Đã xảy ra lỗi, vui lòng thử lại!");
-            })
+            }).catch(message_error)
         } else {
             updateDepartment(id, values).then(response => {
                 message.success("Cập nhật thành công!");
-            }).catch(error => {
-                console.log(error)
-                message.error(error?.response?.data?.detail || "Đã xảy ra lỗi, vui lòng thử lại!");
-            })
+            }).catch(message_error)
         }
 
     }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, Dropdown, message} from "antd";
 import {PauseCircleOutlined, PlayCircleOutlined} from "@ant-design/icons";
+import {message_error} from "../../../common/Constant";
 
 const ButtonStatus = ({updateStatus, status}) => {
         const items = [
@@ -14,9 +15,7 @@ const ButtonStatus = ({updateStatus, status}) => {
         const onSelectStatus = ({key}) => {
             updateStatus(key).then(res => {
                 message.success("Cập nhật trạng thái thành công!");
-            }).catch(err => {
-                message.error(err.response?.data?.detail || err.response?.data?.title || "Đã có lỗi xảy ra. Vui lòng thử lại!");
-            })
+            }).catch(message_error)
         }
 
         return (

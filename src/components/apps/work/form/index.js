@@ -5,6 +5,7 @@ import {getProjectPages} from "../../../../api/project";
 import {addWork, getWork, getWorkPages, updateWork,} from "../../../../api/work";
 import SelectAccount from "../../../common/select/account";
 import dayjs from "dayjs";
+import {message_error} from "../../../common/Constant";
 
 const WorkForm = ({ workId, phaseId, projectId }) => {
     const [form] = Form.useForm();
@@ -82,25 +83,13 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                 .then(() => {
                     message.success("Thêm công việc thành công!");
                 })
-                .catch((err) => {
-                    message.error(
-                        err.response?.data?.detail ||
-                            err.response?.data?.title ||
-                            "Thêm công việc thất bại!",
-                    );
-                });
+                .catch(message_error);
         } else {
             updateWork(workId, values)
                 .then(() => {
                     message.success("Cập nhật công việc thành công!");
                 })
-                .catch((err) => {
-                    message.error(
-                        err.response?.data?.detail ||
-                            err.response?.data?.title ||
-                            "Cập nhật công việc thất bại!",
-                    );
-                });
+                .catch(message_error);
         }
     };
 

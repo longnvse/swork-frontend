@@ -7,9 +7,9 @@ import CommonHeader from "../components/common/layout/header/Header";
 import CommonContent from "../components/common/layout/content/Content";
 
 const RootPage = (props) => {
-    const { title, sidebar } = props;
-    const { loading } = useSelector((state) => state.commonReducer);
-    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+    const {sidebar} = props;
+    const {loading} = useSelector((state) => state.commonReducer);
+    const antIcon = <LoadingOutlined style={{fontSize: 24}} spin/>;
 
     return (
         <Layout
@@ -19,7 +19,7 @@ const RootPage = (props) => {
         >
             {sidebar}
             <Layout>
-                <CommonHeader title={title} />
+                <CommonHeader/>
                 <CommonContent>
                     <Spin
                         style={{
@@ -29,7 +29,7 @@ const RootPage = (props) => {
                         spinning={loading}
                         indicator={antIcon}
                     >
-                        <Outlet />
+                        <Outlet/>
                     </Spin>
                 </CommonContent>
             </Layout>

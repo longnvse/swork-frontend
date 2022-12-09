@@ -5,6 +5,7 @@ import SelectAccount from "../../../common/select/account";
 import FormItem from "antd/es/form/FormItem";
 import SWDatePicker from "../../../common/date";
 import dayjs from "dayjs";
+import {message_error} from "../../../common/Constant";
 
 const ProjectForm = ({id}) => {
     const [form] = Form.useForm();
@@ -22,19 +23,14 @@ const ProjectForm = ({id}) => {
     }, [id]);
 
     const onFinish = (values) => {
-        console.log(values);
         if (!id) {
             addProject(values).then(() => {
                 message.success("Thêm dự án thành công!");
-            }).catch(error => {
-                message.error(error.response?.data?.detail || "Đã có lỗi xảy ra! Vui lòng thử lại.")
-            })
+            }).catch(message_error)
         } else {
             updateProject(id, values).then(() => {
                 message.success("Cập nhật dự án thành công!");
-            }).catch(error => {
-                message.error(error.response?.data?.detail || "Đã có lỗi xảy ra! Vui lòng thử lại.")
-            })
+            }).catch(message_error)
         }
 
     };

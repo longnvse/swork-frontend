@@ -3,6 +3,7 @@ import {Col, Form, InputNumber, message, Row} from "antd";
 import {useForm} from "antd/es/form/Form";
 import FormItem from "antd/es/form/FormItem";
 import {getWork, reportProgressByAmount} from "../../../../api/work";
+import {message_error} from "../../../common/Constant";
 
 const ReportAmountForm = ({workId}) => {
     const [totalAmount, setTotalAmount] = useState(0);
@@ -13,18 +14,14 @@ const ReportAmountForm = ({workId}) => {
         getWork(workId).then(res => {
             setTotalAmount(res.data?.incompleteAmount);
             setUnit(res.data?.unit);
-        }).catch(err => {
-            message.error(err.response?.data?.detail || err.response?.data?.title || "Đã có lỗi xảy ra vui lòng thử lại sau ít phút!");
-        })
+        }).catch(message_error)
     }, [workId])
 
     const onFinish = (values) => {
         const {completeAmount} = values;
         reportProgressByAmount(workId, completeAmount).then(res => {
             message.success("Thành công!");
-        }).catch(err => {
-            message.error(err.response?.data?.detail || err.response?.data?.title || "Đã có lỗi xảy ra vui lòng thử lại sau ít phút!");
-        })
+        }).catch(message_error)
     }
 
     return (

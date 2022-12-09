@@ -3,11 +3,12 @@ import {Input, Layout} from "antd";
 import ProfileIcon from "./profile";
 import {IoMdNotificationsOutline} from "react-icons/io";
 import {FiSearch} from "react-icons/fi";
+import {useSelector} from "react-redux";
 
-const { Header } = Layout;
+const {Header} = Layout;
 
 function CommonHeader(props) {
-    const { title } = props;
+    const {title} = useSelector(state => state.commonReducer);
     return (
         <Header
             className={"flex flex-row justify-between items-center"}
@@ -22,14 +23,14 @@ function CommonHeader(props) {
                 <div className="mr-2">
                     <div className="flex items-center">
                         <Input
-                            prefix={<FiSearch />}
+                            prefix={<FiSearch/>}
                             className="mr-4"
                             placeholder="Tìm kiếm"
                         />
                         <div className="app__header--item cursor-pointer flex items-center mr-2">
-                            <IoMdNotificationsOutline className="text-white w-6 h-6" />
+                            <IoMdNotificationsOutline className="text-white w-6 h-6"/>
                         </div>
-                        <ProfileIcon />
+                        <ProfileIcon/>
                     </div>
                 </div>
             </div>

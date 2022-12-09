@@ -3,6 +3,7 @@ import {Form, Input, message, Select} from "antd";
 import FormItem from "antd/es/form/FormItem";
 import {addTeam, getTeam, updateTeam} from "../../../../api/team";
 import SelectAccount from "../../../common/select/account";
+import {message_error} from "../../../common/Constant";
 
 const TeamForm = ({projectId, phaseId, id}) => {
     const [form] = Form.useForm();
@@ -23,17 +24,11 @@ const TeamForm = ({projectId, phaseId, id}) => {
             addTeam(values).then(response => {
                 message.success("Tạo mới thành công!");
                 form.resetFields();
-            }).catch(error => {
-                console.log(error)
-                message.error(error?.response?.data?.detail || "Đã xảy ra lỗi, vui lòng thử lại!");
-            })
+            }).catch(message_error)
         } else {
             updateTeam(id, values).then(response => {
                 message.success("Cập nhật thành công!");
-            }).catch(error => {
-                console.log(error)
-                message.error(error?.response?.data?.detail || "Đã xảy ra lỗi, vui lòng thử lại!");
-            })
+            }).catch(message_error)
         }
 
     }

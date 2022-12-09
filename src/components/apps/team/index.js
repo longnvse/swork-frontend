@@ -1,7 +1,7 @@
 import React from "react";
 import CommonList from "../../common/list";
 import {columns} from "./common/columns";
-import {ADD, DATE_FORMAT, UPDATE} from "../../common/Constant";
+import {ADD, DATE_FORMAT, message_error, UPDATE} from "../../common/Constant";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {Button, message, Popconfirm} from "antd";
 import {deleteTeam, getTeamPages} from "../../../api/team";
@@ -16,12 +16,7 @@ const TeamList = ({projectId, phaseId}) => {
             .then(() => {
                 message.success("Xoá đội nhóm thành công!");
             })
-            .catch((err) => {
-                message.error(
-                    err.response?.data?.detail ||
-                    "Đã xảy ra lỗi. Vui lòng thử lại.",
-                );
-            });
+            .catch(message_error);
     };
 
     const load = (params) => {

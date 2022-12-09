@@ -3,7 +3,7 @@ import CommonList from "../../../../common/list";
 import {columnPhase} from "../../common/columns";
 import {deletePhase, getPhasePages} from "../../../../../api/phase";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {ADD, DATE_FORMAT, INACTIVE, UPDATE} from "../../../../common/Constant";
+import {ADD, DATE_FORMAT, INACTIVE, message_error, UPDATE} from "../../../../common/Constant";
 import PhaseForm from "../../../phase/form";
 import {renderStatus} from "../../../../common/status";
 import {Button, message, Popconfirm, Progress} from "antd";
@@ -21,12 +21,7 @@ function ProjectViewPhase({ projectId }) {
             .then((value) => {
                 message.success("Xoá thành công!");
             })
-            .catch((err) => {
-                message.error(
-                    err.response?.data?.detail ||
-                        "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
-                );
-            });
+            .catch(message_error);
     };
 
     const mapData = (item) => ({
