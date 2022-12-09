@@ -9,11 +9,11 @@ import ProjectView from "./view";
 const ProjectRouter = (props) => {
     return (
         <Routes path={"/"}>
-            <Route index element={<ProjectList />} />
-            <Route path={`view/:id`} element={<ProjectView />} />
-            <Route path={`view-work/:id`} element={<ViewWork />} />
-            <Route path={`view-phase/:id`} element={<PhaseView />} />
-            <Route path={`view-team/:id`} element={<TeamView />} />
+            <Route path={"/:type"} element={<ProjectList/>}/>
+            <Route path={`view/:id`} element={<ProjectView/>}/>
+            <Route path={`view-work/:id`} element={<ViewWork/>}/>
+            <Route path={`view-phase/:id`} element={<PhaseView/>}/>
+            <Route path={`view-team/:id`} element={<TeamView/>}/>
         </Routes>
     );
 };

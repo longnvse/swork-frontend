@@ -14,14 +14,17 @@ import {isReload} from "../../../redux/actions/common/actions";
 import ButtonTab from "../../common/button/ButtonTab";
 import {TbLayoutKanban} from "react-icons/tb";
 import {CiViewTimeline} from "react-icons/ci";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {URIS} from "../../../utils/constant";
 
 const status = ["pending", "active", "completed", "inactive", "denied"];
 
 function ProjectList(props) {
+    const {type} = useParams();
     const [filter, setFilter] = useState(null);
     const dispatch = useDispatch();
+
+    console.log(type);
 
     const onConfirmDelete = (id) => {
         deleteProject(id).then(value => {
