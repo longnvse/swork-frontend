@@ -1,4 +1,4 @@
-import { DG_Format_Money } from "./format";
+import {DG_Format_Money} from "./format";
 
 export function convertMoney(labelValue) {
     // Nine Zeroes for Billions

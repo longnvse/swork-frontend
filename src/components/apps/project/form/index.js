@@ -4,7 +4,7 @@ import {addProject, getProject, updateProject} from "../../../../api/project";
 import SelectAccount from "../../../common/select/account";
 import FormItem from "antd/es/form/FormItem";
 import SWDatePicker from "../../../common/date";
-import moment from "moment";
+import dayjs from "dayjs";
 
 const ProjectForm = ({id}) => {
     const [form] = Form.useForm();
@@ -14,8 +14,8 @@ const ProjectForm = ({id}) => {
             getProject(id).then(response => {
                 form.setFieldsValue({
                     ...response?.data,
-                    startDate: moment(response.data.startDate),
-                    endDate: moment(response.data.endDate)
+                    startDate: dayjs(response.data.startDate),
+                    endDate: dayjs(response.data.endDate)
                 });
             })
         }
@@ -23,13 +23,13 @@ const ProjectForm = ({id}) => {
 
     const onFinish = (values) => {
         console.log(values);
-        if(!id){
+        if (!id) {
             addProject(values).then(() => {
                 message.success("Thêm dự án thành công!");
             }).catch(error => {
                 message.error(error.response?.data?.detail || "Đã có lỗi xảy ra! Vui lòng thử lại.")
             })
-        }else{
+        } else {
             updateProject(id, values).then(() => {
                 message.success("Cập nhật dự án thành công!");
             }).catch(error => {

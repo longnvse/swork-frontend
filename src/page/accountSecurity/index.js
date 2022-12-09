@@ -1,6 +1,6 @@
-import { UserOutlined } from "@ant-design/icons";
-import { Avatar } from "antd";
-import React, { useState } from "react";
+import {UserOutlined} from "@ant-design/icons";
+import {Avatar} from "antd";
+import React, {useState} from "react";
 import FormAuthentication from "../../components/common/Authentication/Form";
 
 const changePasswordFields = [

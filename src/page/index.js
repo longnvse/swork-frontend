@@ -1,8 +1,8 @@
 import React from "react";
-import { Layout, Spin } from "antd";
-import { Outlet } from "react-router-dom";
-import { LoadingOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import {Layout, Spin} from "antd";
+import {Outlet} from "react-router-dom";
+import {LoadingOutlined} from "@ant-design/icons";
+import {useSelector} from "react-redux";
 import CommonHeader from "../components/common/layout/header/Header";
 import CommonContent from "../components/common/layout/content/Content";
 

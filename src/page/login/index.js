@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import LoginForm from "./Form";
 import background from "../../images/background.png";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 function LoginPage(props) {
     const navigate = useNavigate();

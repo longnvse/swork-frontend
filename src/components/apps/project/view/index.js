@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Col, Row, Tabs} from "antd";
+import {Col, Row} from "antd";
 import {approvalProject, getProject} from "../../../../api/project";
 import ProjectViewPhase from "./tabs/Phase";
 import ProjectViewResource from "./tabs/Resource";
@@ -12,6 +12,7 @@ import {getPhasePages} from "../../../../api/phase";
 import ButtonTab from "../../../common/button/ButtonTab";
 import {CiViewTimeline} from "react-icons/ci";
 import ButtonStatus from "../../work/common/button-status";
+import SWTabs from "../../../common/tabs";
 
 function ProjectView(props) {
     const [data, setData] = useState({});
@@ -83,10 +84,9 @@ function ProjectView(props) {
 
     return (
         <div>
-            <Tabs
+            <SWTabs
                 items={tabItems}
                 tabBarExtraContent={tabExtra}
-                destroyInactiveTabPane={true}
             />
         </div>
     );

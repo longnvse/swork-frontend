@@ -2,26 +2,30 @@ import React, {useCallback, useEffect, useState} from "react";
 import CommonList from "../../common/list";
 import {columns} from "./common/columns";
 import {deleteProject, getProjectPages} from "../../../api/project";
-import {Button, Col, message, Popconfirm, Progress, Row, Tabs, Tooltip} from "antd";
+import {Button, Col, message, Popconfirm, Progress, Row, Tooltip} from "antd";
 import {renderStatus} from "../../common/status";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
 import {ADD, DATE_FORMAT, DENIED, STATUS, UPDATE} from "../../common/Constant";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import ProjectForm from "./form";
-import moment from "moment";
+import dayjs from 'dayjs';
 import {useDispatch} from "react-redux";
 import {isReload} from "../../../redux/actions/common/actions";
 import ButtonTab from "../../common/button/ButtonTab";
 import {TbLayoutKanban} from "react-icons/tb";
 import {CiViewTimeline} from "react-icons/ci";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {URIS} from "../../../utils/constant";
+import SWTabs from "../../common/tabs";
 
 const status = ["pending", "active", "completed", "inactive", "denied"];
 
 function ProjectList(props) {
+    const {type} = useParams();
     const [filter, setFilter] = useState(null);
     const dispatch = useDispatch();
+
+    console.log(type);
 
     const onConfirmDelete = (id) => {
         deleteProject(id).then(value => {
@@ -48,8 +52,8 @@ function ProjectList(props) {
             ...item,
             name: <Link to={`${URIS.VIEW_PROJECT}/${item.id}`}>{item.name}</Link>,
             status: renderStatus(item.status),
-            startDate: moment(item.startDate).format(DATE_FORMAT),
-            endDate: moment(item.endDate).format(DATE_FORMAT),
+            startDate: dayjs(item.startDate).format(DATE_FORMAT),
+            endDate: dayjs(item.endDate).format(DATE_FORMAT),
             progress: <Progress percent={item.progress} size="small"/>,
             action: <div className={"flex justify-evenly"}>
                 <ButtonDrawer
@@ -128,7 +132,7 @@ function ProjectList(props) {
 
     return (
         <div>
-            <Tabs
+            <SWTabs
                 onChange={onChangeStatusFilter}
                 items={tabItems}
                 tabBarExtraContent={tabExtra}

@@ -1,18 +1,19 @@
-import { Col, Collapse, Row, Tabs } from "antd";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { getPhase } from "../../../../api/phase";
-import { DATE_FORMAT } from "../../../common/Constant";
+import {Col, Collapse, Row} from "antd";
+import React, {useEffect, useState} from "react";
+import {Link, useParams} from "react-router-dom";
+import {getPhase} from "../../../../api/phase";
+import {DATE_FORMAT} from "../../../common/Constant";
 import SWDescription from "../../../common/description";
-import { renderStatus } from "../../../common/status";
+import {renderStatus} from "../../../common/status";
 import ProjectViewResource from "../../project/view/tabs/Resource";
 import ProjectViewWork from "../../project/view/tabs/Work";
 import TeamList from "../../team";
-import { viewPhaseFirstColumns, viewPhaseSecondColumns } from "./columns";
+import {viewPhaseFirstColumns, viewPhaseSecondColumns} from "./columns";
+import dayjs from "dayjs";
+import SWTabs from "../../../common/tabs";
 
 const PhaseView = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const [phaseData, setPhaseData] = useState({});
 
     const mapData = (data) => {
@@ -23,9 +24,9 @@ const PhaseView = () => {
                     return <span key={index}>{phaseManage?.accountName}</span>;
                 }),
                 status: renderStatus(data?.status),
-                date: `${moment(data?.startDate).format(
+                date: `${dayjs(data?.startDate).format(
                     DATE_FORMAT,
-                )} - ${moment(data?.endDate).format(DATE_FORMAT)}`,
+                )} - ${dayjs(data?.endDate).format(DATE_FORMAT)}`,
             },
             secondColum: {
                 projectName: (
@@ -47,9 +48,12 @@ const PhaseView = () => {
         }
     }, [id]);
 
-    return (
-        <Tabs type="line" defaultActiveKey="general">
-            <Tabs.TabPane key="general" tab="Thông tin chung">
+    const tabItems = [
+        {
+            key: "general",
+            label: "Thông tin chung",
+            children: <>
+
                 <Row gutter={12}>
                     <Col span={12}>
                         <SWDescription
@@ -74,17 +78,29 @@ const PhaseView = () => {
                         />
                     </Collapse.Panel>
                 </Collapse>
-            </Tabs.TabPane>
-            <Tabs.TabPane key={"team"} tab="Đội nhóm">
-                <TeamList />
-            </Tabs.TabPane>
-            <Tabs.TabPane key={"resource"} tab="Tài nguyên">
-                <ProjectViewResource />
-            </Tabs.TabPane>
-            <Tabs.TabPane key={"attach"} tab="Đính kèm">
-                Attach tab
-            </Tabs.TabPane>
-        </Tabs>
+            </>
+        },
+        {
+            key: "team",
+            label: "Đội nhóm",
+            children: <TeamList/>
+        },
+        {
+            key: "resource",
+            label: "Tài nguyên",
+            children: <ProjectViewResource/>
+        },
+        {
+            key: "attach",
+            label: "Đính kèm",
+            children: "Attach tab"
+        }
+    ]
+
+    return (
+        <SWTabs
+            items={tabItems}
+        />
     );
 };
 
