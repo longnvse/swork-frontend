@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import CommonList from "../../common/list";
 import {columns} from "./common/columns";
 import {deleteProject, getProjectPages} from "../../../api/project";
-import {Button, Col, message, Popconfirm, Progress, Row, Tabs, Tooltip} from "antd";
+import {Button, Col, message, Popconfirm, Progress, Row, Tooltip} from "antd";
 import {renderStatus} from "../../common/status";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
 import {ADD, DATE_FORMAT, DENIED, STATUS, UPDATE} from "../../common/Constant";
@@ -16,6 +16,7 @@ import {TbLayoutKanban} from "react-icons/tb";
 import {CiViewTimeline} from "react-icons/ci";
 import {Link, useParams} from "react-router-dom";
 import {URIS} from "../../../utils/constant";
+import SWTabs from "../../common/tabs";
 
 const status = ["pending", "active", "completed", "inactive", "denied"];
 
@@ -131,7 +132,7 @@ function ProjectList(props) {
 
     return (
         <div>
-            <Tabs
+            <SWTabs
                 onChange={onChangeStatusFilter}
                 items={tabItems}
                 tabBarExtraContent={tabExtra}
