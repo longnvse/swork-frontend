@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {Image, Menu} from "antd";
-import logo from "../../../../images/swork-logo.png";
+import logo from "../../../../images/logo.png";
 import Sider from "antd/es/layout/Sider";
 import {SiderByPermission} from "../../sider";
 
