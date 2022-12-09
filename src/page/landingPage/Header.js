@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { URIS } from "../../utils/constant";
+import {Link, useLocation} from "react-router-dom";
+import {URIS} from "../../utils/constant";
 import classNames from "classnames/bind";
 
 const links = [

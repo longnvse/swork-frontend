@@ -1,25 +1,10 @@
-import {
-    Col,
-    Collapse,
-    DatePicker,
-    Form,
-    Input,
-    InputNumber,
-    message,
-    Row,
-    Select,
-} from "antd";
-import React, { useEffect, useState } from "react";
-import { getPhasePages } from "../../../../api/phase";
-import { getProjectPages } from "../../../../api/project";
-import {
-    addWork,
-    getWork,
-    getWorkPages,
-    updateWork,
-} from "../../../../api/work";
+import {Col, Collapse, DatePicker, Form, Input, InputNumber, message, Row, Select,} from "antd";
+import React, {useEffect, useState} from "react";
+import {getPhasePages} from "../../../../api/phase";
+import {getProjectPages} from "../../../../api/project";
+import {addWork, getWork, getWorkPages, updateWork,} from "../../../../api/work";
 import SelectAccount from "../../../common/select/account";
-import moment from "moment";
+import dayjs from "dayjs";
 
 const WorkForm = ({ workId, phaseId, projectId }) => {
     const [form] = Form.useForm();
@@ -46,10 +31,10 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                     ...response?.data,
                     startDate:
                         response.data?.startDate &&
-                        moment(response.data?.startDate),
+                        dayjs(response.data?.startDate),
                     endDate:
                         response.data?.endDate &&
-                        moment(response.data?.endDate),
+                        dayjs(response.data?.endDate),
                 });
                 setProgressType(response.data?.progressType);
             });

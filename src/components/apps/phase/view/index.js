@@ -1,15 +1,15 @@
-import { Col, Collapse, Row, Tabs } from "antd";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { getPhase } from "../../../../api/phase";
-import { DATE_FORMAT } from "../../../common/Constant";
+import {Col, Collapse, Row, Tabs} from "antd";
+import React, {useEffect, useState} from "react";
+import {Link, useParams} from "react-router-dom";
+import {getPhase} from "../../../../api/phase";
+import {DATE_FORMAT} from "../../../common/Constant";
 import SWDescription from "../../../common/description";
-import { renderStatus } from "../../../common/status";
+import {renderStatus} from "../../../common/status";
 import ProjectViewResource from "../../project/view/tabs/Resource";
 import ProjectViewWork from "../../project/view/tabs/Work";
 import TeamList from "../../team";
-import { viewPhaseFirstColumns, viewPhaseSecondColumns } from "./columns";
+import {viewPhaseFirstColumns, viewPhaseSecondColumns} from "./columns";
+import dayjs from "dayjs";
 
 const PhaseView = () => {
     const { id } = useParams();
@@ -23,9 +23,9 @@ const PhaseView = () => {
                     return <span key={index}>{phaseManage?.accountName}</span>;
                 }),
                 status: renderStatus(data?.status),
-                date: `${moment(data?.startDate).format(
+                date: `${dayjs(data?.startDate).format(
                     DATE_FORMAT,
-                )} - ${moment(data?.endDate).format(DATE_FORMAT)}`,
+                )} - ${dayjs(data?.endDate).format(DATE_FORMAT)}`,
             },
             secondColum: {
                 projectName: (

@@ -1,8 +1,8 @@
 import React from "react";
-import { Col, Input, Layout, Row } from "antd";
+import {Input, Layout} from "antd";
 import ProfileIcon from "./profile";
-import { IoMdNotificationsOutline } from "react-icons/io";
-import { FiSearch } from "react-icons/fi";
+import {IoMdNotificationsOutline} from "react-icons/io";
+import {FiSearch} from "react-icons/fi";
 
 const { Header } = Layout;
 

@@ -1,10 +1,4 @@
-import {
-    BankOutlined,
-    CalendarOutlined,
-    ClusterOutlined,
-    FileAddOutlined,
-    TeamOutlined,
-} from "@ant-design/icons";
+import {BankOutlined, CalendarOutlined, ClusterOutlined, FileAddOutlined, TeamOutlined,} from "@ant-design/icons";
 import React from "react";
 
 const ProjectViewSummary = ({ data, teamData, phaseData }) => {

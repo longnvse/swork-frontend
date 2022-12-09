@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import ProjectList from ".";
 import PhaseView from "../phase/view";
 import TeamView from "../team/view";

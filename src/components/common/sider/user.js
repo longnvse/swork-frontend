@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
-import { BiBuildings } from "react-icons/bi";
+import {Link} from "react-router-dom";
+import {BiBuildings} from "react-icons/bi";
 import React from "react";
-import { MdWorkOutline } from "react-icons/md";
-import { GiWoodPile } from "react-icons/gi";
+import {MdWorkOutline} from "react-icons/md";
 
 export const UserSider = [
     {

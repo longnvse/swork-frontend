@@ -8,7 +8,7 @@ import ButtonDrawer from "../../common/button/ButtonDrawer";
 import {ADD, DATE_FORMAT, DENIED, STATUS, UPDATE} from "../../common/Constant";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import ProjectForm from "./form";
-import moment from "moment";
+import dayjs from 'dayjs';
 import {useDispatch} from "react-redux";
 import {isReload} from "../../../redux/actions/common/actions";
 import ButtonTab from "../../common/button/ButtonTab";
@@ -48,8 +48,8 @@ function ProjectList(props) {
             ...item,
             name: <Link to={`${URIS.VIEW_PROJECT}/${item.id}`}>{item.name}</Link>,
             status: renderStatus(item.status),
-            startDate: moment(item.startDate).format(DATE_FORMAT),
-            endDate: moment(item.endDate).format(DATE_FORMAT),
+            startDate: dayjs(item.startDate).format(DATE_FORMAT),
+            endDate: dayjs(item.endDate).format(DATE_FORMAT),
             progress: <Progress percent={item.progress} size="small"/>,
             action: <div className={"flex justify-evenly"}>
                 <ButtonDrawer

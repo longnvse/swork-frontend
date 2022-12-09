@@ -1,10 +1,10 @@
 import React, {useEffect} from "react";
 import {Col, Form, Input, message, Row, Select} from "antd";
-import moment from "moment/moment";
 import FormItem from "antd/es/form/FormItem";
 import SWDatePicker from "../../../common/date";
 import SelectAccount from "../../../common/select/account";
 import {addPhase, getPhase, updatePhase} from "../../../../api/phase";
+import dayjs from "dayjs";
 
 const PhaseForm = ({projectId, id}) => {
     const [form] = Form.useForm();
@@ -14,8 +14,8 @@ const PhaseForm = ({projectId, id}) => {
             getPhase(id).then((response) => {
                 form.setFieldsValue({
                     ...response?.data,
-                    startDate: moment(response.data.startDate),
-                    endDate: moment(response.data.endDate),
+                    startDate: dayjs(response.data.startDate),
+                    endDate: dayjs(response.data.endDate),
                     manages: response.data.phaseManages.map(
                         (item) => item.accountId,
                     ),

@@ -1,11 +1,11 @@
-import { Image, Menu } from "antd";
+import {Image, Menu} from "antd";
 import Sider from "antd/es/layout/Sider";
-import React, { useState } from "react";
-import { RiGitRepositoryPrivateLine } from "react-icons/ri";
-import { VscAccount } from "react-icons/vsc";
-import { Link, useLocation } from "react-router-dom";
+import React, {useState} from "react";
+import {RiGitRepositoryPrivateLine} from "react-icons/ri";
+import {VscAccount} from "react-icons/vsc";
+import {Link, useLocation} from "react-router-dom";
 import logo from "../../../../images/logo.png";
-import { URIS } from "../../../../utils/constant";
+import {URIS} from "../../../../utils/constant";
 
 function AccountSidebar({ children }) {
     const [collapsed, setCollapsed] = useState(false);

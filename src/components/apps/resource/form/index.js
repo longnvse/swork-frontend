@@ -2,8 +2,8 @@ import {Col, DatePicker, Form, Input, InputNumber, message, Row, Select,} from "
 import React, {useEffect, useState} from "react";
 import {addResource, getResource, updateResource,} from "../../../../api/resource/resource";
 import {getTeamPages} from "../../../../api/team";
-import moment from "moment";
 import {DATE_FORMAT} from "../../../common/Constant";
+import dayjs from "dayjs";
 
 const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
     const [form] = Form.useForm();
@@ -34,7 +34,7 @@ const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
                     ...response?.data,
                     dateResource:
                         response.data.dateResource &&
-                        moment(response?.data?.dateResource),
+                        dayjs(response?.data?.dateResource),
                 });
             });
         }

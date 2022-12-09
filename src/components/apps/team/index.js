@@ -7,8 +7,8 @@ import {Button, message, Popconfirm} from "antd";
 import {deleteTeam, getTeamPages} from "../../../api/team";
 import TeamForm from "./form";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
-import moment from "moment";
 import {Link} from "react-router-dom";
+import dayjs from "dayjs";
 
 const TeamList = ({projectId, phaseId}) => {
     const onConfirmDelete = (id) => {
@@ -43,9 +43,9 @@ const TeamList = ({projectId, phaseId}) => {
             quantityMembers: countMembers(item),
             inoutcoming: `${item.totalIncoming}/${item.totalSpending}`,
             parent: item.projectName || item.phaseName || "",
-            time: `${moment(item.createDate).format(DATE_FORMAT)}${
+            time: `${dayjs(item.createDate).format(DATE_FORMAT)}${
                 !item.isActive
-                    ? "/" + moment(item.modifiedDate).format(DATE_FORMAT)
+                    ? "/" + dayjs(item.modifiedDate).format(DATE_FORMAT)
                     : ""
             }`,
             action: (
