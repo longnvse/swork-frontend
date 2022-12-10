@@ -13,7 +13,7 @@ const SWTabs = (props) => {
     }, [props, searchParams]);
 
     useEffect(() => {
-        if (!searchParams.get("tab")) {
+        if ((!searchParams.get("tab") || searchParams.get("tab") === "undefined") && props.items?.[0]?.key) {
             searchParams.set("tab", props.items?.[0]?.key);
             setSearchParams(searchParams);
         }
@@ -30,6 +30,9 @@ const SWTabs = (props) => {
             {...props}
             onChange={onChangeTab}
             activeKey={searchParams.get("tab") || props.items?.[0]?.key}
+            tabBarStyle={{
+                height: 48
+            }}
         />
     );
 };
