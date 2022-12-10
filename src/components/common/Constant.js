@@ -17,6 +17,8 @@ export const STATUS = {
     "denied": "Đã huỷ"
 }
 
+export const STATUS_ARRAY = [PENDING, ACTIVE, COMPLETED, INACTIVE, DENIED]
+
 export const message_error = (error) => {
     message.error(error.response?.data?.detail ||
         error.response?.data?.title ||

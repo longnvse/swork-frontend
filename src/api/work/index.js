@@ -3,7 +3,7 @@ import {SWAxios} from "../../system/axios";
 const url = "swork/work-rest/v1.0/works";
 
 export const getWorkPages = (params) => {
-    return SWAxios.get(url, {params: {page: 1, pageSize: 1000, ...params}});
+    return SWAxios.get(url, {params});
 };
 
 export const getWork = (workId) => {

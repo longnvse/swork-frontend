@@ -6,7 +6,7 @@ import {Button, Col, message, Popconfirm, Progress, Row, Tooltip} from "antd";
 import {renderStatus} from "../../common/status";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
 import {ADD, DATE_FORMAT, DENIED, STATUS, UPDATE} from "../../common/Constant";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {DeleteOutlined, EditOutlined, UnorderedListOutlined} from "@ant-design/icons";
 import ProjectForm from "./form";
 import dayjs from 'dayjs';
 import {useDispatch} from "react-redux";
@@ -17,12 +17,14 @@ import {CiViewTimeline} from "react-icons/ci";
 import {Link, useParams} from "react-router-dom";
 import {URIS} from "../../../utils/constant";
 import SWTabs from "../../common/tabs";
+import ProjectKanban from "./kanban";
 
 const status = ["pending", "active", "completed", "inactive", "denied"];
 
 function ProjectList(props) {
     const {type} = useParams();
     const [filter, setFilter] = useState(null);
+    const [viewMode, setViewMode] = useState("list");
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -117,16 +119,40 @@ function ProjectList(props) {
 
     const tabExtra = (
         <Row gutter={8}>
+            {viewMode !== "list" && <Col>
+                <ButtonTab
+                    icon={<UnorderedListOutlined style={{fontSize: 20}}/>}
+                    title={"Danh sách"}
+                    buttonProps={{
+                        onClick: () => {
+                            setViewMode("list");
+                        }
+                    }}
+                    selected={viewMode === "list"}
+                />
+            </Col>}
             <Col>
                 <ButtonTab
                     icon={<TbLayoutKanban style={{fontSize: 20}}/>}
                     title={"Kanban"}
+                    buttonProps={{
+                        onClick: () => {
+                            setViewMode("kanban");
+                        }
+                    }}
+                    selected={viewMode === "kanban"}
                 />
             </Col>
             <Col>
                 <ButtonTab
                     icon={<CiViewTimeline style={{fontSize: 20}}/>}
                     title={"Gantt chart"}
+                    buttonProps={{
+                        onClick: () => {
+                            setViewMode("ganttChart");
+                        }
+                    }}
+                    selected={viewMode === "ganttChart"}
                 />
             </Col>
         </Row>
@@ -136,15 +162,17 @@ function ProjectList(props) {
         <div>
             <SWTabs
                 onChange={onChangeStatusFilter}
-                items={tabItems}
+                items={viewMode === "list" ? tabItems : []}
                 tabBarExtraContent={tabExtra}
             />
-            <CommonList
-                mapData={mapData}
-                load={onLoad}
-                columns={columns}
-                buttonAdd={buttonAdd}
-            />
+            {viewMode === "list" ?
+                <CommonList
+                    mapData={mapData}
+                    load={onLoad}
+                    columns={columns}
+                    buttonAdd={buttonAdd}
+                /> :
+                <ProjectKanban/>}
         </div>
     );
 }
