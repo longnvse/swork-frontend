@@ -13,6 +13,7 @@
         "dayjs": "^1.11.7",
         "echarts-for-react": "^3.0.2",
         "env-cmd": "^10.1.0",
+        "gantt-task-react": "^0.3.9",
         "jwt-decode": "^3.1.2",
         "lodash": "^4.17.21",
         "node-sass": "^7.0.3",

@@ -18,6 +18,7 @@ import {Link, useParams} from "react-router-dom";
 import {URIS} from "../../../utils/constant";
 import SWTabs from "../../common/tabs";
 import ProjectKanban from "./kanban";
+import ProjectGanttChart from "./gantt-chart";
 
 const status = ["pending", "active", "completed", "inactive", "denied"];
 
@@ -52,8 +53,7 @@ function ProjectList(props) {
 
     const mapData = (item, index) => {
         return {
-            key: item.id,
-            ...item,
+            key: item.id, ...item,
             name: <Link to={`${URIS.VIEW_PROJECT}/${item.id}`}>{item.name}</Link>,
             status: renderStatus(item.status),
             startDate: dayjs(item.startDate).format(DATE_FORMAT),
@@ -65,9 +65,7 @@ function ProjectList(props) {
                     formId={"project-form"}
                     mode={UPDATE}
                     buttonProps={{
-                        icon: <EditOutlined/>,
-                        type: "link",
-                        value: null
+                        icon: <EditOutlined/>, type: "link", value: null
                     }}
                 >
                     <ProjectForm id={item.id}/>
@@ -101,13 +99,9 @@ function ProjectList(props) {
         <ProjectForm/>
     </ButtonDrawer>
 
-    const tabItems = [
-        {
-            label: "Tất cả",
-            key: "all"
-        },
-        ...status.map((item) => ({label: STATUS[item], key: item}))
-    ]
+    const tabItems = [{
+        label: "Tất cả", key: "all"
+    }, ...status.map((item) => ({label: STATUS[item], key: item}))]
 
     const onChangeStatusFilter = (activeKey) => {
         if (activeKey === "all") {
@@ -117,64 +111,60 @@ function ProjectList(props) {
         setFilter(`status eq '${activeKey}'`);
     }
 
-    const tabExtra = (
-        <Row gutter={8}>
-            {viewMode !== "list" && <Col>
-                <ButtonTab
-                    icon={<UnorderedListOutlined style={{fontSize: 20}}/>}
-                    title={"Danh sách"}
-                    buttonProps={{
-                        onClick: () => {
-                            setViewMode("list");
-                        }
-                    }}
-                    selected={viewMode === "list"}
-                />
-            </Col>}
-            <Col>
-                <ButtonTab
-                    icon={<TbLayoutKanban style={{fontSize: 20}}/>}
-                    title={"Kanban"}
-                    buttonProps={{
-                        onClick: () => {
-                            setViewMode("kanban");
-                        }
-                    }}
-                    selected={viewMode === "kanban"}
-                />
-            </Col>
-            <Col>
-                <ButtonTab
-                    icon={<CiViewTimeline style={{fontSize: 20}}/>}
-                    title={"Gantt chart"}
-                    buttonProps={{
-                        onClick: () => {
-                            setViewMode("ganttChart");
-                        }
-                    }}
-                    selected={viewMode === "ganttChart"}
-                />
-            </Col>
-        </Row>
-    )
-
-    return (
-        <div>
-            <SWTabs
-                onChange={onChangeStatusFilter}
-                items={viewMode === "list" ? tabItems : []}
-                tabBarExtraContent={tabExtra}
+    const tabExtra = (<Row gutter={8}>
+        {viewMode !== "list" && <Col>
+            <ButtonTab
+                icon={<UnorderedListOutlined style={{fontSize: 20}}/>}
+                title={"Danh sách"}
+                buttonProps={{
+                    onClick: () => {
+                        setViewMode("list");
+                    }
+                }}
+                selected={viewMode === "list"}
             />
-            {viewMode === "list" ?
-                <CommonList
-                    mapData={mapData}
-                    load={onLoad}
-                    columns={columns}
-                    buttonAdd={buttonAdd}
-                /> :
-                <ProjectKanban/>}
-        </div>
-    );
+        </Col>}
+        <Col>
+            <ButtonTab
+                icon={<TbLayoutKanban style={{fontSize: 20}}/>}
+                title={"Kanban"}
+                buttonProps={{
+                    onClick: () => {
+                        setViewMode("kanban");
+                    }
+                }}
+                selected={viewMode === "kanban"}
+            />
+        </Col>
+        <Col>
+            <ButtonTab
+                icon={<CiViewTimeline style={{fontSize: 20}}/>}
+                title={"Gantt chart"}
+                buttonProps={{
+                    onClick: () => {
+                        setViewMode("ganttChart");
+                    }
+                }}
+                selected={viewMode === "ganttChart"}
+            />
+        </Col>
+    </Row>)
+
+    return (<div>
+        <SWTabs
+            onChange={onChangeStatusFilter}
+            items={viewMode === "list" ? tabItems : []}
+            tabBarExtraContent={tabExtra}
+        />
+        {viewMode === "list" && <CommonList
+            mapData={mapData}
+            load={onLoad}
+            columns={columns}
+            buttonAdd={buttonAdd}
+        />}
+        {viewMode === "kanban" && <ProjectKanban/>}
+        {viewMode === "ganttChart" && <ProjectGanttChart/>}
+    </div>);
 }
 
 export default ProjectList;
