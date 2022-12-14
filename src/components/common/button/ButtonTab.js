@@ -24,7 +24,7 @@ const ButtonTab = ({icon, title, selected = false, buttonProps}) => {
     );
 };
 
-function hexToRGBA(h) {
+export const hexToRGBA = (h) => {
     let r = 0, g = 0, b = 0;
 
     // 3 digits

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import CommonList from "../../common/list";
 import {columns} from "./common/columns";
 import {deleteProject, getProjectPages} from "../../../api/project";
@@ -19,6 +19,7 @@ import {URIS} from "../../../utils/constant";
 import SWTabs from "../../common/tabs";
 import ProjectKanban from "./kanban";
 import ProjectGanttChart from "./gantt-chart";
+import {ViewMode} from "gantt-task-react";
 
 const status = ["pending", "active", "completed", "inactive", "denied"];
 
@@ -99,16 +100,40 @@ function ProjectList(props) {
         <ProjectForm/>
     </ButtonDrawer>
 
-    const tabItems = [{
+    const tabItemsForList = [{
         label: "Tất cả", key: "all"
     }, ...status.map((item) => ({label: STATUS[item], key: item}))]
 
+    const tabItemsForGanttChart = [{label: "Ngày", key: ViewMode.Day}, {
+        label: "Tuần", key: ViewMode.Week
+    }, {label: "Tháng", key: ViewMode.Month}, {
+        label: "Năm", key: ViewMode.Year
+    }]
+
+    const tabItems = useMemo(() => {
+        switch (viewMode) {
+            case "list":
+                return tabItemsForList;
+            case "ganttChart":
+                return tabItemsForGanttChart;
+            default:
+                return [];
+        }
+    }, [viewMode]);
+
     const onChangeStatusFilter = (activeKey) => {
-        if (activeKey === "all") {
-            setFilter(undefined);
+        if (!isValidStatus(activeKey)) {
             return;
         }
-        setFilter(`status eq '${activeKey}'`);
+        if (activeKey === "all") {
+            setFilter(prev => undefined);
+            return;
+        }
+        setFilter(prev => `status eq '${activeKey}'`);
+    }
+
+    const isValidStatus = (activeKey) => {
+        return status.findIndex(item => item === activeKey) !== -1;
     }
 
     const tabExtra = (<Row gutter={8}>
@@ -153,7 +178,7 @@ function ProjectList(props) {
     return (<div>
         <SWTabs
             onChange={onChangeStatusFilter}
-            items={viewMode === "list" ? tabItems : []}
+            items={tabItems}
             tabBarExtraContent={tabExtra}
         />
         {viewMode === "list" && <CommonList
