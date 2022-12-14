@@ -6,7 +6,7 @@ import {Button, Col, message, Popconfirm, Progress, Row, Tooltip} from "antd";
 import {renderStatus} from "../../common/status";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
 import {ADD, DATE_FORMAT, DENIED, STATUS, UPDATE} from "../../common/Constant";
-import {DeleteOutlined, EditOutlined, UnorderedListOutlined} from "@ant-design/icons";
+import {DeleteOutlined, EditOutlined, PlusOutlined, UnorderedListOutlined} from "@ant-design/icons";
 import ProjectForm from "./form";
 import dayjs from 'dayjs';
 import {useDispatch} from "react-redux";
@@ -133,7 +133,7 @@ function ProjectList(props) {
     }
 
     const isValidStatus = (activeKey) => {
-        return status.findIndex(item => item === activeKey) !== -1;
+        return tabItemsForList.findIndex(item => item.key === activeKey) !== -1;
     }
 
     const tabExtra = (<Row gutter={8}>
@@ -173,6 +173,19 @@ function ProjectList(props) {
                 selected={viewMode === "ganttChart"}
             />
         </Col>
+        <Col>
+            <ButtonDrawer
+                title={"Thêm mới dự án"}
+                formId={"project-form"}
+                mode={ADD}
+                button={<ButtonTab
+                    icon={<PlusOutlined style={{fontSize: 20}}/>}
+                    title={"Thêm dự án"}
+                />}
+            >
+                <ProjectForm/>
+            </ButtonDrawer>
+        </Col>
     </Row>)
 
     return (<div>
@@ -185,7 +198,8 @@ function ProjectList(props) {
             mapData={mapData}
             load={onLoad}
             columns={columns}
-            buttonAdd={buttonAdd}
+            hiddenButton={true}
+            // buttonAdd={buttonAdd}
         />}
         {viewMode === "kanban" && <ProjectKanban/>}
         {viewMode === "ganttChart" && <ProjectGanttChart/>}

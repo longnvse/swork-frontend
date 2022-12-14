@@ -102,7 +102,7 @@ const ProjectGanttChart = (props) => {
                 borderRadius: 8, boxShadow: "-5px 0 5px -5px #171a1f", marginLeft: !collapsed ? '8px' : 0
             }}
         >
-            <Button icon={<CloseOutlined/>} className={"float-right"} onClick={() => setCollapsed(true)}/>
+            <Button type={"text"} icon={<CloseOutlined/>} className={"float-right"} onClick={() => setCollapsed(true)}/>
         </Sider>
     </Layout>);
 };

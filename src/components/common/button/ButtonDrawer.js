@@ -11,7 +11,8 @@ const ButtonDrawer = ({
                           formId = undefined,
                           mode = "",
                           drawerProps = {},
-                          buttonProps = {}
+                          buttonProps = {},
+                          button
                       }) => {
     const [open, setOpen] = useState(false);
     const [toggle, setToggle] = useState(false);
@@ -63,56 +64,53 @@ const ButtonDrawer = ({
         setAfterSubmit(true);
     }
 
-    const footer = (
-        <Row gutter={12}>
-            <Col>
-                <Button type={"primary"} onClick={onClickSubmit} form={formId}
-                        htmlType={"submit"}>{buttonTitle}</Button>
-            </Col>
-            <Col>
-                <Button type={"default"} onClick={onClose}>Hủy bỏ</Button>
-            </Col>
-        </Row>
-    )
+    const footer = (<Row gutter={12}>
+        <Col>
+            <Button type={"primary"} onClick={onClickSubmit} form={formId}
+                    htmlType={"submit"}>{buttonTitle}</Button>
+        </Col>
+        <Col>
+            <Button type={"default"} onClick={onClose}>Hủy bỏ</Button>
+        </Col>
+    </Row>)
 
-    return (
-        <div>
-            <Button onClick={onOpen} {...buttonProps}>{buttonProps.value}</Button>
-            <Drawer
-                open={open}
-                title={title || ""}
-                placement="right"
-                onClose={onClose}
-                footer={footer}
-                destroyOnClose={true}
-                drawerStyle={{
-                    borderRadius: 8
-                }}
-                getContainer={document.getElementById('content')}
-                style={{
-                    position: 'absolute'
-                }}
-                contentWrapperStyle={{
-                    borderRadius: 8
-                }}
-                extra={formId && mode === ADD ? <Tooltip
-                    title={!toggle ? "Đóng lại sau khi hoàn thành tác vụ" : "Giữ lại sau khi hoàn thành tác vụ"}
-                    placement={"left"}
-                >
-                    <Switch checked={toggle} onChange={(value) => setToggle(value)}/>
-                </Tooltip> : null}
-                {...drawerProps}
+    return (<div>
+        {!button ? <Button
+            onClick={onOpen} {...buttonProps}>{buttonProps.value}</Button> : React.cloneElement(button, {onClick: onOpen})}
+        <Drawer
+            open={open}
+            title={title || ""}
+            placement="right"
+            onClose={onClose}
+            footer={footer}
+            destroyOnClose={true}
+            drawerStyle={{
+                borderRadius: 8
+            }}
+            getContainer={document.getElementById('content')}
+            rootStyle={{
+                position: 'absolute'
+            }}
+            contentWrapperStyle={{
+                borderRadius: 8
+            }}
+            extra={formId && mode === ADD ? <Tooltip
+                title={!toggle ? "Đóng lại sau khi hoàn thành tác vụ" : "Giữ lại sau khi hoàn thành tác vụ"}
+                placement={"left"}
             >
-                <Spin
-                    className={"loading"}
-                    spinning={loading}
-                    indicator={antIcon}
-                >
-                    {React.cloneElement(children)}
-                </Spin>
-            </Drawer>
-        </div>
-    );
+                <Switch checked={toggle} onChange={(value) => setToggle(value)}/>
+            </Tooltip> : null}
+            {...drawerProps}
+        >
+            <Spin
+                className={"loading"}
+                spinning={loading}
+                indicator={antIcon}
+            >
+                {React.cloneElement(children)}
+            </Spin>
+        </Drawer>
+    </div>);
 };
 
 ButtonDrawer.propTypes = {};
