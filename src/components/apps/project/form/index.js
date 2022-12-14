@@ -82,10 +82,10 @@ const ProjectForm = ({id}) => {
                         message: "Chưa chọn cách tính tiến độ dự án",
                     },
                 ]}
+                initialValue={"averageWorks"}
             >
                 <Select
                     dropdownMatchSelectWidth={false}
-                    defaultValue={"averageWorks"}
                     placeholder={"Chọn cách tính tiến độ dự án"}
                 >
                     <Select.Option

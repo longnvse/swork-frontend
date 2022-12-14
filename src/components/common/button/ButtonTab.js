@@ -3,7 +3,7 @@ import {Button, theme} from "antd";
 
 
 const {useToken} = theme;
-const ButtonTab = ({icon, title, selected = false, buttonProps}) => {
+const ButtonTab = ({icon, title, selected = false, onClick, buttonProps}) => {
     const {token} = useToken()
 
     return (
@@ -17,6 +17,7 @@ const ButtonTab = ({icon, title, selected = false, buttonProps}) => {
                 color: selected && token.colorPrimary,
                 backgroundColor: selected && hexToRGBA(token.colorPrimary)
             }}
+            onClick={onClick}
             {...buttonProps}
         >
             {title || "Button"}
@@ -24,7 +25,7 @@ const ButtonTab = ({icon, title, selected = false, buttonProps}) => {
     );
 };
 
-function hexToRGBA(h) {
+export const hexToRGBA = (h) => {
     let r = 0, g = 0, b = 0;
 
     // 3 digits

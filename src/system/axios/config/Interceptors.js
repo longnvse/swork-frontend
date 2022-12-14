@@ -70,10 +70,7 @@ const setup = (store) => {
                         updateLocalAccessToken(accessToken);
                         return axiosInstance(originalConfig);
                     } catch (_error) {
-                        debugger
-                        if (_error.config.url === `/login-rest/v1.0/refreshtoken` && _error.response.status === 400) {
-                            store.dispatch(logoutStart());
-                        }
+                        store.dispatch(logoutStart());
                         return Promise.reject(_error);
                     }
                 }

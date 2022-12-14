@@ -41,7 +41,6 @@ export const statusString = (status) => {
 };
 
 export const statusColor = (status) => {
-
     switch (status) {
         case PENDING : {
             return 'rgba(255, 119, 35, 0.6)'
@@ -57,6 +56,75 @@ export const statusColor = (status) => {
         }
         case DENIED : {
             return 'rgba(233, 10, 53, 0.6)'
+        }
+        default : {
+            return '#000000'
+        }
+    }
+};
+
+export const statusColorGanttChartSelected = (status) => {
+    switch (status) {
+        case PENDING : {
+            return 'rgba(255, 119, 35, 0.8)'
+        }
+        case ACTIVE : {
+            return 'rgba(53, 130, 255, 0.8)'
+        }
+        case COMPLETED : {
+            return 'rgba(87, 89, 239, 0.8)'
+        }
+        case INACTIVE : {
+            return 'rgba(209, 209, 209, 0.8)'
+        }
+        case DENIED : {
+            return 'rgba(233, 10, 53, 0.8)'
+        }
+        default : {
+            return '#000000'
+        }
+    }
+};
+
+export const progressColorGanttChart = (status) => {
+    switch (status) {
+        case PENDING : {
+            return 'rgb(126,48,2)'
+        }
+        case ACTIVE : {
+            return 'rgb(2,52,138)'
+        }
+        case COMPLETED : {
+            return 'rgb(2,4,143)'
+        }
+        case INACTIVE : {
+            return 'rgb(124,112,112)'
+        }
+        case DENIED : {
+            return 'rgb(112,0,23)'
+        }
+        default : {
+            return '#251f1f'
+        }
+    }
+};
+
+export const statusColorGanttChart = (status) => {
+    switch (status) {
+        case PENDING : {
+            return 'rgba(255, 119, 35)'
+        }
+        case ACTIVE : {
+            return 'rgba(53, 130, 255)'
+        }
+        case COMPLETED : {
+            return 'rgba(87, 89, 239)'
+        }
+        case INACTIVE : {
+            return 'rgba(209, 209, 209)'
+        }
+        case DENIED : {
+            return 'rgba(233, 10, 53)'
         }
         default : {
             return '#000000'
