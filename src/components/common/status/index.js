@@ -63,6 +63,52 @@ export const statusColor = (status) => {
     }
 };
 
+export const statusColorKanban = (status) => {
+    switch (status) {
+        case PENDING : {
+            return 'rgba(255, 119, 35, 0.6)'
+        }
+        case ACTIVE : {
+            return 'rgba(53, 130, 255, 0.6)'
+        }
+        case COMPLETED : {
+            return 'rgba(87, 89, 239, 0.6)'
+        }
+        case INACTIVE : {
+            return 'rgb(100,96,96)'
+        }
+        case DENIED : {
+            return 'rgba(233, 10, 53, 0.6)'
+        }
+        default : {
+            return '#000000'
+        }
+    }
+};
+
+export const statusBgColorKanban = (status) => {
+    switch (status) {
+        case PENDING : {
+            return 'rgb(255, 218, 185)'
+        }
+        case ACTIVE : {
+            return 'rgb(240, 248, 255)'
+        }
+        case COMPLETED : {
+            return 'rgb(235, 224, 253)'
+        }
+        case INACTIVE : {
+            return 'rgba(209, 209, 209, 0.3)'
+        }
+        case DENIED : {
+            return 'rgb(255, 199, 199)'
+        }
+        default : {
+            return '#000000'
+        }
+    }
+};
+
 export const statusColorGanttChartSelected = (status) => {
     switch (status) {
         case PENDING : {
