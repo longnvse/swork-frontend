@@ -7,7 +7,7 @@ import {Link, useLocation} from "react-router-dom";
 import logo from "../../../../images/logo.png";
 import {URIS} from "../../../../utils/constant";
 
-function AccountSidebar({ children }) {
+function AccountSidebar({children}) {
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation();
 
@@ -15,12 +15,12 @@ function AccountSidebar({ children }) {
         {
             label: <Link to={URIS.ACCOUNT_INFO}>Thông tin cá nhân</Link>,
             key: URIS.ACCOUNT_INFO,
-            icon: <VscAccount style={{ fontSize: 20 }} />,
+            icon: <VscAccount style={{fontSize: 20}}/>,
         },
         {
             label: <Link to={URIS.ACCOUNT_SECURITY}>Bảo mật</Link>,
             key: URIS.ACCOUNT_SECURITY,
-            icon: <RiGitRepositoryPrivateLine style={{ fontSize: 20 }} />,
+            icon: <RiGitRepositoryPrivateLine style={{fontSize: 20}}/>,
         },
     ];
 

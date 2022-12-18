@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Kanban from "../../kanban";
 import {approvalProject, getProjectPages} from "../../../../api/project";
 import {DATE_FORMAT, message_error, STATUS_ARRAY} from "../../../common/Constant";
-import {statusColor, statusString} from "../../../common/status";
+import {statusBgColorKanban, statusColor, statusColorKanban, statusString} from "../../../common/status";
 import {Badge, Col, message, Progress, Row} from "antd";
 import {CommentOutlined, PaperClipOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -26,17 +26,14 @@ const ProjectKanban = props => {
             const projects = items.filter(item => item.status === status);
 
             return {
-                id: status,
-                title: statusString(status),
-                label: <Badge
+                id: status, title: statusString(status), label: <Badge
                     count={projects.length}
-                    color={statusColor(status)}
+                    color={statusColorKanban(status)}
                     showZero={true}
-                />,
-                cards: projects.map(mapCard),
-                titleStyle: {
-                    color: statusColor(status),
-                    fontWeight: "bold"
+                />, cards: projects.map(mapCard), titleStyle: {
+                    color: statusColorKanban(status), fontWeight: "bold"
+                }, style: {
+                    background: statusBgColorKanban(status)
                 }
             }
         })
@@ -67,12 +64,10 @@ const ProjectKanban = props => {
         });
     }
 
-    return (
-        <Kanban
+    return (<Kanban
             data={data}
             onUpdateStatus={onUpdateStatus}
-        />
-    );
+        />);
 };
 
 ProjectKanban.propTypes = {};
