@@ -17,6 +17,7 @@ import { columnsResource } from "../common/columns";
 import ResourceForm from "../form";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import { DG_Format_Money } from "../../../common/convert/format";
 
 const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
     const [dataSources, setDataSources] = useState([]);
@@ -24,11 +25,13 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
 
     useEffect(() => {
         if (!resourceData) {
-            getResourcePages({ projectId: projectId, phaseId: phaseId }).then(
-                (response) => {
-                    setDataSources(mapData(response?.data?.items));
-                },
-            );
+            getResourcePages({
+                projectId: projectId,
+                phaseId: phaseId,
+                teamId: teamId,
+            }).then((response) => {
+                setDataSources(mapData(response?.data?.items));
+            });
         }
         setDataSources(resourceData);
     }, [resourceData, reload]);
@@ -41,6 +44,22 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
             .catch(message_error);
     };
 
+    const checkParentName = (data) => {
+        if (data?.phaseId === 0) {
+            return (
+                <Link to={`/project/view/${data?.projectId}`}>
+                    {data?.parentName}
+                </Link>
+            );
+        } else {
+            return (
+                <Link to={`/project/view-phase/${data?.phaseId}`}>
+                    {data?.parentName}
+                </Link>
+            );
+        }
+    };
+
     const mapData = (data) => {
         if (data?.length <= 0) return [];
         return data?.map((item) => {
@@ -49,13 +68,13 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
                 ...item,
                 name: item?.resourceTypeName,
                 quantity: item?.quantity,
-                totalAmount: item?.totalAmount,
+                totalAmount: DG_Format_Money(item?.totalAmount),
                 team: (
                     <Link to={`/project/view-team/${item?.teamId}`}>
                         {item?.teamName}
                     </Link>
                 ),
-                parent: item?.parentName,
+                parent: checkParentName(item),
                 date:
                     item?.dateResource &&
                     dayjs(item.dateResource).format(DATE_FORMAT),

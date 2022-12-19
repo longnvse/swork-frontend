@@ -15,16 +15,18 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { renderStatus } from "../../../../common/status";
 
-function ProjectViewWork({ projectId, phaseId }) {
+function ProjectViewWork({ projectId, phaseId, parentId }) {
     const [dataSources, setDataSources] = useState([]);
     const { reload } = useSelector((state) => state.commonReducer);
 
     useEffect(() => {
-        getWorkPages({ projectId: projectId, phaseId: phaseId }).then(
-            (response) => {
-                setDataSources(mapData(response?.data?.items));
-            },
-        );
+        if (projectId || phaseId) {
+            getWorkPages({ projectId: projectId, phaseId: phaseId }).then(
+                (response) => {
+                    setDataSources(mapData(response?.data?.items));
+                },
+            );
+        }
     }, [projectId, phaseId, reload]);
 
     const onConfirmDelete = (id) => {
@@ -38,7 +40,6 @@ function ProjectViewWork({ projectId, phaseId }) {
     const mapData = (data) => {
         if (data?.length <= 0) return [];
         return data?.map((item) => {
-            console.log(item.status);
             return {
                 key: item.id,
                 ...item,
@@ -103,7 +104,11 @@ function ProjectViewWork({ projectId, phaseId }) {
                             width: 500,
                         }}
                     >
-                        <WorkForm projectId={projectId} phaseId={phaseId} />
+                        <WorkForm
+                            projectId={projectId}
+                            phaseId={phaseId}
+                            parentId={parentId}
+                        />
                     </ButtonDrawer>
                 </Col>
             </Row>

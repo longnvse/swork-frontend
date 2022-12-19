@@ -10,8 +10,6 @@ import {
     Select,
 } from "antd";
 import React, { useEffect, useState } from "react";
-import { getPhasePages } from "../../../../api/phase";
-import { getProjectPages } from "../../../../api/project";
 import {
     addWork,
     getWork,
@@ -22,8 +20,9 @@ import SelectAccount from "../../../common/select/account";
 import dayjs from "dayjs";
 import { message_error } from "../../../common/Constant";
 
-const WorkForm = ({ workId, phaseId, projectId }) => {
+const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
     const [form] = Form.useForm();
+    const [workData, setWorkData] = useState([]);
     const [progressType, setProgressType] = useState();
 
     useEffect(() => {
@@ -49,8 +48,9 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
     const onFinish = (values) => {
         values = {
             ...values,
-            projectId: projectId,
-            phaseId: phaseId,
+            projectId: Number(projectId),
+            phaseId: Number(phaseId),
+            parentId: Number(parentId),
         };
 
         if (!workId) {
@@ -156,8 +156,6 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                             </Form.Item>
                         </Col>
                     </Row>
-                </Collapse.Panel>
-                <Collapse.Panel header="Nâng cao" key="advance">
                     <Row gutter={12} wrap className="pt-3">
                         <Col span={24}>
                             <Form.Item
@@ -285,34 +283,6 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                 </Col>
                             </>
                         )}
-                        <Col span={24}>
-                            <Form.Item label="Dự án" name="projectId">
-                                <Select
-                                    className="w-full"
-                                    placeholder="Chọn dự án"
-                                    defaultValue={projectId}
-                                    options={projectData}
-                                    onChange={onChangeProject}
-                                    onClear={() => setShowPhase(false)}
-                                    onDeselect={() => setShowPhase(false)}
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Col>
-                        {showPhase ? (
-                            <Col span={24}>
-                                <Form.Item label="Giai đoạn" name="phaseId">
-                                    <Select
-                                        className="w-full"
-                                        placeholder="Chọn giai đoạn"
-                                        defaultValue={phaseId}
-                                        options={phaseData}
-                                        onChange={onChangePhase}
-                                        allowClear
-                                    />
-                                </Form.Item>
-                            </Col>
-                        ) : null}
                         <Col span={24}>
                             <Form.Item label="Công việc cha" name="parentId">
                                 <Select

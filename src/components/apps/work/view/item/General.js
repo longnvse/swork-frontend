@@ -1,13 +1,12 @@
-import {Col, Progress, Row} from "antd";
-import React, {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import { Col, Progress, Row } from "antd";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import SWDescription from "../../../../common/description";
-import {viewWorkFirstColumn, viewWorkSecondColumn} from "../columns";
-import {renderStatus} from "../../../../common/status";
+import { viewWorkFirstColumn, viewWorkSecondColumn } from "../columns";
+import { renderStatus } from "../../../../common/status";
 import dayjs from "dayjs";
 
-const ViewWorkGeneral = ({data}) => {
-    const {id} = useParams();
+const ViewWorkGeneral = ({ data }) => {
     const dateFormat = "DD/MM/YYYY";
     const [workData, setWorkData] = useState({});
 
@@ -30,7 +29,7 @@ const ViewWorkGeneral = ({data}) => {
                 ).format(dateFormat)}`,
             },
             secondColumn: {
-                progress: <Progress percent={data?.progress}/>,
+                progress: <Progress percent={data?.progress} />,
                 project: (
                     <Link to={`/project/view/${data?.projectId}`}>
                         {data?.projectName}
