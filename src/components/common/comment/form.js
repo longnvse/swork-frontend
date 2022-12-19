@@ -1,32 +1,48 @@
 import React from 'react';
-import {Form, Input, message} from "antd";
-import {addComment} from "../../../api/comment";
+import {Form} from "antd";
+import {addComment, updateComment} from "../../../api/comment";
 import {message_error} from "../Constant";
+import CommentInput from "./resource/Input";
 
-const CommentForm = ({classPkId, classPkName}) => {
+const CommentForm = ({id, content, onCancelEdit, classPkId, classPkName, parentId = 0, replyRef}) => {
     const [form] = Form.useForm();
 
     const onFinish = (values) => {
-        addComment({...values, classPkId, classPkName}).then(res => {
-            message.success("Thành công!");
-        }).catch(message_error);
+        if (!values.content) {
+            return;
+        }
+
+        if (!id) {
+            addComment({...values, classPkId, classPkName, parentId}).then(() => {
+                form.resetFields();
+            }).catch(message_error);
+        } else {
+            updateComment(id, values).then(() => {
+                if (typeof onCancelEdit === 'function') {
+                    onCancelEdit();
+                }
+            }).catch(message_error);
+        }
     }
 
     return (
         <Form
             onFinish={onFinish}
+            onKeyUp={(event) => {
+                if ((event.key === "Escape") && typeof onCancelEdit === "function") {
+                    onCancelEdit();
+                }
+            }}
             form={form}
         >
             <Form.Item
                 name={"content"}
                 required={true}
+                initialValue={content}
             >
-                <Input
-                    onEnter={() => {
-                        form.submit();
-                    }}
-                />
+                <CommentInput isEdit={!!id} replyRef={replyRef} onCancelEdit={onCancelEdit}/>
             </Form.Item>
+
         </Form>
     );
 };

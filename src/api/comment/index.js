@@ -3,7 +3,7 @@ import {SWAxios} from "../../system/axios";
 const url = "swork/common-comment-rest/v1.0/comments";
 
 export const getCommentPages = (classPkId, classPkName) => {
-    return SWAxios.get(url, {params: {classPkId, classPkName}});
+    return SWAxios.get(url, {params: {classPkId, classPkName,sort: "modifiedDate:desc"}});
 }
 
 export const getComment = (commentId) => {
