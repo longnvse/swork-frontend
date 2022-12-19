@@ -16,6 +16,7 @@ import {
 import { columnsResource } from "../common/columns";
 import ResourceForm from "../form";
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
     const [dataSources, setDataSources] = useState([]);
