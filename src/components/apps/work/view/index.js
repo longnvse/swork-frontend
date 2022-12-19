@@ -1,17 +1,17 @@
-import {Col, Collapse, Row, Tabs} from "antd";
-import React, {useEffect, useMemo, useState} from "react";
-import {useParams} from "react-router-dom";
-import {approvalWork, getWork} from "../../../../api/work";
+import { Col, Collapse, Row, Tabs } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
+import { approvalWork, getWork } from "../../../../api/work";
 import ProjectViewWork from "../../project/view/tabs/Work";
 import ViewWorkGeneral from "./item/General";
 import ButtonStatus from "../common/button-status";
 import ReportProgressModal from "../report-progress";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 const ViewWork = () => {
-    const {id} = useParams();
+    const { id } = useParams();
     const [workData, setWorkData] = useState();
-    const {reload} = useSelector(state => state.commonReducer);
+    const { reload } = useSelector((state) => state.commonReducer);
 
     useEffect(() => {
         getWork(id).then((response) => {
@@ -27,34 +27,34 @@ const ViewWork = () => {
         }
     }, [reload]);
 
-
     const tabExtra = useMemo(() => {
         return (
             <Row gutter={8}>
                 <Col>
-                    <ButtonStatus status={workData?.status} updateStatus={(status) => approvalWork(id, status)}/>
+                    <ButtonStatus
+                        status={workData?.status}
+                        updateStatus={(status) => approvalWork(id, status)}
+                    />
                 </Col>
                 <Col>
-                    <ReportProgressModal workId={id} progressType={workData?.progressType}/>
+                    <ReportProgressModal
+                        workId={id}
+                        progressType={workData?.progressType}
+                    />
                 </Col>
             </Row>
-        )
+        );
     }, [workData]);
 
+    console.log("jtadd", workData);
 
     return (
-        <Tabs
-            defaultActiveKey="general"
-            tabBarExtraContent={tabExtra}
-        >
+        <Tabs defaultActiveKey="general" tabBarExtraContent={tabExtra}>
             <Tabs.TabPane key={"general"} tab="Thông tin chung">
-                <ViewWorkGeneral data={workData}/>
+                <ViewWorkGeneral data={workData} />
                 <Collapse className="mt-3" defaultActiveKey={"work"}>
                     <Collapse.Panel header="Công việc" key={"work"}>
-                        <ProjectViewWork
-                            projectId={workData?.projectId}
-                            phaseId={workData?.phaseId}
-                        />
+                        <ProjectViewWork parentId={workData?.id} />
                     </Collapse.Panel>
                 </Collapse>
             </Tabs.TabPane>

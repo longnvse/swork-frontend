@@ -1,29 +1,29 @@
-import {Col, Collapse, DatePicker, Form, Input, InputNumber, message, Row, Select,} from "antd";
-import React, {useEffect, useState} from "react";
-import {getPhasePages} from "../../../../api/phase";
-import {getProjectPages} from "../../../../api/project";
-import {addWork, getWork, getWorkPages, updateWork,} from "../../../../api/work";
+import {
+    Col,
+    Collapse,
+    DatePicker,
+    Form,
+    Input,
+    InputNumber,
+    message,
+    Row,
+    Select,
+} from "antd";
+import React, { useEffect, useState } from "react";
+import {
+    addWork,
+    getWork,
+    getWorkPages,
+    updateWork,
+} from "../../../../api/work";
 import SelectAccount from "../../../common/select/account";
 import dayjs from "dayjs";
-import {message_error} from "../../../common/Constant";
+import { message_error } from "../../../common/Constant";
 
-const WorkForm = ({ workId, phaseId, projectId }) => {
+const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
     const [form] = Form.useForm();
-    const [projectData, setProjectData] = useState([]);
-    const [projectChoosed, setProjectChoosed] = useState(0);
-    const [showPhase, setShowPhase] = useState(false);
-    const [phaseData, setPhaseData] = useState([]);
-    const [phaseChoosed, setPhaseChoosed] = useState(0);
     const [workData, setWorkData] = useState([]);
     const [progressType, setProgressType] = useState();
-    const mapDataForOptions = (data) => {
-        return data?.map((option) => {
-            return {
-                label: option?.name,
-                value: option?.id,
-            };
-        });
-    };
 
     useEffect(() => {
         if (workId) {
@@ -34,38 +34,12 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                         response.data?.startDate &&
                         dayjs(response.data?.startDate),
                     endDate:
-                        response.data?.endDate &&
-                        dayjs(response.data?.endDate),
+                        response.data?.endDate && dayjs(response.data?.endDate),
                 });
                 setProgressType(response.data?.progressType);
             });
         }
-
-        getProjectPages().then((response) => {
-            setProjectData(mapDataForOptions(response?.data?.items));
-        });
     }, [workId]);
-
-    const onChangeProject = (e) => {
-        if (e) {
-            setShowPhase(true);
-            setProjectChoosed(e);
-            getPhasePages(e).then((response) => {
-                setPhaseData(mapDataForOptions(response?.data?.items));
-            });
-        }
-    };
-
-    const onChangePhase = (e) => {
-        if (e) {
-            setPhaseChoosed(e);
-            getWorkPages({ projectId: projectChoosed, phaseId: e }).then(
-                (response) => {
-                    setWorkData(mapDataForOptions(response?.data?.items));
-                },
-            );
-        }
-    };
 
     const onChangeProgressType = (value) => {
         setProgressType(value);
@@ -74,8 +48,9 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
     const onFinish = (values) => {
         values = {
             ...values,
-            projectId: values?.projectId || projectId || projectChoosed,
-            phaseId: values?.phaseId || phaseId || phaseChoosed,
+            projectId: Number(projectId),
+            phaseId: Number(phaseId),
+            parentId: Number(parentId),
         };
 
         if (!workId) {
@@ -156,7 +131,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                         </Col>
                         <Col span={24}>
                             <Form.Item name="handles" label="Người thực hiện">
-                                <SelectAccount withExt={true}/>
+                                <SelectAccount withExt={true} />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
@@ -169,7 +144,7 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                 name="participates"
                                 label="Người theo dõi/phối hợp thực hiện"
                             >
-                                <SelectAccount withExt={true}/>
+                                <SelectAccount withExt={true} />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
@@ -181,8 +156,6 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                             </Form.Item>
                         </Col>
                     </Row>
-                </Collapse.Panel>
-                <Collapse.Panel header="Nâng cao" key="advance">
                     <Row gutter={12} wrap className="pt-3">
                         <Col span={24}>
                             <Form.Item
@@ -310,34 +283,6 @@ const WorkForm = ({ workId, phaseId, projectId }) => {
                                 </Col>
                             </>
                         )}
-                        <Col span={24}>
-                            <Form.Item label="Dự án" name="projectId">
-                                <Select
-                                    className="w-full"
-                                    placeholder="Chọn dự án"
-                                    defaultValue={projectId}
-                                    options={projectData}
-                                    onChange={onChangeProject}
-                                    onClear={() => setShowPhase(false)}
-                                    onDeselect={() => setShowPhase(false)}
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Col>
-                        {showPhase ? (
-                            <Col span={24}>
-                                <Form.Item label="Giai đoạn" name="phaseId">
-                                    <Select
-                                        className="w-full"
-                                        placeholder="Chọn giai đoạn"
-                                        defaultValue={phaseId}
-                                        options={phaseData}
-                                        onChange={onChangePhase}
-                                        allowClear
-                                    />
-                                </Form.Item>
-                            </Col>
-                        ) : null}
                         <Col span={24}>
                             <Form.Item label="Công việc cha" name="parentId">
                                 <Select

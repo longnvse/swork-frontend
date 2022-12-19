@@ -1,25 +1,32 @@
-import {Button, Col, message, Popconfirm, Progress, Row, Table,} from "antd";
-import React, {useEffect, useState} from "react";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import { Button, Col, message, Popconfirm, Progress, Row, Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {ADD, DENIED, message_error, UPDATE} from "../../../../common/Constant";
+import {
+    ADD,
+    DENIED,
+    message_error,
+    UPDATE,
+} from "../../../../common/Constant";
 import WorkForm from "../../../work/form";
-import {deleteWork, getWorkPages} from "../../../../../api/work";
-import {columnsWork} from "../../../work/common/columns";
-import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {renderStatus} from "../../../../common/status";
+import { deleteWork, getWorkPages } from "../../../../../api/work";
+import { columnsWork } from "../../../work/common/columns";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { renderStatus } from "../../../../common/status";
 
-function ProjectViewWork({projectId, phaseId}) {
+function ProjectViewWork({ projectId, phaseId, parentId }) {
     const [dataSources, setDataSources] = useState([]);
-    const {reload} = useSelector(state => state.commonReducer);
+    const { reload } = useSelector((state) => state.commonReducer);
 
     useEffect(() => {
-        getWorkPages({projectId: projectId, phaseId: phaseId}).then(
-            (response) => {
-                setDataSources(mapData(response?.data?.items));
-            },
-        );
+        if (projectId || phaseId) {
+            getWorkPages({ projectId: projectId, phaseId: phaseId }).then(
+                (response) => {
+                    setDataSources(mapData(response?.data?.items));
+                },
+            );
+        }
     }, [projectId, phaseId, reload]);
 
     const onConfirmDelete = (id) => {
@@ -33,7 +40,6 @@ function ProjectViewWork({projectId, phaseId}) {
     const mapData = (data) => {
         if (data?.length <= 0) return [];
         return data?.map((item) => {
-            console.log(item.status);
             return {
                 key: item.id,
                 ...item,
@@ -42,7 +48,7 @@ function ProjectViewWork({projectId, phaseId}) {
                         {item?.name}
                     </Link>
                 ),
-                progress: <Progress percent={item?.progress}/>,
+                progress: <Progress percent={item?.progress} />,
                 admin: item?.admin,
                 status: renderStatus(item?.status),
                 priority: item?.priority,
@@ -55,12 +61,16 @@ function ProjectViewWork({projectId, phaseId}) {
                             formId={"work-form"}
                             mode={UPDATE}
                             buttonProps={{
-                                icon: <EditOutlined/>,
+                                icon: <EditOutlined />,
                                 type: "link",
                                 value: null,
                             }}
                         >
-                            <WorkForm workId={item?.id}/>
+                            <WorkForm
+                                projectId={projectId}
+                                workId={item?.id}
+                                phaseId={phaseId}
+                            />
                         </ButtonDrawer>
                         <Popconfirm
                             disabled={item.status !== DENIED}
@@ -70,7 +80,7 @@ function ProjectViewWork({projectId, phaseId}) {
                             <Button
                                 type={"link"}
                                 disabled={item.status !== DENIED}
-                                icon={<DeleteOutlined/>}
+                                icon={<DeleteOutlined />}
                             />
                         </Popconfirm>
                     </div>
@@ -94,11 +104,15 @@ function ProjectViewWork({projectId, phaseId}) {
                             width: 500,
                         }}
                     >
-                        <WorkForm/>
+                        <WorkForm
+                            projectId={projectId}
+                            phaseId={phaseId}
+                            parentId={parentId}
+                        />
                     </ButtonDrawer>
                 </Col>
             </Row>
-            <Table dataSource={dataSources} columns={columnsWork}/>
+            <Table dataSource={dataSources} columns={columnsWork} />
         </div>
     );
 }

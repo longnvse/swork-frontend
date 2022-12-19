@@ -1,21 +1,23 @@
-import React from 'react';
-import {Button, theme} from "antd";
+import React from "react";
+import { Button, theme } from "antd";
 
-
-const {useToken} = theme;
-const ButtonTab = ({icon, title, selected = false, onClick, buttonProps}) => {
-    const {token} = useToken()
+const { useToken } = theme;
+const ButtonTab = ({ icon, title, selected = false, onClick, buttonProps }) => {
+    const { token } = useToken();
 
     return (
         <Button
             icon={icon}
-            className={"flex flex-col items-center justify-center h-fit w-fit border-0" +
-                " btn--tab" + (selected ? "btn--tab__active" : "")}
+            className={
+                "flex flex-col items-center justify-center h-fit w-fit border-0" +
+                " btn--tab" +
+                (selected ? "btn--tab__active" : "")
+            }
             style={{
                 fontSize: 10,
-                lineHeight: '16px',
+                lineHeight: "16px",
                 color: selected && token.colorPrimary,
-                backgroundColor: selected && hexToRGBA(token.colorPrimary)
+                backgroundColor: selected && hexToRGBA(token.colorPrimary),
             }}
             onClick={onClick}
             {...buttonProps}
@@ -26,7 +28,9 @@ const ButtonTab = ({icon, title, selected = false, onClick, buttonProps}) => {
 };
 
 export const hexToRGBA = (h) => {
-    let r = 0, g = 0, b = 0;
+    let r = 0,
+        g = 0,
+        b = 0;
 
     // 3 digits
     if (h.length == 4) {
@@ -42,6 +46,6 @@ export const hexToRGBA = (h) => {
     }
 
     return "rgba(" + +r + "," + +g + "," + +b + ",0.08)";
-}
+};
 
 export default ButtonTab;
