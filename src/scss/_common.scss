@@ -1,7 +1,7 @@
 .text {
     &__header {
         font-family: 'Source Sans Pro', serif;
-        font-size: 32px;
+        font-size: x-large;
         font-weight: bold;
         color: white;
     }
@@ -10,24 +10,5 @@
 .btn {
     &--tab {
         border-radius: var(--border-radius);
-
-        &:hover {
-            background-color: var(--ant-primary-2);
-        }
-
-        &__selected {
-            background-color: var(--ant-primary-2);
-            color: var(--ant-primary-color-hover);
-            border-color: var(--ant-primary-color-hover);
-
-            &:hover {
-                background-color: var(--ant-primary-2);
-            }
-
-            &:focus {
-                background-color: var(--ant-primary-2);
-            }
-        }
-
     }
 }

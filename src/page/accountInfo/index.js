@@ -1,8 +1,8 @@
-import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Button, Form, Input, Radio } from "antd";
-import React, { useState } from "react";
-import { BiCheck, BiEditAlt } from "react-icons/bi";
-import { VscClose } from "react-icons/vsc";
+import {UserOutlined} from "@ant-design/icons";
+import {Avatar, Button, Form, Input, Radio} from "antd";
+import React, {useState} from "react";
+import {BiCheck, BiEditAlt} from "react-icons/bi";
+import {VscClose} from "react-icons/vsc";
 import classNames from "classnames/bind";
 
 const changePasswordFields = [

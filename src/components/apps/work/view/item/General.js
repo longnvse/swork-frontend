@@ -1,10 +1,10 @@
 import {Col, Progress, Row} from "antd";
-import moment from "moment";
 import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import SWDescription from "../../../../common/description";
 import {viewWorkFirstColumn, viewWorkSecondColumn} from "../columns";
-import {renderStatusWork} from "../../../../common/status/status-work";
+import {renderStatus} from "../../../../common/status";
+import dayjs from "dayjs";
 
 const ViewWorkGeneral = ({data}) => {
     const {id} = useParams();
@@ -15,7 +15,7 @@ const ViewWorkGeneral = ({data}) => {
         return {
             firstColumn: {
                 name: data?.name,
-                status: renderStatusWork(data?.status),
+                status: renderStatus(data?.status),
                 handles: data?.handles?.map((handle, index) => {
                     return <span key={index}>{handle?.memberName}</span>;
                 }),
@@ -25,7 +25,7 @@ const ViewWorkGeneral = ({data}) => {
                 participates: data?.participates.map((participate, index) => {
                     return <span key={index}>{participate?.memberName}</span>;
                 }),
-                date: `${moment(data?.startDate).format(dateFormat)} - ${moment(
+                date: `${dayjs(data?.startDate).format(dateFormat)} - ${dayjs(
                     data?.endDate,
                 ).format(dateFormat)}`,
             },

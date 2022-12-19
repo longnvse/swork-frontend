@@ -1,17 +1,21 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, message, Popconfirm, Table } from "antd";
-import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import {
     deleteResource,
     getResourcePages,
 } from "../../../../api/resource/resource";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import { DATE_FORMAT, INACTIVE, UPDATE } from "../../../common/Constant";
+import {
+    DATE_FORMAT,
+    INACTIVE,
+    message_error,
+    UPDATE,
+} from "../../../common/Constant";
 import { columnsResource } from "../common/columns";
 import ResourceForm from "../form";
+import dayjs from "dayjs";
 
 const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
     const [dataSources, setDataSources] = useState([]);
@@ -33,13 +37,7 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
             .then(() => {
                 message.success("Xoá thành công!");
             })
-            .catch((err) => {
-                message.error(
-                    err.response?.data?.detail ||
-                        err.response?.data?.title ||
-                        "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
-                );
-            });
+            .catch(message_error);
     };
 
     const mapData = (data) => {
@@ -59,7 +57,7 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
                 parent: item?.parentName,
                 date:
                     item?.dateResource &&
-                    moment(item.dateResource).format(DATE_FORMAT),
+                    dayjs(item.dateResource).format(DATE_FORMAT),
                 creator: item?.creator,
                 action: (
                     <div className={"flex justify-evenly"}>

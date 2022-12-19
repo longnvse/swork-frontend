@@ -1,17 +1,16 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Col, message, Popconfirm, Progress, Row } from "antd";
-import moment from "moment";
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { deletePhase, getPhasePages } from "../../../api/phase";
-import { isReload } from "../../../redux/actions/common/actions";
-import { URIS } from "../../../utils/constant";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {Button, message, Popconfirm, Progress} from "antd";
+import React, {useCallback, useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {Link} from "react-router-dom";
+import {deletePhase, getPhasePages} from "../../../api/phase";
+import {isReload} from "../../../redux/actions/common/actions";
+import {URIS} from "../../../utils/constant";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
-import { ADD, DATE_FORMAT, PENDING, UPDATE } from "../../common/Constant";
+import {ADD, PENDING, UPDATE} from "../../common/Constant";
 import CommonList from "../../common/list";
-import { renderStatus } from "../../common/status";
-import { columns } from "./common/columns";
+import {renderStatus} from "../../common/status";
+import {columns} from "./common/columns";
 import PhaseForm from "./form";
 
 const status = ["pending", "doing", "completed", "pause", "cancel"];

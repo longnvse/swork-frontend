@@ -4,11 +4,11 @@ import {renderStatus} from "../../../../common/status";
 import {UPDATE} from "../../../../common/Constant";
 import ProjectForm from "../../form";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import moment from "moment";
+import dayjs from "dayjs";
 
 function ProjectViewGeneral({data}) {
     const dayDiffTime = useMemo(() => {
-        return moment(data.endDate).diff(moment(data.startDate), "day");
+        return dayjs(data.endDate).diff(dayjs(data.startDate), "day");
     }, [data.startDate, data.endDate]);
 
     return (
@@ -41,9 +41,9 @@ function ProjectViewGeneral({data}) {
                         Thời gian dự kiến:
                     </Col>
                     <Col span={16}>
-                        {`${moment(data?.startDate).format(
+                        {`${dayjs(data?.startDate).format(
                             "DD/MM/YYYY",
-                        )} - ${moment(data.endDate).format(
+                        )} - ${dayjs(data.endDate).format(
                             "DD/MM/YYYY",
                         )} (${dayDiffTime} ngày)`}
                     </Col>

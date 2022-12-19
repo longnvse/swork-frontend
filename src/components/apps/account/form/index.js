@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {DatePicker, Form, Input, message} from "antd";
 import FormItem from "antd/es/form/FormItem";
-import {DATE_FORMAT} from "../../../common/Constant";
+import {DATE_FORMAT, message_error} from "../../../common/Constant";
 import {addAccount, getAccount, updateAccount} from "../../../../api/account/api";
 
 const AccountForm = ({id}) => {
@@ -20,17 +20,11 @@ const AccountForm = ({id}) => {
             addAccount(values).then(response => {
                 message.success("Tạo mới thành công!");
                 form.resetFields();
-            }).catch(error => {
-                console.log(error)
-                message.error(error?.response?.data?.detail || "Đã xảy ra lỗi, vui lòng thử lại!");
-            })
+            }).catch(message_error)
         } else {
             updateAccount(id, values).then(response => {
                 message.success("Cập nhật thành công!");
-            }).catch(error => {
-                console.log(error)
-                message.error(error?.response?.data?.detail || "Đã xảy ra lỗi, vui lòng thử lại!");
-            })
+            }).catch(message_error)
         }
 
     }

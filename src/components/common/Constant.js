@@ -1,3 +1,5 @@
+import {message} from "antd";
+
 export const ADD = "add";
 export const UPDATE = "update";
 export const INFORMATION = "information";
@@ -8,10 +10,23 @@ export const DENIED = "denied";
 export const COMPLETED = "completed";
 export const DATE_FORMAT = "DD-MM-YYYY"
 export const STATUS = {
-    "doing": "Đang hoạt động",
-    "inactive": "Dừng hoạt động",
+    "active": "Đang thực hiện",
+    "inactive": "Tạm dừng",
     "pending": "Chờ thực hiện",
-    "pause": "Tạm dừng",
-    "completed": "Đã hoàn thành",
-    "cancel": "Đã huỷ"
+    "completed": "Hoàn thành",
+    "denied": "Đã huỷ"
+}
+
+export const STATUS_ARRAY = [PENDING, ACTIVE, COMPLETED, INACTIVE, DENIED]
+
+export const CLASS_PK_NAME = {
+    PROJECT: "project",
+    PHASE: "phase",
+    WORK: "work"
+}
+export const message_error = (error) => {
+    message.error(error.response?.data?.detail ||
+        error.response?.data?.title ||
+        "Đã có lỗi xảy ra vui lòng thử lại sau ít phút!");
+
 }

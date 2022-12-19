@@ -1,15 +1,15 @@
-import { Col, Divider, Progress, Row } from "antd";
-import moment from "moment";
-import React, { useMemo } from "react";
+import {Col, Divider, Progress, Row} from "antd";
+import React, {useMemo} from "react";
 import ButtonDrawer from "../../../../../common/button/ButtonDrawer";
-import { UPDATE } from "../../../../../common/Constant";
-import { convertMoney } from "../../../../../common/convert";
-import { renderStatus } from "../../../../../common/status";
+import {UPDATE} from "../../../../../common/Constant";
+import {convertMoney} from "../../../../../common/convert";
+import {renderStatus} from "../../../../../common/status";
 import ProjectForm from "../../../form";
+import dayjs from "dayjs";
 
 const ProjectViewGeneral = ({ data }) => {
     const dayDiffTime = useMemo(() => {
-        return moment(data.endDate).diff(moment(data.startDate), "day");
+        return dayjs(data.endDate).diff(dayjs(data.startDate), "day");
     }, [data.startDate, data.endDate]);
 
     return (
@@ -37,9 +37,9 @@ const ProjectViewGeneral = ({ data }) => {
                     Thời gian dự kiến:
                 </Col>
                 <Col span={16}>
-                    {`${moment(data?.startDate).format(
+                    {`${dayjs(data?.startDate).format(
                         "DD/MM/YYYY",
-                    )} - ${moment(data.endDate).format(
+                    )} - ${dayjs(data.endDate).format(
                         "DD/MM/YYYY",
                     )} (${dayDiffTime} ngày)`}
                 </Col>

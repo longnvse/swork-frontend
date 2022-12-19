@@ -1,13 +1,13 @@
 import React from "react";
-import { Avatar, Dropdown, Menu, Space } from "antd";
-import { KeyOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logoutStart } from "../../../../../redux/actions/login/actions";
-import { VscAccount } from "react-icons/vsc";
-import { RiGitRepositoryPrivateLine } from "react-icons/ri";
-import { URIS } from "../../../../../utils/constant";
-import { getMe } from "../../../../../api/common";
+import {Avatar, Dropdown, Menu, Space} from "antd";
+import {KeyOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {logoutStart} from "../../../../../redux/actions/login/actions";
+import {VscAccount} from "react-icons/vsc";
+import {RiGitRepositoryPrivateLine} from "react-icons/ri";
+import {URIS} from "../../../../../utils/constant";
+import {getMe} from "../../../../../api/common";
 
 const ProfileIcon = (props) => {
     let navigate = useNavigate();
