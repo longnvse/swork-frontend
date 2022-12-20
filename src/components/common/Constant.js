@@ -19,6 +19,11 @@ export const STATUS = {
 
 export const STATUS_ARRAY = [PENDING, ACTIVE, COMPLETED, INACTIVE, DENIED]
 
+export const CLASS_PK_NAME = {
+    PROJECT: "project",
+    PHASE: "phase",
+    WORK: "work"
+}
 export const message_error = (error) => {
     message.error(error.response?.data?.detail ||
         error.response?.data?.title ||
