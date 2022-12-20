@@ -32,8 +32,9 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
             }).then((response) => {
                 setDataSources(mapData(response?.data?.items));
             });
+        } else {
+            setDataSources(mapData(resourceData));
         }
-        setDataSources(resourceData);
     }, [resourceData, reload]);
 
     const onConfirmDelete = (id) => {

@@ -1,23 +1,50 @@
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import {Button, message, Popconfirm, Progress, Table} from "antd";
-import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import {deleteWork, getWorkPages} from "../../../../api/work";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, message, Popconfirm, Progress, Col, Row } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { deleteWork, getWorkPages } from "../../../../api/work";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import {DENIED, message_error, UPDATE} from "../../../common/Constant";
-import {columnsWork} from "../common/columns";
+import {
+    ADD,
+    DATE_FORMAT,
+    DENIED,
+    message_error,
+    STATUS,
+    UPDATE,
+} from "../../../common/Constant";
+import { columnsWork } from "../common/columns";
 import WorkForm from "../form";
+import { useDispatch } from "react-redux";
+import { isReload, setHeader } from "../../../../redux/actions/common/actions";
+import SWTabs from "../../../common/tabs";
+import CommonList from "../../../common/list";
+import { renderStatus } from "../../../common/status";
+import dayjs from "dayjs";
+import ButtonTab from "../../../common/button/ButtonTab";
 
-const WorkList = ({projectId, phaseId}) => {
-    const [dataSources, setDataSources] = useState([]);
+const WorkList = ({ projectId, phaseId }) => {
+    const [filter, setFilter] = useState(null);
+    const dispatch = useDispatch();
+    const status = ["pending", "active", "completed", "inactive", "denied"];
 
     useEffect(() => {
-        getWorkPages({projectId: projectId, phaseId: phaseId}).then(
-            (response) => {
-                setDataSources(mapData(response?.data?.items));
-            },
-        );
-    }, [projectId, phaseId]);
+        dispatch(setHeader("Danh sách công việc"));
+    }, []);
+
+    useEffect(() => {
+        if (filter !== null) {
+            dispatch(isReload(true));
+        }
+    }, [filter]);
+
+    const onLoad = useCallback(
+        (params) => {
+            params.filter = filter;
+
+            return getWorkPages(params);
+        },
+        [filter],
+    );
 
     const onConfirmDelete = (id) => {
         deleteWork(id)
@@ -38,11 +65,11 @@ const WorkList = ({projectId, phaseId}) => {
                         {item?.name}
                     </Link>
                 ),
-                progress: <Progress percent={item?.progress}/>,
+                progress: <Progress percent={item?.progress} />,
                 admin: item?.admin,
-                status: item?.status,
+                status: renderStatus(item?.status),
                 priority: item?.priority,
-                intendTime: item?.intendTime,
+                intendTime: dayjs(item?.intendTime).format(DATE_FORMAT),
                 deadline: item?.deadline,
                 action: (
                     <div className={"flex justify-evenly"}>
@@ -51,12 +78,12 @@ const WorkList = ({projectId, phaseId}) => {
                             formId={"work-form"}
                             mode={UPDATE}
                             buttonProps={{
-                                icon: <EditOutlined/>,
+                                icon: <EditOutlined />,
                                 type: "link",
                                 value: null,
                             }}
                         >
-                            <WorkForm workId={item?.id}/>
+                            <WorkForm workId={item?.id} />
                         </ButtonDrawer>
                         <Popconfirm
                             disabled={item.status !== DENIED}
@@ -66,7 +93,7 @@ const WorkList = ({projectId, phaseId}) => {
                             <Button
                                 type={"link"}
                                 disabled={item.status !== DENIED}
-                                icon={<DeleteOutlined/>}
+                                icon={<DeleteOutlined />}
                             />
                         </Popconfirm>
                     </div>
@@ -75,9 +102,64 @@ const WorkList = ({projectId, phaseId}) => {
         });
     };
 
+    const tabItemsForList = [
+        {
+            label: "Tất cả",
+            key: "all",
+        },
+        ...status.map((item) => ({ label: STATUS[item], key: item })),
+    ];
+
+    const onChangeStatusFilter = (activeKey) => {
+        if (!isValidStatus(activeKey)) {
+            return;
+        }
+        if (activeKey === "all") {
+            setFilter((prev) => undefined);
+            return;
+        }
+        setFilter((prev) => `status eq '${activeKey}'`);
+    };
+
+    const isValidStatus = (activeKey) => {
+        return (
+            tabItemsForList.findIndex((item) => item.key === activeKey) !== -1
+        );
+    };
+
+    const tabExtra = (
+        <Row gutter={8}>
+            <Col>
+                <ButtonDrawer
+                    title={"Thêm mới công việc"}
+                    formId={"work-form"}
+                    mode={ADD}
+                    button={
+                        <ButtonTab
+                            icon={<PlusOutlined style={{ fontSize: 20 }} />}
+                            title={"Thêm công việc"}
+                        />
+                    }
+                >
+                    <WorkForm />
+                </ButtonDrawer>
+            </Col>
+        </Row>
+    );
+
     return (
         <div>
-            <Table dataSource={dataSources} columns={columnsWork}/>
+            <SWTabs
+                onChange={onChangeStatusFilter}
+                items={tabItemsForList}
+                tabBarExtraContent={tabExtra}
+            />
+            <CommonList
+                mapData={mapData}
+                load={onLoad}
+                columns={columnsWork}
+                hiddenButton={false}
+            />
         </div>
     );
 };
