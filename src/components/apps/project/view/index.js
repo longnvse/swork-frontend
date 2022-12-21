@@ -1,32 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row } from "antd";
-import { approvalProject, getProject } from "../../../../api/project";
+import React, {useEffect, useState} from "react";
+import {Col, Row} from "antd";
+import {approvalProject, getProject} from "../../../../api/project";
 import ProjectViewPhase from "./tabs/Phase";
 import ProjectViewResource from "./tabs/Resource";
 import ProjectViewWork from "./tabs/Work";
-import { useParams } from "react-router-dom";
+import {useParams} from "react-router-dom";
 import TeamList from "../../team";
 import ProjectViewDetail from "./tabs/Project";
-import { getTeamPages } from "../../../../api/team";
-import { getPhasePages } from "../../../../api/phase";
+import {getTeamPages} from "../../../../api/team";
+import {getPhasePages} from "../../../../api/phase";
 import ButtonTab from "../../../common/button/ButtonTab";
 import ButtonStatus from "../../work/common/button-status";
 import SWTabs from "../../../common/tabs";
-import { useDispatch, useSelector } from "react-redux";
-import { setHeader } from "../../../../redux/actions/common/actions";
+import {useDispatch, useSelector} from "react-redux";
+import {setHeader} from "../../../../redux/actions/common/actions";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import { UPDATE } from "../../../common/Constant";
-import { EditOutlined, UsergroupAddOutlined } from "@ant-design/icons";
+import {MODULE_ID, UPDATE} from "../../../common/Constant";
+import {EditOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 import ProjectForm from "../form";
 import ButtonModal from "../../../common/button/ButtonModal";
 import ProjectMemberForm from "../form/update-member-form";
+import SWFile from "../../../common/file";
 
 function ProjectView(props) {
     const [data, setData] = useState({});
-    const { id } = useParams();
+    const {id} = useParams();
     const [teamData, setTeamData] = useState([]);
     const [phaseData, setPhaseData] = useState([]);
-    const { reload } = useSelector((state) => state.commonReducer);
+    const {reload} = useSelector((state) => state.commonReducer);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -38,7 +39,7 @@ function ProjectView(props) {
             setData(response?.data);
         });
 
-        getTeamPages({ projectId: id }).then((response) => {
+        getTeamPages({projectId: id}).then((response) => {
             setTeamData(response?.data.items);
         });
 
@@ -62,22 +63,30 @@ function ProjectView(props) {
         {
             label: "Giai đoạn",
             key: "phase",
-            children: <ProjectViewPhase projectId={data.id} />,
+            children: <ProjectViewPhase projectId={data.id}/>,
         },
         {
             label: "Đội nhóm",
             key: "team",
-            children: <TeamList projectId={data.id} />,
+            children: <TeamList projectId={data.id}/>,
         },
         {
             label: "Tài nguyên",
             key: "resource",
-            children: <ProjectViewResource projectId={data.id || id} />,
+            children: <ProjectViewResource projectId={data.id || id}/>,
         },
         {
             label: "Công việc",
             key: "work",
-            children: <ProjectViewWork projectId={data.id || id} phaseId={0} />,
+            children: <ProjectViewWork projectId={data.id || id} phaseId={0}/>,
+        },
+        {
+            label: "Đính kèm",
+            key: "attach",
+            children: <SWFile
+                projectId={data.id}
+                appId={`${data.id}`}
+                moduleId={MODULE_ID.PROJECT}/>,
         },
     ];
 
@@ -98,14 +107,14 @@ function ProjectView(props) {
                         <ButtonTab
                             icon={
                                 <UsergroupAddOutlined
-                                    style={{ fontSize: 20 }}
+                                    style={{fontSize: 20}}
                                 />
                             }
                             title={"Người thực hiện"}
                         />
                     }
                 >
-                    <ProjectMemberForm projectData={data} />
+                    <ProjectMemberForm projectData={data}/>
                 </ButtonModal>
             </Col>
             <Col>
@@ -115,12 +124,12 @@ function ProjectView(props) {
                     mode={UPDATE}
                     button={
                         <ButtonTab
-                            icon={<EditOutlined style={{ fontSize: 20 }} />}
+                            icon={<EditOutlined style={{fontSize: 20}}/>}
                             title={"Sửa dự án"}
                         />
                     }
                 >
-                    <ProjectForm id={id} />
+                    <ProjectForm id={id}/>
                 </ButtonDrawer>
             </Col>
         </Row>
@@ -128,7 +137,7 @@ function ProjectView(props) {
 
     return (
         <div>
-            <SWTabs items={tabItems} tabBarExtraContent={tabExtra} />
+            <SWTabs items={tabItems} tabBarExtraContent={tabExtra}/>
         </div>
     );
 }

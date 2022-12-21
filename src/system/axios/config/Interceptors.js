@@ -8,9 +8,9 @@ import {
 import {getToken, refreshToken} from "../../../api/login/api";
 import {logoutStart} from "../../../redux/actions/login/actions";
 import {closeDrawer, isReload, loadingFinish, loadingStart} from "../../../redux/actions/common/actions";
+import {urlFile} from "../../../api/file";
 
 const setup = (store) => {
-
 
     axiosInstance.interceptors.request.use(
         (config) => {
@@ -20,7 +20,9 @@ const setup = (store) => {
             config.headers["Authorization"] = oauth2Token;
             config.headers["swork-x-user-context-request"] = accessToken;
 
-            store.dispatch(loadingStart(config.url));
+            if (config.url !== urlFile) {
+                store.dispatch(loadingStart(config.url));
+            }
 
             return config;
 
@@ -47,7 +49,6 @@ const setup = (store) => {
                     store.dispatch(closeDrawer(new Boolean(true)));
                 }
             }
-
             return res;
         },
         async (err) => {
