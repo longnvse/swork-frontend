@@ -54,52 +54,47 @@ const WorkList = ({ projectId, phaseId }) => {
             .catch(message_error);
     };
 
-    const mapData = (data) => {
-        if (data?.length <= 0) return [];
-        return data?.map((item) => {
-            return {
-                key: item.id,
-                ...item,
-                name: (
-                    <Link to={`/project/view-work/${item?.id}`}>
-                        {item?.name}
-                    </Link>
-                ),
-                progress: <Progress percent={item?.progress} />,
-                admin: item?.admin,
-                status: renderStatus(item?.status),
-                priority: item?.priority,
-                intendTime: dayjs(item?.intendTime).format(DATE_FORMAT),
-                deadline: item?.deadline,
-                action: (
-                    <div className={"flex justify-evenly"}>
-                        <ButtonDrawer
-                            title={"Cập nhật công việc"}
-                            formId={"work-form"}
-                            mode={UPDATE}
-                            buttonProps={{
-                                icon: <EditOutlined />,
-                                type: "link",
-                                value: null,
-                            }}
-                        >
-                            <WorkForm workId={item?.id} />
-                        </ButtonDrawer>
-                        <Popconfirm
+    const mapData = (item) => {
+        return {
+            key: item.id,
+            ...item,
+            name: (
+                <Link to={`/project/view-work/${item?.id}`}>{item?.name}</Link>
+            ),
+            progress: <Progress percent={item?.progress} />,
+            admin: item?.admin,
+            status: renderStatus(item?.status),
+            priority: item?.priority,
+            intendTime: dayjs(item?.intendTime).format(DATE_FORMAT),
+            deadline: item?.deadline,
+            action: (
+                <div className={"flex justify-evenly"}>
+                    <ButtonDrawer
+                        title={"Cập nhật công việc"}
+                        formId={"work-form"}
+                        mode={UPDATE}
+                        buttonProps={{
+                            icon: <EditOutlined />,
+                            type: "link",
+                            value: null,
+                        }}
+                    >
+                        <WorkForm workId={item?.id} />
+                    </ButtonDrawer>
+                    <Popconfirm
+                        disabled={item.status !== DENIED}
+                        title={"Chắc chắn chứ!"}
+                        onConfirm={() => onConfirmDelete(item.id)}
+                    >
+                        <Button
+                            type={"link"}
                             disabled={item.status !== DENIED}
-                            title={"Chắc chắn chứ!"}
-                            onConfirm={() => onConfirmDelete(item.id)}
-                        >
-                            <Button
-                                type={"link"}
-                                disabled={item.status !== DENIED}
-                                icon={<DeleteOutlined />}
-                            />
-                        </Popconfirm>
-                    </div>
-                ),
-            };
-        });
+                            icon={<DeleteOutlined />}
+                        />
+                    </Popconfirm>
+                </div>
+            ),
+        };
     };
 
     const tabItemsForList = [
