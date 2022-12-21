@@ -3,8 +3,18 @@ import {Col, Row, Table} from "antd";
 import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import {useSearchParams} from "react-router-dom";
+import {message_error} from "../Constant";
 
-function CommonList({mapData, buttonAdd = <></>, load, columns = [], isSelections = false, hiddenButton = false}) {
+function CommonList({
+                        mapData,
+                        buttonAdd = <></>,
+                        load,
+                        columns = [],
+                        isSelections = false,
+                        rowSelection = {},
+                        hiddenButton = false,
+                        maxHeight = 650
+                    }) {
     const [params, setParams] = useState({page: 1, pageSize: 10});
     const [totalCount, setTotalCount] = useState();
     const [data, setData] = useState([]);
@@ -34,9 +44,7 @@ function CommonList({mapData, buttonAdd = <></>, load, columns = [], isSelection
                 ...mapData(item), index: (params.page - 1) * 10 + index + 1,
             })));
             setTotalCount(response.data?.totalCount);
-        }).catch(err => {
-            console.log(err)
-        });
+        }).catch(message_error);
     }
 
     const onChangeTable = ({current, pageSize}, filters, sorter, extra) => {
@@ -55,7 +63,7 @@ function CommonList({mapData, buttonAdd = <></>, load, columns = [], isSelection
             columns={columns}
             dataSource={data}
             onChange={onChangeTable}
-            rowSelection={isSelections && {}}
+            rowSelection={isSelections && rowSelection}
             onHeaderRow={() => {
                 return {
                     style: {
@@ -63,8 +71,8 @@ function CommonList({mapData, buttonAdd = <></>, load, columns = [], isSelection
                     }
                 }
             }}
-            scroll={data?.length > 10 && {
-                y: 650
+            scroll={{
+                y: maxHeight
             }}
             pagination={{
                 defaultCurrent: 1, defaultPageSize: 10, total: totalCount, showTotal: (total) => `${total} kết quả`,
