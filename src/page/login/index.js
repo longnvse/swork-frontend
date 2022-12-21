@@ -32,12 +32,12 @@ function LoginPage(props) {
                 </a>
             </div>
             <div className="px-10 m-auto mt-10 flex items-start justify-between">
-                <div className="flex flex-col items-end">
+                <div className="w-[10%] flex flex-col items-end">
                     <img src={Coffee} alt="Coffee" className="mb-8" />
                     <div className="w-[150px] bg-orange-500 rounded-lg h-[5px]" />
                 </div>
 
-                <div className="mt-14">
+                <div className="mt-14 w-[30%]">
                     <h1 className="w-[200px] leading-[45px] text-gray-400 font-[400] mb-5">
                         Great to have you back!
                     </h1>
@@ -50,11 +50,13 @@ function LoginPage(props) {
 
                 <LoginForm />
 
-                <img
-                    src={Lightbulb}
-                    alt="Lightbulb"
-                    style={{ transform: "translate(-50%, 200%)" }}
-                />
+                <div className="w-[10%]">
+                    <img
+                        src={Lightbulb}
+                        alt="Lightbulb"
+                        style={{ transform: "translate(50%, 200%)" }}
+                    />
+                </div>
             </div>
         </div>
     );

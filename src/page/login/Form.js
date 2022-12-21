@@ -15,11 +15,11 @@ function LoginForm(props) {
     return (
         <div
             className={
-                "flex items-center justify-center rounded-lg overflow-hidden"
+                "w-[30%] flex items-center justify-center rounded-lg overflow-hidden"
             }
             style={{ border: "2px solid lightblue" }}
         >
-            <div className={"w-full px-20 py-7 bg-white h-full"}>
+            <div className={"w-full xl:px-20 md:p-10 py-7 bg-white h-full"}>
                 <div className="w-full text-center">
                     <img src={logo} alt="logo" />
                 </div>
