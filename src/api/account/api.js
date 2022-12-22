@@ -1,10 +1,10 @@
-import { SWAxios } from "../../system/axios";
+import {SWAxios} from "../../system/axios";
 
 const url = "swork/account-rest/v1.0/accounts";
 const urlInfo = "swork/account-rest/v1.0/accounts/account-info";
 
 export const getAccountPages = (params) => {
-    return SWAxios.get(url, { params });
+    return SWAxios.get(url, {params});
 };
 
 export const getAccount = (accountId) => {
@@ -23,7 +23,7 @@ export const approvalAccount = (accountId, status) => {
     return SWAxios.put(
         `${url}/approval/${accountId}`,
         {},
-        { params: { status } },
+        {params: {status}},
     );
 };
 
@@ -51,4 +51,10 @@ export const uploadAvatar = (multipartBody) => {
                 'Content-Type': "multipart/form-data"
             }
         });
+}
+
+export const getListAccount = (accountIds = []) => {
+    const params = `?accountIds=${accountIds.join("&accountIds=")}`
+
+    return SWAxios.get(`${url}/account-list/${params}`);
 }

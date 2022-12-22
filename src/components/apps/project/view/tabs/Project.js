@@ -47,7 +47,7 @@ const ProjectViewDetail = ({data, teamData, phaseData}) => {
                     className={"rounded-[8px] border-solid border-[1px] border-[#ccc] mt-1.5 p-6 w-full"}
                 >
                     <Row className={"w-full"}>
-                            <strong>Thảo luận</strong>
+                        <strong>Thảo luận</strong>
                     </Row>
                     <Row className={"w-full"}>
                         <CommentList classPkId={data.id} classPkName={CLASS_PK_NAME.PROJECT}/>

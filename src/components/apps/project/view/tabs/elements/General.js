@@ -6,8 +6,9 @@ import {convertMoney} from "../../../../../common/convert";
 import {renderStatus} from "../../../../../common/status";
 import ProjectForm from "../../../form";
 import dayjs from "dayjs";
+import AccountGroup from "../../../../../common/account/group";
 
-const ProjectViewGeneral = ({ data }) => {
+const ProjectViewGeneral = ({data}) => {
     const dayDiffTime = useMemo(() => {
         return dayjs(data.endDate).diff(dayjs(data.startDate), "day");
     }, [data.startDate, data.endDate]);
@@ -15,7 +16,7 @@ const ProjectViewGeneral = ({ data }) => {
     return (
         <Col
             span={7}
-            className={"rounded-[8px] border-solid border-[1px] border-[#ccc]"}
+            className={"rounded-[8px] border-solid border-[1px] border-[#ccc] h-fit"}
         >
             <Row className={"justify-center text-[20px] font-bold p-[17px]"}>
                 {data.name}
@@ -26,10 +27,10 @@ const ProjectViewGeneral = ({ data }) => {
             <Row className={"p-[17px] justify-between"}>
                 <Col span={3}>Tiến độ:</Col>
                 <Col span={20}>
-                    <Progress percent={data.progress} />
+                    <Progress percent={data.progress}/>
                 </Col>
             </Row>
-            <Divider style={{ fontSize: 14 }} orientation="left">
+            <Divider style={{fontSize: 14}} orientation="left">
                 Chi tiết
             </Divider>
             <Row className={"p-[17px]"}>
@@ -61,7 +62,7 @@ const ProjectViewGeneral = ({ data }) => {
                     Người quản trị:
                 </Col>
                 <Col span={16}>
-                    {data.manages?.map((item) => item.memberName)}
+                    <AccountGroup accountIds={data.manages?.map(item => item.memberId)}/>
                 </Col>
             </Row>
             <Row className={"p-[17px]"}>
@@ -69,7 +70,7 @@ const ProjectViewGeneral = ({ data }) => {
                     Người theo dõi:
                 </Col>
                 <Col span={16}>
-                    {data.participates?.map((item) => item.memberName)}
+                    <AccountGroup accountIds={data.participates?.map(item => item.memberId)}/>
                 </Col>
             </Row>
             <Row className={"p-[17px]"}>
@@ -77,7 +78,7 @@ const ProjectViewGeneral = ({ data }) => {
                     Người thực hiện:
                 </Col>
                 <Col span={16}>
-                    {data.handles?.map((item) => item.memberName)}
+                    <AccountGroup accountIds={data.handles?.map(item => item.memberId)}/>
                 </Col>
             </Row>
             <Row className={"justify-center mb-[17px]"}>
@@ -89,7 +90,7 @@ const ProjectViewGeneral = ({ data }) => {
                         value: "Cập nhật",
                     }}
                 >
-                    <ProjectForm id={data.id} />
+                    <ProjectForm id={data.id}/>
                 </ButtonDrawer>
             </Row>
         </Col>
