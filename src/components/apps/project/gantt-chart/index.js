@@ -3,19 +3,21 @@ import {Gantt, ViewMode} from "gantt-task-react";
 import {getProjectPages, updateDateProject} from "../../../../api/project";
 import {message_error} from "../../../common/Constant";
 import dayjs from "dayjs";
-import {Button, Layout} from "antd";
+import {Button, Col, Layout, Row} from "antd";
 import {Content} from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import {CloseOutlined} from "@ant-design/icons";
+import {CloseOutlined, ProjectOutlined} from "@ant-design/icons";
 import {progressColorGanttChart, statusColorGanttChart, statusColorGanttChartSelected} from "../../../common/status";
 import {useSearchParams} from "react-router-dom";
+import ProjectInfo from "./project-info";
 
 const ProjectGanttChart = (props) => {
     const [tasks, setTasks] = useState([]);
     const [collapsed, setCollapsed] = useState(true);
     const [searchParams] = useSearchParams();
     const [viewMode, setViewMode] = useState(ViewMode.Day);
-
+    const [selectedProject, setSelectedProject] = useState();
+    const [selectedProjectName, setSelectedProjectName] = useState();
     useEffect(() => {
         getProjectPages({page: 1, pageSize: Number.MAX_VALUE}).then(res => {
             setTasks(res.data?.items?.map(mapData) || []);
@@ -75,7 +77,9 @@ const ProjectGanttChart = (props) => {
         return updateDateProject(id, start, end);
     }
 
-    const onClick = (task) => {
+    const onClick = ({id, name}) => {
+        setSelectedProject(id);
+        setSelectedProjectName(name);
         setCollapsed(false);
     }
 
@@ -95,14 +99,39 @@ const ProjectGanttChart = (props) => {
         <Sider
             collapsed={collapsed}
             collapsedWidth={0}
-            width={300}
+            width={350}
             theme={"light"}
             className={"shadow-l"}
             style={{
                 borderRadius: 8, boxShadow: "-5px 0 5px -5px #171a1f", marginLeft: !collapsed ? '8px' : 0
             }}
         >
-            <Button type={"text"} icon={<CloseOutlined/>} className={"float-right"} onClick={() => setCollapsed(true)}/>
+            <Row className={"justify-between items-center p-5"}
+                 style={{
+                     borderBottom: '1px solid #cccccc66'
+                 }}
+            >
+                <Col>
+                    <Row className={"font-bold text-[16px] items-center"} gutter={12}>
+                        <Col>
+                            <Button type={"primary"}
+                                    className={"rounded-3xl w-[40px] h-[40px] flex items-center justify-center"}
+                                    icon={<ProjectOutlined style={{fontSize: 16}}/>}/>
+                        </Col>
+                        <Col>{selectedProjectName}</Col>
+                    </Row>
+                </Col>
+                <Col>
+                    <Button
+                        type={"text"}
+                        icon={<CloseOutlined/>}
+                        className={"float-right"}
+                        onClick={() => setCollapsed(true)}/>
+                </Col>
+            </Row>
+            <div className={"p-5"}>
+                <ProjectInfo projectId={selectedProject}/>
+            </div>
         </Sider>
     </Layout>);
 };
