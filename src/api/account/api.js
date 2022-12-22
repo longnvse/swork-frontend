@@ -24,3 +24,13 @@ export const approvalAccount = (accountId, status) => {
 export const deleteAccount = (accountId) => {
     return SWAxios.delete(`${url}/${accountId}`);
 }
+
+export const uploadAvatar = (multipartBody) => {
+    return SWAxios.patch(`${url}/account-info/avatar`,
+        multipartBody,
+        {
+            headers: {
+                'Content-Type': "multipart/form-data"
+            }
+        });
+}

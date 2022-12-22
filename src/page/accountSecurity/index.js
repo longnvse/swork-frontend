@@ -1,7 +1,6 @@
-import {UserOutlined} from "@ant-design/icons";
-import {Avatar} from "antd";
 import React, {useState} from "react";
 import FormAuthentication from "../../components/common/Authentication/Form";
+import AvatarAccount from "../accountInfo/avatar";
 
 const changePasswordFields = [
     {
@@ -44,19 +43,7 @@ const AccountSecurity = () => {
     return (
         <div className="px-20 py-11">
             <div className="flex items-center">
-                <div>
-                    <Avatar
-                        size={64}
-                        icon={<UserOutlined />}
-                        // src={require("../../../../../images/avatar.png")}
-                        // src={`${base_url}${portraitThumbnail}`}
-                    />
-                    <img
-                        src={require("../../images/icon-edit.png")}
-                        alt=""
-                        className="-translate-x-6 translate-y-4 cursor-pointer"
-                    />
-                </div>
+                <AvatarAccount/>
                 <div className="ml-14 text-primary text-24/36 font-semibold">
                     Xin chào {account.username}
                 </div>
@@ -64,7 +51,7 @@ const AccountSecurity = () => {
             <div className="mt-8 px-10 max-w-[781px] mx-auto">
                 <div
                     className="py-4 text-14/22"
-                    style={{ borderBottom: "1px solid #DEE1E6FF" }}
+                    style={{borderBottom: "1px solid #DEE1E6FF"}}
                 >
                     <div className="font-semibold">Account</div>
                     <div className="mt-1">{account.username.toLowerCase()}</div>

@@ -1,9 +1,9 @@
-import {UserOutlined} from "@ant-design/icons";
-import {Avatar, Button, Form, Input, Radio} from "antd";
+import {Button, Form, Input, Radio} from "antd";
 import React, {useState} from "react";
 import {BiCheck, BiEditAlt} from "react-icons/bi";
 import {VscClose} from "react-icons/vsc";
 import classNames from "classnames/bind";
+import AvatarAccount from "./avatar";
 
 const changePasswordFields = [
     {
@@ -71,13 +71,13 @@ const AccountInfo = () => {
     };
 
     const [fields, setFields] = useState([
-        { name: "fullname", value: "King Wisdom" },
-        { name: "email", value: "kingwisdom.dev@gmail.com" },
-        { name: "gender", value: true },
-        { name: "birthday", value: "1/1/2000" },
-        { name: "phone", value: "0123456789" },
-        { name: "address", value: "Ha Noi - Viet Nam" },
-        { name: "department", value: "phong ban a" },
+        {name: "fullname", value: "King Wisdom"},
+        {name: "email", value: "kingwisdom.dev@gmail.com"},
+        {name: "gender", value: true},
+        {name: "birthday", value: "1/1/2000"},
+        {name: "phone", value: "0123456789"},
+        {name: "address", value: "Ha Noi - Viet Nam"},
+        {name: "department", value: "phong ban a"},
     ]);
 
     const [isEditing, setIsEditing] = useState(false);
@@ -94,19 +94,7 @@ const AccountInfo = () => {
     return (
         <div className="px-20 py-11">
             <div className="flex items-center">
-                <div>
-                    <Avatar
-                        size={64}
-                        icon={<UserOutlined />}
-                        // src={require("../../../../../images/avatar.png")}
-                        // src={`${base_url}${portraitThumbnail}`}
-                    />
-                    <img
-                        src={require("../../images/icon-edit.png")}
-                        alt=""
-                        className="-translate-x-6 translate-y-4 cursor-pointer"
-                    />
-                </div>
+                <AvatarAccount/>
                 <div className="ml-14 text-primary text-24/36 font-semibold">
                     Xin chào {account.username}
                 </div>
@@ -164,7 +152,7 @@ const AccountInfo = () => {
                                 className={
                                     "h-10 flex items-center bg-primary text-white hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
                                 }
-                                icon={<BiEditAlt size={20} className="mr-2" />}
+                                icon={<BiEditAlt size={20} className="mr-2"/>}
                                 onClick={toggleEdit}
                             >
                                 Chỉnh sửa
@@ -178,7 +166,7 @@ const AccountInfo = () => {
                                         "h-10 flex items-center justify-center text-primary border-primary hover:border-white hover:bg-primary hover:text-white focus:border-white focus:bg-primary focus:text-white"
                                     }
                                     icon={
-                                        <BiCheck size={20} className="mr-2" />
+                                        <BiCheck size={20} className="mr-2"/>
                                     }
                                 >
                                     Cập nhật
@@ -189,7 +177,7 @@ const AccountInfo = () => {
                                         "ml-5 h-10 flex items-center justify-center w-[120px] text-primary border-0 hover:border hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
                                     }
                                     icon={
-                                        <VscClose size={20} className="mr-2" />
+                                        <VscClose size={20} className="mr-2"/>
                                     }
                                 >
                                     Hủy
