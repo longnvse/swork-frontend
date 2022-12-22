@@ -8,16 +8,16 @@ export const columns = [
         dataIndex: "code",
     },
     {
-        title: "Mã dự án",
+        title: "Tên dự án",
         dataIndex: "name",
     },
     {
         title: "Người quản trị",
-        dataIndex: "assignor",
+        dataIndex: "manager",
     },
     {
         title: "Tham gia",
-        dataIndex: "follower",
+        dataIndex: "participates",
     },
     {
         title: "Tiến độ",
