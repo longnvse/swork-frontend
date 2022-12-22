@@ -1,150 +1,159 @@
-import {Button, Form, Input, Radio} from "antd";
-import React, {useState} from "react";
-import {BiCheck, BiEditAlt} from "react-icons/bi";
-import {VscClose} from "react-icons/vsc";
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Button, Form, Input, Radio, DatePicker, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { BiCheck, BiEditAlt } from "react-icons/bi";
+import { VscClose } from "react-icons/vsc";
 import classNames from "classnames/bind";
-import AvatarAccount from "./avatar";
-
-const changePasswordFields = [
-    {
-        label: "Họ và tên",
-        name: "fullname",
-        rules: [
-            {
-                required: true,
-                message: "Họ và tên là bắt buộc",
-            },
-        ],
-        placeholder: "Họ và tên",
-    },
-    {
-        label: "Email",
-        name: "email",
-        rules: [
-            {
-                required: true,
-                message: "Email là bắt buộc",
-            },
-        ],
-        placeholder: "Email",
-    },
-    {
-        type: "radio-group",
-        label: "Giới tính",
-        name: "gender",
-        groupData: [
-            {
-                label: "Nam",
-                value: true,
-            },
-            {
-                label: "Nữ",
-                value: false,
-            },
-        ],
-    },
-    {
-        label: "Ngày sinh",
-        name: "birthday",
-        placeholder: "Ngày sinh",
-    },
-    {
-        label: "Số điện thoại",
-        name: "phone",
-        placeholder: "Số điện thoại",
-    },
-    {
-        label: "Địa chỉ",
-        name: "address",
-        placeholder: "Địa chỉ",
-    },
-    {
-        label: "Phòng ban",
-        name: "department",
-        placeholder: "Phòng ban",
-    },
-];
+import { getMe } from "../../api/common";
+import { getAccountInfo, updateAccountInfo } from "../../api/account/api";
+import dayjs from "dayjs";
+import { message_error } from "../../components/common/Constant";
 
 const AccountInfo = () => {
-    const account = {
-        username: "DatNQ30",
-    };
-
-    const [fields, setFields] = useState([
-        {name: "fullname", value: "King Wisdom"},
-        {name: "email", value: "kingwisdom.dev@gmail.com"},
-        {name: "gender", value: true},
-        {name: "birthday", value: "1/1/2000"},
-        {name: "phone", value: "0123456789"},
-        {name: "address", value: "Ha Noi - Viet Nam"},
-        {name: "department", value: "phong ban a"},
-    ]);
-
+    const [form] = Form.useForm();
     const [isEditing, setIsEditing] = useState(false);
+
+    useEffect(() => {
+        getAccountInfo().then((response) => {
+            form.setFieldsValue({
+                ...response.data,
+                dateOfBirth: dayjs(response.data?.dateOfBirth),
+            });
+        });
+    }, []);
 
     const toggleEdit = () => {
         setIsEditing(!isEditing);
     };
 
-    const onSubmit = (values) => {
-        console.log("values :>> ", values);
-        toggleEdit();
+    const onFinish = (values) => {
+        delete values.gender;
+
+        updateAccountInfo(values)
+            .then(() => {
+                toggleEdit();
+                message.success("Cập nhật thông tin thành công!");
+            })
+            .catch(message_error);
     };
 
     return (
         <div className="px-20 py-11">
             <div className="flex items-center">
-                <AvatarAccount/>
+                <div>
+                    <Avatar size={64} icon={<UserOutlined />} />
+                    <img
+                        src={require("../../images/icon-edit.png")}
+                        alt=""
+                        className="-translate-x-6 translate-y-4 cursor-pointer"
+                    />
+                </div>
                 <div className="ml-14 text-primary text-24/36 font-semibold">
-                    Xin chào {account.username}
+                    Xin chào {getMe()?.fullName}
                 </div>
             </div>
-            <div className="mt-12 px-10 max-w-[781px] mx-auto">
-                <Form onFinish={onSubmit} layout={"vertical"} fields={fields}>
-                    {changePasswordFields.map((field) => (
-                        <Form.Item
-                            key={field.name}
-                            label={field.label}
-                            className="text-14/22 font-semibold mb-0"
-                        >
-                            {field.type === "radio-group" ? (
-                                <Radio.Group
-                                    className={classNames(
-                                        "font-normal px-10 pb-1 mb-6 w-full",
-                                        !isEditing && "pointer-events-none",
-                                    )}
-                                    defaultValue={field.groupData[0].value}
-                                    style={{
-                                        borderBottom: "2px solid #cccccc",
-                                    }}
-                                >
-                                    {field.groupData.map((groupItem, index) => (
-                                        <Radio
-                                            key={groupItem.value}
-                                            value={groupItem.value}
-                                            className="last:ml-28"
-                                        >
-                                            {groupItem.label}
-                                        </Radio>
-                                    ))}
-                                </Radio.Group>
-                            ) : (
-                                <Form.Item
-                                    name={field.name}
-                                    className="font-normal"
-                                    rules={field.rules}
-                                >
-                                    <Input
-                                        placeholder={field.placeholder}
-                                        className={classNames(
-                                            "border-0 border-b-2 px-0 bg-white",
-                                            !isEditing && "pointer-events-none",
-                                        )}
-                                    />
-                                </Form.Item>
+            <div className="mt-12 max-w-[781px]">
+                <Form form={form} onFinish={onFinish} layout={"vertical"}>
+                    <Form.Item
+                        name={"fullName"}
+                        label={"Họ và tên"}
+                        className="text-14/22 font-semibold"
+                    >
+                        <Input
+                            placeholder={"Họ và tên"}
+                            className={classNames(
+                                "border-0 border-b-2 px-2 bg-white",
+                                !isEditing && "pointer-events-none",
                             )}
-                        </Form.Item>
-                    ))}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        name={"email"}
+                        label={"Email"}
+                        className="text-14/22 font-semibold"
+                    >
+                        <Input
+                            placeholder={"Email"}
+                            className={classNames(
+                                "border-0 border-b-2 px-2 bg-white",
+                                !isEditing && "pointer-events-none",
+                            )}
+                            type={"email"}
+                            disabled={true}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        name={"gender"}
+                        className="font-normal"
+                        label={"Giới tính"}
+                    >
+                        <Radio.Group
+                            className={classNames(
+                                "font-normal pb-1 w-full",
+                                !isEditing && "pointer-events-none",
+                            )}
+                        >
+                            <Radio key={"1"} value={"1"}>
+                                Nam
+                            </Radio>
+                            <Radio key={"2"} value={"2"}>
+                                Nữ
+                            </Radio>
+                        </Radio.Group>
+                    </Form.Item>
+
+                    <Form.Item
+                        name={"dateOfBirth"}
+                        label={"Ngày sinh"}
+                        className="text-14/22 font-semibold"
+                    >
+                        <DatePicker
+                            placeholder={"Ngày sinh"}
+                            className={classNames(
+                                "w-full border-0 border-b-2 px-2 bg-white",
+                                !isEditing && "pointer-events-none",
+                            )}
+                            format={"DD-MM-YYYY"}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        name={"phoneNumber"}
+                        label={"Số điện thoại"}
+                        className="text-14/22 font-semibold"
+                        rules={[
+                            {
+                                type: "string",
+                                pattern:
+                                    /^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4}$/im,
+                                message: "Sai định dạng số điện thoại!",
+                            },
+                        ]}
+                    >
+                        <Input
+                            placeholder={"(+84) 987 654 321"}
+                            className={classNames(
+                                "w-full border-0 border-b-2 px-2 bg-white",
+                                !isEditing && "pointer-events-none",
+                            )}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        name={"address"}
+                        label={"Địa chỉ"}
+                        className="text-14/22 font-semibold"
+                    >
+                        <Input
+                            placeholder={"Địa chỉ"}
+                            className={classNames(
+                                "border-0 border-b-2 px-2 bg-white",
+                                !isEditing && "pointer-events-none",
+                            )}
+                        />
+                    </Form.Item>
 
                     <div className="mt-8 flex">
                         {!isEditing && (
@@ -152,7 +161,7 @@ const AccountInfo = () => {
                                 className={
                                     "h-10 flex items-center bg-primary text-white hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
                                 }
-                                icon={<BiEditAlt size={20} className="mr-2"/>}
+                                icon={<BiEditAlt size={20} className="mr-2" />}
                                 onClick={toggleEdit}
                             >
                                 Chỉnh sửa
@@ -166,7 +175,7 @@ const AccountInfo = () => {
                                         "h-10 flex items-center justify-center text-primary border-primary hover:border-white hover:bg-primary hover:text-white focus:border-white focus:bg-primary focus:text-white"
                                     }
                                     icon={
-                                        <BiCheck size={20} className="mr-2"/>
+                                        <BiCheck size={20} className="mr-2" />
                                     }
                                 >
                                     Cập nhật
@@ -177,7 +186,7 @@ const AccountInfo = () => {
                                         "ml-5 h-10 flex items-center justify-center w-[120px] text-primary border-0 hover:border hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
                                     }
                                     icon={
-                                        <VscClose size={20} className="mr-2"/>
+                                        <VscClose size={20} className="mr-2" />
                                     }
                                 >
                                     Hủy
