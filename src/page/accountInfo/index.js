@@ -1,13 +1,13 @@
-import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Button, Form, Input, Radio, DatePicker, message } from "antd";
-import React, { useEffect, useState } from "react";
-import { BiCheck, BiEditAlt } from "react-icons/bi";
-import { VscClose } from "react-icons/vsc";
+import {Button, DatePicker, Form, Input, message, Radio} from "antd";
+import React, {useEffect, useState} from "react";
+import {BiCheck, BiEditAlt} from "react-icons/bi";
+import {VscClose} from "react-icons/vsc";
 import classNames from "classnames/bind";
-import { getMe } from "../../api/common";
-import { getAccountInfo, updateAccountInfo } from "../../api/account/api";
+import {getMe} from "../../api/common";
+import {getAccountInfo, updateAccountInfo} from "../../api/account/api";
 import dayjs from "dayjs";
-import { message_error } from "../../components/common/Constant";
+import {message_error} from "../../components/common/Constant";
+import AvatarAccount from "./avatar";
 
 const AccountInfo = () => {
     const [form] = Form.useForm();
@@ -40,14 +40,7 @@ const AccountInfo = () => {
     return (
         <div className="px-20 py-11">
             <div className="flex items-center">
-                <div>
-                    <Avatar size={64} icon={<UserOutlined />} />
-                    <img
-                        src={require("../../images/icon-edit.png")}
-                        alt=""
-                        className="-translate-x-6 translate-y-4 cursor-pointer"
-                    />
-                </div>
+                <AvatarAccount/>
                 <div className="ml-14 text-primary text-24/36 font-semibold">
                     Xin chào {getMe()?.fullName}
                 </div>
@@ -161,7 +154,7 @@ const AccountInfo = () => {
                                 className={
                                     "h-10 flex items-center bg-primary text-white hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
                                 }
-                                icon={<BiEditAlt size={20} className="mr-2" />}
+                                icon={<BiEditAlt size={20} className="mr-2"/>}
                                 onClick={toggleEdit}
                             >
                                 Chỉnh sửa
@@ -175,7 +168,7 @@ const AccountInfo = () => {
                                         "h-10 flex items-center justify-center text-primary border-primary hover:border-white hover:bg-primary hover:text-white focus:border-white focus:bg-primary focus:text-white"
                                     }
                                     icon={
-                                        <BiCheck size={20} className="mr-2" />
+                                        <BiCheck size={20} className="mr-2"/>
                                     }
                                 >
                                     Cập nhật
@@ -186,7 +179,7 @@ const AccountInfo = () => {
                                         "ml-5 h-10 flex items-center justify-center w-[120px] text-primary border-0 hover:border hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
                                     }
                                     icon={
-                                        <VscClose size={20} className="mr-2" />
+                                        <VscClose size={20} className="mr-2"/>
                                     }
                                 >
                                     Hủy

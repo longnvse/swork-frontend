@@ -41,8 +41,6 @@ const UploadFile = ({projectId, phaseId, workId, moduleId, appId}) => {
     const onUploadFile = (options) => {
         const {file} = options;
 
-        console.log(file);
-
         const multipartBody = new FormData();
 
         multipartBody.set("file", file);

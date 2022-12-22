@@ -9,6 +9,7 @@ import {formatBytes, message_error} from "../../Constant";
 import UploadFile from "../upload";
 import {DeleteOutlined} from "@ant-design/icons";
 import {getMe} from "../../../../api/common";
+import AccountGroup from "../../account/group";
 
 const FileList = ({projectId, phaseId, workId, moduleId, appId}) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -20,7 +21,7 @@ const FileList = ({projectId, phaseId, workId, moduleId, appId}) => {
     const mapData = (item) => ({
         ...item,
         key: item.fileId,
-        creator: item.creatorId,
+        creator: <AccountGroup accountIds={[item.creatorId]}/>,
         fileName: renderFileName(item),
         createDate: dayjs(item.createDate).format("HH:mm DD-MM-YYYY"),
         action: <Row>

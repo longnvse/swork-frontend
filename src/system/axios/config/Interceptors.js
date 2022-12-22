@@ -44,6 +44,7 @@ const setup = (store) => {
             switch (res.config.method) {
                 case "put":
                 case "post":
+                case "patch":
                 case "delete": {
                     store.dispatch(isReload(true));
                     store.dispatch(closeDrawer(new Boolean(true)));
