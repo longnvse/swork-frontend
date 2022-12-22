@@ -115,7 +115,10 @@ const ProjectGanttChart = (props) => {
                     <Row className={"font-bold text-[16px] items-center"} gutter={12}>
                         <Col>
                             <Button type={"primary"}
-                                    className={"rounded-3xl w-[40px] h-[40px] flex items-center justify-center"}
+                                    className={"rounded-3xl h-[40px] flex items-center justify-center"}
+                                    style={{
+                                        width: '40px'
+                                    }}
                                     icon={<ProjectOutlined style={{fontSize: 16}}/>}/>
                         </Col>
                         <Col>{selectedProjectName}</Col>
