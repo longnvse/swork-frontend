@@ -1,26 +1,11 @@
-import {
-    Col,
-    Collapse,
-    DatePicker,
-    Form,
-    Input,
-    InputNumber,
-    message,
-    Row,
-    Select,
-} from "antd";
-import React, { useEffect, useState } from "react";
-import {
-    addWork,
-    getWork,
-    getWorkPages,
-    updateWork,
-} from "../../../../api/work";
+import {Col, Collapse, DatePicker, Form, Input, InputNumber, message, Row, Select,} from "antd";
+import React, {useEffect, useState} from "react";
+import {addWork, getWork, getWorkPages, updateWork,} from "../../../../api/work";
 import SelectAccount from "../../../common/select/account";
 import dayjs from "dayjs";
-import { message_error } from "../../../common/Constant";
+import {message_error} from "../../../common/Constant";
 
-const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
+const WorkForm = ({workId, phaseId, projectId, parentId}) => {
     const [form] = Form.useForm();
     const [workData, setWorkData] = useState([]);
     const [progressType, setProgressType] = useState();
@@ -40,6 +25,19 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
             });
         }
     }, [workId]);
+
+    useEffect(() => {
+        if (projectId || phaseId) {
+            getWorkPages({projectId, phaseId}).then(res => {
+                setWorkData(res.data?.items?.map(mapOptionWork) || [])
+            })
+        }
+    }, [projectId, phaseId]);
+
+    const mapOptionWork = (item) => ({
+        label: item.name,
+        value: item.id
+    })
 
     const onChangeProgressType = (value) => {
         setProgressType(value);
@@ -90,7 +88,7 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
                                     },
                                 ]}
                             >
-                                <Input placeholder="Tên công việc" />
+                                <Input placeholder="Tên công việc"/>
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -131,12 +129,12 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
                         </Col>
                         <Col span={24}>
                             <Form.Item name="handles" label="Người thực hiện">
-                                <SelectAccount withExt={true} />
+                                <SelectAccount withExt={true}/>
                             </Form.Item>
                         </Col>
                         <Col span={24}>
                             <Form.Item name="manages" label="Người quản trị">
-                                <SelectAccount />
+                                <SelectAccount/>
                             </Form.Item>
                         </Col>
                         <Col span={24}>
@@ -144,7 +142,7 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
                                 name="participates"
                                 label="Người theo dõi/phối hợp thực hiện"
                             >
-                                <SelectAccount withExt={true} />
+                                <SelectAccount withExt={true}/>
                             </Form.Item>
                         </Col>
                         <Col span={24}>
@@ -278,7 +276,7 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
                                             },
                                         ]}
                                     >
-                                        <Input placeholder={"Chiếc"} />
+                                        <Input placeholder={"Chiếc"}/>
                                     </Form.Item>
                                 </Col>
                             </>

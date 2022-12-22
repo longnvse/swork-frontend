@@ -9,6 +9,7 @@ import TeamForm from "./form";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
 import {Link} from "react-router-dom";
 import dayjs from "dayjs";
+import {convertMoney} from "../../common/convert";
 
 const TeamList = ({projectId, phaseId}) => {
     const onConfirmDelete = (id) => {
@@ -36,7 +37,7 @@ const TeamList = ({projectId, phaseId}) => {
                 <span>{admin.memberName}</span>
             )),
             quantityMembers: countMembers(item),
-            inoutcoming: `${item.totalIncoming}/${item.totalSpending}`,
+            inoutcoming: `${convertMoney(item.totalSpending)} VNĐ/${convertMoney(item.totalIncoming)} VNĐ`,
             parent: item.projectName || item.phaseName || "",
             time: `${dayjs(item.createDate).format(DATE_FORMAT)}${
                 !item.isActive
