@@ -1,28 +1,27 @@
-import { Col, Collapse, Row } from "antd";
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { getPhase } from "../../../../api/phase";
-import { DATE_FORMAT } from "../../../common/Constant";
+import {Col, Collapse, Row} from "antd";
+import React, {useEffect, useState} from "react";
+import {Link, useParams} from "react-router-dom";
+import {getPhase} from "../../../../api/phase";
+import {DATE_FORMAT} from "../../../common/Constant";
 import SWDescription from "../../../common/description";
-import { renderStatus } from "../../../common/status";
+import {renderStatus} from "../../../common/status";
 import ProjectViewResource from "../../project/view/tabs/Resource";
 import ProjectViewWork from "../../project/view/tabs/Work";
 import TeamList from "../../team";
-import { viewPhaseFirstColumns, viewPhaseSecondColumns } from "./columns";
+import {viewPhaseFirstColumns, viewPhaseSecondColumns} from "./columns";
 import dayjs from "dayjs";
 import SWTabs from "../../../common/tabs";
+import AccountGroup from "../../../common/account/group";
 
 const PhaseView = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const [phaseData, setPhaseData] = useState({});
 
     const mapData = (data) => {
         return {
             firstColumn: {
                 name: data?.name,
-                phaseManages: data?.phaseManages?.map((phaseManage, index) => {
-                    return <span key={index}>{phaseManage?.accountName}</span>;
-                }),
+                phaseManages: <AccountGroup accountIds={data?.phaseManages?.map(item => item.accountId)}/>,
                 status: renderStatus(data?.status),
                 date: `${dayjs(data?.startDate).format(DATE_FORMAT)} - ${dayjs(
                     data?.endDate,
@@ -86,7 +85,7 @@ const PhaseView = () => {
             key: "team",
             label: "Đội nhóm",
             children: (
-                <TeamList projectId={phaseData?.projectId} phaseId={id} />
+                <TeamList projectId={phaseData?.projectId} phaseId={id}/>
             ),
         },
         {
@@ -106,7 +105,7 @@ const PhaseView = () => {
         },
     ];
 
-    return <SWTabs items={tabItems} />;
+    return <SWTabs items={tabItems}/>;
 };
 
 export default PhaseView;
