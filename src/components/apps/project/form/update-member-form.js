@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Form, message} from "antd";
-import {updateProject} from "../../../../api/project";
+import {updateMemberProject} from "../../../../api/project";
 import {message_error} from "../../../common/Constant";
 import FormItem from "antd/es/form/FormItem";
 import SelectAccount from "../../../common/select/account";
@@ -17,7 +17,7 @@ const ProjectMemberForm = ({projectData}) => {
 
     const onFinish = (values) => {
         const {id} = projectData;
-        updateProject(id, values).then(() => {
+        updateMemberProject(id, values).then(() => {
             message.success("Cập nhật người tham gia!");
         }).catch(message_error)
     };
@@ -26,7 +26,7 @@ const ProjectMemberForm = ({projectData}) => {
         form={form}
         onFinish={onFinish}
         layout={"vertical"}
-        id={"project-form"}
+        id={"project-member-form"}
         style={{width: "100%"}}
     >
         <FormItem
@@ -36,7 +36,7 @@ const ProjectMemberForm = ({projectData}) => {
                 required: true, message: "Vui lòng thêm người thực hiện"
             }]}
         >
-            <SelectAccount/>
+            <SelectAccount withExt={true}/>
         </FormItem>
         <FormItem
             name={"participates"}
@@ -45,7 +45,7 @@ const ProjectMemberForm = ({projectData}) => {
                 required: true, message: "Vui lòng thêm người theo dõi"
             }]}
         >
-            <SelectAccount/>
+            <SelectAccount withExt={true}/>
         </FormItem>
     </Form>);
 };
