@@ -8,11 +8,12 @@ import ButtonStatus from "../common/button-status";
 import ReportProgressModal from "../report-progress";
 import {useDispatch, useSelector} from "react-redux";
 import {setHeader} from "../../../../redux/actions/common/actions";
-import {ADD} from "../../../common/Constant";
+import {ADD, MODULE_ID} from "../../../common/Constant";
 import ButtonTab from "../../../common/button/ButtonTab";
 import {PlusOutlined} from "@ant-design/icons";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
 import WorkForm from "../form";
+import SWFile from "../../../common/file";
 
 const ViewWork = () => {
     const {id} = useParams();
@@ -91,7 +92,12 @@ const ViewWork = () => {
                 </Collapse>
             </Tabs.TabPane>
             <Tabs.TabPane key={"attach"} tab="Đính kèm">
-                Attach tab
+                <SWFile
+                    projectId={workData?.projectId}
+                    phaseId={workData?.phaseId}
+                    workId={workData?.id}
+                    moduleId={MODULE_ID.WORK}
+                    appId={`${workData?.id}`}/>
             </Tabs.TabPane>
         </Tabs>
     );
