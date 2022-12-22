@@ -101,7 +101,7 @@ function ProjectView(props) {
             <Col>
                 <ButtonModal
                     title={"Thêm người thực hiện"}
-                    formId={"project-form"}
+                    formId={"project-member-form"}
                     mode={UPDATE}
                     button={
                         <ButtonTab
