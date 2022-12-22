@@ -1,27 +1,20 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, message, Popconfirm, Table } from "antd";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import {
-    deleteResource,
-    getResourcePages,
-} from "../../../../api/resource/resource";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {Button, message, Popconfirm, Table} from "antd";
+import React, {useEffect, useState} from "react";
+import {useSelector} from "react-redux";
+import {deleteResource, getResourcePages,} from "../../../../api/resource/resource";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import {
-    DATE_FORMAT,
-    INACTIVE,
-    message_error,
-    UPDATE,
-} from "../../../common/Constant";
-import { columnsResource } from "../common/columns";
+import {DATE_FORMAT, INACTIVE, message_error, UPDATE,} from "../../../common/Constant";
+import {columnsResource} from "../common/columns";
 import ResourceForm from "../form";
 import dayjs from "dayjs";
-import { Link } from "react-router-dom";
-import { DG_Format_Money } from "../../../common/convert/format";
+import {Link} from "react-router-dom";
+import {formatMoney} from "../../../common/convert/format";
+import {convertMoney} from "../../../common/convert";
 
-const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
+const ResourceList = ({resourceData, projectId, phaseId, teamId}) => {
     const [dataSources, setDataSources] = useState([]);
-    const { reload } = useSelector((state) => state.commonReducer);
+    const {reload} = useSelector((state) => state.commonReducer);
 
     useEffect(() => {
         if (!resourceData) {
@@ -68,8 +61,8 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
                 key: item.id,
                 ...item,
                 name: item?.resourceTypeName,
-                quantity: item?.quantity,
-                totalAmount: DG_Format_Money(item?.totalAmount),
+                quantity: formatMoney(item?.quantity),
+                totalAmount: convertMoney(item?.totalAmount) + " VNĐ",
                 team: (
                     <Link to={`/project/view-team/${item?.teamId}`}>
                         {item?.teamName}
@@ -87,7 +80,7 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
                             formId={"resource-form"}
                             mode={UPDATE}
                             buttonProps={{
-                                icon: <EditOutlined />,
+                                icon: <EditOutlined/>,
                                 type: "link",
                                 value: null,
                             }}
@@ -107,7 +100,7 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
                             <Button
                                 type={"link"}
                                 disabled={item.status !== INACTIVE}
-                                icon={<DeleteOutlined />}
+                                icon={<DeleteOutlined/>}
                             />
                         </Popconfirm>
                     </div>

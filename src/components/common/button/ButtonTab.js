@@ -10,7 +10,7 @@ const ButtonTab = ({ icon, title, selected = false, onClick, buttonProps }) => {
             icon={icon}
             className={
                 "flex flex-col items-center justify-center h-fit w-fit border-0" +
-                " btn--tab" +
+                " bg-transparent btn--tab" +
                 (selected ? "btn--tab__active" : "")
             }
             style={{
