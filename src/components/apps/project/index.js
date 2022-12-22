@@ -20,6 +20,7 @@ import SWTabs from "../../common/tabs";
 import ProjectKanban from "./kanban";
 import ProjectGanttChart from "./gantt-chart";
 import {ViewMode} from "gantt-task-react";
+import AccountGroup from "../../common/account/group";
 
 const status = ["pending", "active", "completed", "inactive", "denied"];
 
@@ -53,13 +54,17 @@ function ProjectList(props) {
     }, [filter]);
 
     const mapData = (item, index) => {
+        console.log(item)
         return {
-            key: item.id, ...item,
+            key: item.id,
+            ...item,
             name: <Link to={`${URIS.VIEW_PROJECT}/${item.id}`}>{item.name}</Link>,
             status: renderStatus(item.status),
             startDate: dayjs(item.startDate).format(DATE_FORMAT),
             endDate: dayjs(item.endDate).format(DATE_FORMAT),
             progress: <Progress percent={item.progress} size="small"/>,
+            manager: <AccountGroup accountIds={item.manages.map(item => item.memberId)}/>,
+            participates: <AccountGroup accountIds={item.handles.map(item => item.memberId)}/>,
             action: <div className={"flex justify-evenly"}>
                 <ButtonDrawer
                     title={"Cập nhật dự án"}
@@ -88,17 +93,6 @@ function ProjectList(props) {
             index: index + 1
         };
     };
-
-    const buttonAdd = <ButtonDrawer
-        title={"Thêm mới dự án"}
-        formId={"project-form"}
-        mode={ADD}
-        buttonProps={{
-            value: "Thêm mới"
-        }}
-    >
-        <ProjectForm/>
-    </ButtonDrawer>
 
     const tabItemsForList = [{
         label: "Tất cả", key: "all"
@@ -199,7 +193,6 @@ function ProjectList(props) {
             load={onLoad}
             columns={columns}
             hiddenButton={true}
-            // buttonAdd={buttonAdd}
         />}
         {viewMode === "kanban" && <ProjectKanban/>}
         {viewMode === "ganttChart" && <ProjectGanttChart/>}
