@@ -179,6 +179,8 @@ export const statusColorGanttChart = (status) => {
 };
 
 const renderTag = (title, color) => {
-    return <Tag style={{borderRadius: 14, height: 28}} className={"flex items-center w-fit border-none  cursor-pointer"}
-                color={color}>{title}</Tag>
+    return <Tag
+        style={{borderRadius: 14, height: 28}}
+        className={"flex items-center w-fit border-none  cursor-pointer m-0"}
+        color={color}>{title}</Tag>
 }
