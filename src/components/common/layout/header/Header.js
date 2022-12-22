@@ -23,7 +23,7 @@ function CommonHeader(props) {
         } else {
             searchParams.set("keyword", nextValue);
         }
-        setSearchParams(searchParams);
+        setSearchParams(searchParams, {relative: "route"});
     }, 500)).current;
 
     return (<Header

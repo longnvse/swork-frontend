@@ -3,18 +3,20 @@ import React, {useEffect, useState} from "react";
 import {BiCheck, BiEditAlt} from "react-icons/bi";
 import {VscClose} from "react-icons/vsc";
 import classNames from "classnames/bind";
-import {getMe} from "../../api/common";
 import {getAccountInfo, updateAccountInfo} from "../../api/account/api";
 import dayjs from "dayjs";
 import {message_error} from "../../components/common/Constant";
 import AvatarAccount from "./avatar";
+import {useSelector} from "react-redux";
 
 const AccountInfo = () => {
     const [form] = Form.useForm();
     const [isEditing, setIsEditing] = useState(false);
-
+    const [fullName, setFullName] = useState();
+    const {reload} = useSelector(state => state.commonReducer);
     useEffect(() => {
         getAccountInfo().then((response) => {
+            setFullName(response.data?.fullName);
             form.setFieldsValue({
                 ...response.data,
                 dateOfBirth: dayjs(response.data?.dateOfBirth),
@@ -22,15 +24,27 @@ const AccountInfo = () => {
         });
     }, []);
 
+    useEffect(() => {
+        if (reload) {
+
+            getAccountInfo().then((response) => {
+                setFullName(response.data?.fullName);
+                form.setFieldsValue({
+                    ...response.data,
+                    dateOfBirth: dayjs(response.data?.dateOfBirth),
+                });
+            });
+        }
+
+    }, [reload]);
+
     const toggleEdit = () => {
         setIsEditing(!isEditing);
     };
 
     const onFinish = (values) => {
-        delete values.gender;
-
         updateAccountInfo(values)
-            .then(() => {
+            .then((res) => {
                 toggleEdit();
                 message.success("Cập nhật thông tin thành công!");
             })
@@ -42,7 +56,7 @@ const AccountInfo = () => {
             <div className="flex items-center">
                 <AvatarAccount/>
                 <div className="ml-14 text-primary text-24/36 font-semibold">
-                    Xin chào {getMe()?.fullName}
+                    Xin chào {fullName}
                 </div>
             </div>
             <div className="mt-12 max-w-[781px]">
@@ -88,10 +102,10 @@ const AccountInfo = () => {
                                 !isEditing && "pointer-events-none",
                             )}
                         >
-                            <Radio key={"1"} value={"1"}>
+                            <Radio key={"1"} value={true}>
                                 Nam
                             </Radio>
-                            <Radio key={"2"} value={"2"}>
+                            <Radio key={"2"} value={false}>
                                 Nữ
                             </Radio>
                         </Radio.Group>
