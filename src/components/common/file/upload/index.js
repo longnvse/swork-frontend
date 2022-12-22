@@ -7,7 +7,7 @@ import {defaultStyles, FileIcon} from "react-file-icon";
 
 const UploadFile = ({projectId, phaseId, workId, moduleId, appId}) => {
 
-    const progressNotification = ({loaded, total}, file) => {
+    const progressNotification = ({loaded, total}, file, error) => {
         notification.open({
             key: 'upload',
             placement: "bottomRight",
@@ -26,6 +26,7 @@ const UploadFile = ({projectId, phaseId, workId, moduleId, appId}) => {
                     <Col span={2}>
                         <Progress type={"circle"}
                                   width={30}
+                                  status={error ? "exception" : undefined}
                                   percent={Math.round((loaded * 100) / total)}
                         />
                     </Col>
@@ -51,7 +52,12 @@ const UploadFile = ({projectId, phaseId, workId, moduleId, appId}) => {
             onUploadProgress: (progressEvent) => progressNotification(progressEvent, file)
         }
 
-        uploadFile(projectId, phaseId, workId, multipartBody, config).catch(message_error);
+        uploadFile(projectId, phaseId, workId, multipartBody, config).catch((err) => {
+                progressNotification({loaded: 100, total: 100}, file, err);
+                message_error(err);
+            }
+        )
+        ;
     }
 
     return (

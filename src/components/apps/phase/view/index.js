@@ -2,7 +2,7 @@ import {Col, Collapse, Row} from "antd";
 import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {getPhase} from "../../../../api/phase";
-import {DATE_FORMAT} from "../../../common/Constant";
+import {DATE_FORMAT, MODULE_ID} from "../../../common/Constant";
 import SWDescription from "../../../common/description";
 import {renderStatus} from "../../../common/status";
 import ProjectViewResource from "../../project/view/tabs/Resource";
@@ -12,6 +12,7 @@ import {viewPhaseFirstColumns, viewPhaseSecondColumns} from "./columns";
 import dayjs from "dayjs";
 import SWTabs from "../../../common/tabs";
 import AccountGroup from "../../../common/account/group";
+import SWFile from "../../../common/file";
 
 const PhaseView = () => {
     const {id} = useParams();
@@ -101,7 +102,11 @@ const PhaseView = () => {
         {
             key: "attach",
             label: "Đính kèm",
-            children: "Attach tab",
+            children: <SWFile
+                projectId={phaseData?.projectId}
+                phaseId={phaseData?.id}
+                moduleId={MODULE_ID.PHASE}
+                appId={`${phaseData?.id}`}/>,
         },
     ];
 
