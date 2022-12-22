@@ -21,12 +21,19 @@ import ProjectKanban from "./kanban";
 import ProjectGanttChart from "./gantt-chart";
 import {ViewMode} from "gantt-task-react";
 import AccountGroup from "../../common/account/group";
+import {getMe} from "../../../api/common";
 
 const status = ["pending", "active", "completed", "inactive", "denied"];
+const PROJECT_FILTER = {
+    "assign": "projectHandleAccount",
+    "manage": "projectManage",
+    "follow": "projectParticipateAccount"
+}
 
 function ProjectList(props) {
     const {type} = useParams();
-    const [filter, setFilter] = useState(null);
+    const [filter, setFilter] = useState("");
+    const [filterBySider, setFilterBySider] = useState("");
     const [viewMode, setViewMode] = useState("list");
     const dispatch = useDispatch();
 
@@ -41,20 +48,27 @@ function ProjectList(props) {
     }
 
     useEffect(() => {
-        if (filter !== null) {
+        if (filter !== null || filterBySider !== null) {
             dispatch(isReload(true));
         }
-    }, [filter]);
+    }, [filter, filterBySider]);
+
+    useEffect(() => {
+        if (type !== "all") {
+            setFilterBySider(`contains(${PROJECT_FILTER[type]},'${getMe().accountId}')`);
+        } else {
+            setFilterBySider("");
+        }
+    }, [type]);
 
 
     const onLoad = useCallback((params) => {
-        params.filter = filter;
+        params.filter = `${filterBySider || ""}${filterBySider && filter ? " and " : ""}${filter || ""}`;
 
         return getProjectPages(params);
-    }, [filter]);
+    }, [filter, filterBySider]);
 
     const mapData = (item, index) => {
-        console.log(item)
         return {
             key: item.id,
             ...item,
