@@ -2,6 +2,7 @@ export const columnsWork = [
     {
         dataIndex: "name",
         title: "Tên công việc",
+        width: "30%",
     },
     {
         dataIndex: "progress",
@@ -16,11 +17,7 @@ export const columnsWork = [
         title: "Trạng thái",
     },
     {
-        dataIndex: "priority",
-        title: "Độ ưu tiên",
-    },
-    {
-        dataIndex: "intendTime",
+        dataIndex: "endDate",
         title: "Thời gian dự kiến",
     },
     {
