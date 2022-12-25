@@ -4,7 +4,7 @@ import {message_error} from "../../Constant";
 import {Avatar} from "antd";
 import AccountGroupItem from "./item";
 
-const AccountGroup = ({accountIds = []}) => {
+const AccountGroup = ({accountIds = [], positionTooltip = "top"}) => {
     const [accounts, setAccounts] = useState([]);
 
     useEffect(() => {
@@ -21,7 +21,7 @@ const AccountGroup = ({accountIds = []}) => {
             maxCount={3}
             size={36}
         >
-            {accounts.map(account => <AccountGroupItem {...account}/>)}
+            {accounts.map(account => <AccountGroupItem positionTooltip={positionTooltip} {...account}/>)}
         </Avatar.Group>
     );
 };

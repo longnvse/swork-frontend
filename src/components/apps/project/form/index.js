@@ -1,14 +1,14 @@
-import { Col, Form, Input, InputNumber, message, Row, Select } from "antd";
-import React, { useEffect } from "react";
-import { addProject, getProject, updateProject } from "../../../../api/project";
+import {Col, Form, Input, message, Row, Select} from "antd";
+import React, {useEffect} from "react";
+import {addProject, getProject, updateProject} from "../../../../api/project";
 import SelectAccount from "../../../common/select/account";
 import FormItem from "antd/es/form/FormItem";
 import SWDatePicker from "../../../common/date";
 import dayjs from "dayjs";
-import { message_error } from "../../../common/Constant";
+import {message_error} from "../../../common/Constant";
 import InputNumberCustom from "../../../common/input/InputNumber";
 
-const ProjectForm = ({ id }) => {
+const ProjectForm = ({id}) => {
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const ProjectForm = ({ id }) => {
             onFinish={onFinish}
             layout={"vertical"}
             id={"project-form"}
-            style={{ width: "100%" }}
+            style={{width: "100%"}}
         >
             <Row gutter={12}>
                 <Col span={8}>
@@ -59,7 +59,7 @@ const ProjectForm = ({ id }) => {
                             },
                         ]}
                     >
-                        <Input placeholder="Mã dự án" />
+                        <Input placeholder="Mã dự án"/>
                     </Form.Item>
                 </Col>
                 <Col span={16}>
@@ -73,7 +73,7 @@ const ProjectForm = ({ id }) => {
                             },
                         ]}
                     >
-                        <Input placeholder="Tên dự án" />
+                        <Input placeholder="Tên dự án"/>
                     </Form.Item>
                 </Col>
             </Row>
@@ -147,7 +147,16 @@ const ProjectForm = ({ id }) => {
                                     }}
                                 >
                                     Công việc A yêu cầu thời gian thực hiện
-                                    trong 4 ngày , tiến độ 40%
+                                    trong 4 ngày , tiến độ 40%, gồm 4 người thực hiện
+                                </div>
+                                <div
+                                    style={{
+                                        color: "rgb(119, 119, 119)",
+                                        fontSize: "0.9em",
+                                    }}
+                                >
+                                    thì tổng khối lượng công việc là 4*4=16,
+                                    khối lượng công việc đã hoàn thành là 4*4*40%=6.4
                                 </div>
                                 <div
                                     style={{
@@ -156,7 +165,16 @@ const ProjectForm = ({ id }) => {
                                     }}
                                 >
                                     Công việc B yêu cầu thời gian thực hiện
-                                    trong 6 ngày , tiến độ 50%
+                                    trong 6 ngày , tiến độ 50%, gồm 2 nguời thực hiện
+                                </div>
+                                <div
+                                    style={{
+                                        color: "rgb(119, 119, 119)",
+                                        fontSize: "0.9em",
+                                    }}
+                                >
+                                    thì tổng khối lượng công việc là 6*2=12,
+                                    khối lượng công việc đã hoàn thành là 6*2*50%=6
                                 </div>
                                 <div
                                     style={{
@@ -165,7 +183,7 @@ const ProjectForm = ({ id }) => {
                                     }}
                                 >
                                     Tiến độ dự án là
-                                    ((4*40+6*60)/(4*100+6*100))*100 = 52%
+                                    ((6+6.4) / (16+12)) * 100 = 45% (44.28%)
                                 </div>
                             </>
                         }
@@ -184,7 +202,7 @@ const ProjectForm = ({ id }) => {
                             },
                         ]}
                     >
-                        <SWDatePicker className="w-full" />
+                        <SWDatePicker className="w-full"/>
                     </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -198,7 +216,7 @@ const ProjectForm = ({ id }) => {
                             },
                         ]}
                     >
-                        <SWDatePicker className="w-full" />
+                        <SWDatePicker className="w-full"/>
                     </Form.Item>
                 </Col>
             </Row>
@@ -212,7 +230,7 @@ const ProjectForm = ({ id }) => {
                     },
                 ]}
             >
-                <SelectAccount placeholder="Chọn người quản trị" />
+                <SelectAccount placeholder="Chọn người quản trị"/>
             </Form.Item>
             <Form.Item
                 name="handles"
@@ -265,7 +283,7 @@ const ProjectForm = ({ id }) => {
             </Form.Item>
 
             <Form.Item name="description" label="Mô tả">
-                <Input.TextArea placeholder="Nhập mô tả" />
+                <Input.TextArea placeholder="Nhập mô tả"/>
             </Form.Item>
         </Form>
     );
