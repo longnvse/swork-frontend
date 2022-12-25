@@ -9,6 +9,8 @@ import {getToken, refreshToken} from "../../../api/login/api";
 import {logoutStart} from "../../../redux/actions/login/actions";
 import {closeDrawer, isReload, loadingFinish, loadingStart} from "../../../redux/actions/common/actions";
 import {urlFile} from "../../../api/file";
+import dayjs from "dayjs";
+import qs from "qs";
 
 const setup = (store) => {
 
@@ -23,6 +25,10 @@ const setup = (store) => {
             if (config.url !== urlFile) {
                 store.dispatch(loadingStart(config.url));
             }
+
+            config.paramsSerializer = (params) => qs.stringify(params, {
+                serializeDate: (date) => dayjs(date).format("YYYY-MM-DD HH:mm:ss")
+            });
 
             return config;
 

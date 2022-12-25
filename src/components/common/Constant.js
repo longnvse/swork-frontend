@@ -32,6 +32,12 @@ export const CLASS_PK_NAME = {
     WORK: "work"
 }
 
+export const homePageByRole = {
+    "superAdmin": "/business",
+    "admin": "/account",
+    "user": "/project/all"
+}
+
 export const MODULE_ID = {
     PROJECT: "project",
     PHASE: "phase",
