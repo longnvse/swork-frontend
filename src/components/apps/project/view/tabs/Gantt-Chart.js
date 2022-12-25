@@ -68,7 +68,7 @@ const ProjectViewGanttChart = ({projectId}) => {
                 name: item.name,
                 id: `${item.id} - ${item.name}`,
                 phaseId: item.id,
-                type: 'task',
+                type: 'project',
                 progress: item.progress,
                 isPhase: true,
                 status: item.status,
