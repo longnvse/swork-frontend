@@ -20,13 +20,9 @@ const ProjectViewDetail = ({data, teamData, phaseData}) => {
                 </Row>
                 <Row className={"mt-1.5"}>
                     <Col
-                        className={"rounded-[8px] border-solid border-[1px] border-[#ccc] p-6 w-full"}
-                        span={8}>
-                        <div
-                            style={{
-                                paddingTop: 13,
-                                paddingLeft: 26,
-                            }}>
+                        span={16}
+                        className={"rounded-[8px] border-solid border-[1px] border-[#ccc] p-6 w-full"}>
+                        <div>
                         <span>
                             <strong>Công việc</strong>
                         </span>
