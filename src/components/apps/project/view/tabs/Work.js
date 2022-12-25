@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { renderStatus } from "../../../../common/status";
 
-function ProjectViewWork({ projectId, phaseId, parentId }) {
+function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
     const [dataSources, setDataSources] = useState([]);
     const { reload } = useSelector((state) => state.commonReducer);
 
@@ -92,27 +92,29 @@ function ProjectViewWork({ projectId, phaseId, parentId }) {
 
     return (
         <div>
-            <Row gutter={12} className={"mb-4"}>
-                <Col>
-                    <ButtonDrawer
-                        title={"Thêm mới công việc"}
-                        formId={"work-form"}
-                        mode={ADD}
-                        buttonProps={{
-                            value: "Thêm mới",
-                        }}
-                        drawerProps={{
-                            width: 500,
-                        }}
-                    >
-                        <WorkForm
-                            projectId={projectId}
-                            phaseId={phaseId}
-                            parentId={parentId}
-                        />
-                    </ButtonDrawer>
-                </Col>
-            </Row>
+            {!hiddenBtn ? (
+                <Row gutter={12} className={"mb-4"}>
+                    <Col>
+                        <ButtonDrawer
+                            title={"Thêm mới công việc"}
+                            formId={"work-form"}
+                            mode={ADD}
+                            buttonProps={{
+                                value: "Thêm mới",
+                            }}
+                            drawerProps={{
+                                width: 500,
+                            }}
+                        >
+                            <WorkForm
+                                projectId={projectId}
+                                phaseId={phaseId}
+                                parentId={parentId}
+                            />
+                        </ButtonDrawer>
+                    </Col>
+                </Row>
+            ) : null}
             <Table dataSource={dataSources} columns={columnsWork} />
         </div>
     );

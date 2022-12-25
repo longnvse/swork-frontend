@@ -1,4 +1,4 @@
-.ant-collapse-header{
+.ant-collapse-header {
     align-items: center !important;
 }
 
@@ -52,9 +52,9 @@
     }
 
     .ant-collapse-ghost
-    > .ant-collapse-item
-    > .ant-collapse-content
-    > .ant-collapse-content-box {
+        > .ant-collapse-item
+        > .ant-collapse-content
+        > .ant-collapse-content-box {
         padding: 0;
     }
 }
@@ -62,7 +62,7 @@
 .react-trello {
     &-lane {
         & header {
-            border-bottom: 1px solid rgba(196, 196, 196, .3);
+            border-bottom: 1px solid rgba(196, 196, 196, 0.3);
             padding: 13px 0;
             margin: 0 16px;
 
@@ -87,6 +87,10 @@
     }
 }
 
-._CZjuD{
+._CZjuD {
     border-radius: 12px;
+}
+
+.ant-btn > .anticon + span {
+    margin: 0;
 }
