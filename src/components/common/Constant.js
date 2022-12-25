@@ -17,6 +17,13 @@ export const STATUS = {
     "denied": "Đã huỷ"
 }
 
+export const progressTypeString = {
+    "manual": "Người dùng tự cập nhập tiến độ",
+    "averageWorks": "Theo bình quân % hoàn thành công việc",
+    "proportionDate": "Theo tỷ trọng ngày thực hiện công việc",
+    "byAmount": "Theo tỷ lệ hoàn thành khối lượng công việc"
+}
+
 export const STATUS_ARRAY = [PENDING, ACTIVE, COMPLETED, INACTIVE, DENIED]
 
 export const CLASS_PK_NAME = {

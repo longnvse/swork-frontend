@@ -4,7 +4,7 @@ import {HomeOutlined, PhoneOutlined, UserOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
 import {DATE_FORMAT} from "../../Constant";
 
-const AccountGroupItem = ({avatar, fullName, departmentName, username, phoneNumber}) => {
+const AccountGroupItem = ({avatar, fullName, departmentName, username, phoneNumber, positionTooltip = "top"}) => {
 
     const title = (
         <Row gutter={12} className={"items-center justify-between p-2"}>
@@ -32,7 +32,7 @@ const AccountGroupItem = ({avatar, fullName, departmentName, username, phoneNumb
     return (
         <Tooltip
             className={"w-fit max-w-full"}
-            placement={"top"}
+            placement={positionTooltip}
             color={"white"}
             title={title}
         >

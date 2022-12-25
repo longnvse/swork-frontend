@@ -6,7 +6,7 @@ import { ADD } from "../../../../common/Constant";
 import ResourceForm from "../../../resource/form";
 import ResourceList from "../../../resource/list";
 
-function ProjectViewResource({ projectId, phaseId, teamId }) {
+function ProjectViewResource({ projectId, phaseId, workId, teamId }) {
     return (
         <div>
             <Row gutter={12} className={"mb-4"}>
@@ -30,7 +30,12 @@ function ProjectViewResource({ projectId, phaseId, teamId }) {
                     <Input prefix={<FiSearch />} />
                 </Col>
             </Row>
-            <ResourceList projectId={projectId} phaseId={phaseId} />
+            <ResourceList
+                projectId={projectId}
+                phaseId={phaseId}
+                workId={workId}
+                teamId={teamId}
+            />
         </div>
     );
 }

@@ -5,7 +5,7 @@ import WorkList from "./list";
 const WorkRouter = () => {
     return (
         <Routes path={"/"}>
-            <Route path="all" element={<WorkList />} />
+            <Route path="/:type" element={<WorkList />} />
         </Routes>
     );
 };

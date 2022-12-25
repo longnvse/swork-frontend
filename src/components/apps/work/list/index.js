@@ -1,4 +1,12 @@
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+    DeleteOutlined,
+    EditOutlined,
+    PlusOutlined,
+    FolderOutlined,
+    ApartmentOutlined,
+    CheckCircleOutlined,
+    UnorderedListOutlined,
+} from "@ant-design/icons";
 import { Button, message, Popconfirm, Progress, Col, Row } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -12,20 +20,29 @@ import {
     STATUS,
     UPDATE,
 } from "../../../common/Constant";
-import { columnsWork } from "../common/columns";
+import {
+    columnsWork,
+    columnsWorkActive,
+    columnsWorkPending,
+} from "../common/columns";
 import WorkForm from "../form";
 import { useDispatch } from "react-redux";
 import { isReload, setHeader } from "../../../../redux/actions/common/actions";
 import SWTabs from "../../../common/tabs";
 import CommonList from "../../../common/list";
-import { renderStatus } from "../../../common/status";
+import { renderStatus, renderTag } from "../../../common/status";
 import dayjs from "dayjs";
 import ButtonTab from "../../../common/button/ButtonTab";
+import AccountGroup from "../../../common/account/group";
+import { TbLayoutKanban } from "react-icons/tb";
+import { CiViewTimeline } from "react-icons/ci";
 
 const WorkList = ({ projectId, phaseId }) => {
     const [filter, setFilter] = useState(null);
     const dispatch = useDispatch();
+    const [viewMode, setViewMode] = useState("list");
     const status = ["pending", "active", "completed", "inactive", "denied"];
+    const [statusFilter, setStatusFilter] = useState("all");
 
     useEffect(() => {
         dispatch(setHeader("Danh sách công việc"));
@@ -54,19 +71,89 @@ const WorkList = ({ projectId, phaseId }) => {
             .catch(message_error);
     };
 
+    const getDeadline = (d1, d2) => {
+        let ms1 = d1.getTime();
+        let ms2 = d2.getTime();
+
+        const deadline = Math.ceil((ms2 - ms1) / (24 * 60 * 60 * 1000));
+
+        if (deadline > 1) {
+            return renderTag(`Quá hạn ${deadline} ngày`, "error");
+        } else if (deadline < 1) {
+            return renderTag(`Còn ${Math.abs(deadline)} ngày`, "success");
+        } else if (deadline === 1) {
+            return renderTag(`Đến hạn`, "volcano");
+        } else if (deadline === 0) {
+            return renderTag(`Hoàn thành`, "success");
+        }
+    };
+
     const mapData = (item) => {
         return {
             key: item.id,
             ...item,
             name: (
-                <Link to={`/project/view-work/${item?.id}`}>{item?.name}</Link>
+                <div>
+                    <Link to={`/project/view-work/${item?.id}`}>
+                        {item?.name}
+                    </Link>
+                    <div className="flex items-center">
+                        {item?.projectId ? (
+                            <div className="flex items-center">
+                                <FolderOutlined />
+                                <Link
+                                    to={`/project/view/${item?.projectId}`}
+                                    className="ml-2 block text-gray-800 hover:underline"
+                                    style={{ fontSize: 13 }}
+                                >
+                                    {item?.projectName}
+                                </Link>
+                                {item?.projectId && item?.phaseId ? (
+                                    <span className="mx-2">/</span>
+                                ) : null}
+                            </div>
+                        ) : null}
+                        {item?.phaseId ? (
+                            <div className="flex items-center">
+                                <ApartmentOutlined />
+                                <Link
+                                    to={`/project/view-phase/${item?.phaseId}`}
+                                    className="ml-2 block text-gray-800 hover:underline"
+                                    style={{ fontSize: 13 }}
+                                >
+                                    {item?.phaseName}
+                                </Link>
+                            </div>
+                        ) : null}
+                        {item?.parentId ? (
+                            <div className="flex items-center">
+                                <CheckCircleOutlined />
+                                <Link
+                                    to={`/project/view-work/${item?.parentId}`}
+                                    className="ml-2 block text-gray-800 hover:underline"
+                                    style={{ fontSize: 13 }}
+                                >
+                                    {item?.parentName}
+                                </Link>
+                            </div>
+                        ) : null}
+                    </div>
+                </div>
             ),
             progress: <Progress percent={item?.progress} />,
-            admin: item?.admin,
+            admin: (
+                <AccountGroup
+                    accountIds={item?.manages.map((item) => item.memberId)}
+                />
+            ),
             status: renderStatus(item?.status),
-            priority: item?.priority,
-            intendTime: dayjs(item?.intendTime).format(DATE_FORMAT),
-            deadline: item?.deadline,
+            endDate: `${dayjs(item?.startDate).format(DATE_FORMAT)} - ${dayjs(
+                item?.endDate,
+            ).format(DATE_FORMAT)}`,
+            deadline:
+                item?.status === "active"
+                    ? getDeadline(new Date(item?.endDate), new Date())
+                    : null,
             action: (
                 <div className={"flex justify-evenly"}>
                     <ButtonDrawer
@@ -106,6 +193,7 @@ const WorkList = ({ projectId, phaseId }) => {
     ];
 
     const onChangeStatusFilter = (activeKey) => {
+        setStatusFilter(activeKey);
         if (!isValidStatus(activeKey)) {
             return;
         }
@@ -124,6 +212,46 @@ const WorkList = ({ projectId, phaseId }) => {
 
     const tabExtra = (
         <Row gutter={8}>
+            {viewMode !== "list" && (
+                <Col>
+                    <ButtonTab
+                        icon={
+                            <UnorderedListOutlined style={{ fontSize: 20 }} />
+                        }
+                        title={"Danh sách"}
+                        buttonProps={{
+                            onClick: () => {
+                                setViewMode("list");
+                            },
+                        }}
+                        selected={viewMode === "list"}
+                    />
+                </Col>
+            )}
+            <Col>
+                <ButtonTab
+                    icon={<TbLayoutKanban style={{ fontSize: 20 }} />}
+                    title={"Kanban"}
+                    buttonProps={{
+                        onClick: () => {
+                            setViewMode("kanban");
+                        },
+                    }}
+                    selected={viewMode === "kanban"}
+                />
+            </Col>
+            <Col>
+                <ButtonTab
+                    icon={<CiViewTimeline style={{ fontSize: 20 }} />}
+                    title={"Gantt chart"}
+                    buttonProps={{
+                        onClick: () => {
+                            setViewMode("ganttChart");
+                        },
+                    }}
+                    selected={viewMode === "ganttChart"}
+                />
+            </Col>
             <Col>
                 <ButtonDrawer
                     title={"Thêm mới công việc"}
@@ -142,6 +270,42 @@ const WorkList = ({ projectId, phaseId }) => {
         </Row>
     );
 
+    function renderList() {
+        if (viewMode === "list") {
+            if (statusFilter === "active" || statusFilter === "all") {
+                return (
+                    <CommonList
+                        mapData={mapData}
+                        load={onLoad}
+                        columns={columnsWorkActive}
+                        hiddenButton={false}
+                    />
+                );
+            } else if (
+                statusFilter === "pending" ||
+                statusFilter === "completed"
+            ) {
+                return (
+                    <CommonList
+                        mapData={mapData}
+                        load={onLoad}
+                        columns={columnsWorkPending}
+                        hiddenButton={false}
+                    />
+                );
+            } else {
+                return (
+                    <CommonList
+                        mapData={mapData}
+                        load={onLoad}
+                        columns={columnsWork}
+                        hiddenButton={false}
+                    />
+                );
+            }
+        }
+    }
+
     return (
         <div>
             <SWTabs
@@ -149,12 +313,7 @@ const WorkList = ({ projectId, phaseId }) => {
                 items={tabItemsForList}
                 tabBarExtraContent={tabExtra}
             />
-            <CommonList
-                mapData={mapData}
-                load={onLoad}
-                columns={columnsWork}
-                hiddenButton={false}
-            />
+            {renderList()}
         </div>
     );
 };
