@@ -1,44 +1,55 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Gantt, ViewMode } from "gantt-task-react";
-import { getProjectPages, updateDateProject } from "../../../../api/project";
-import { message_error } from "../../../common/Constant";
+import React, {useEffect, useMemo, useState} from "react";
+import {Gantt, ViewMode} from "gantt-task-react";
+import {getProjectPages, updateDateProject} from "../../../../api/project";
+import {message_error} from "../../../common/Constant";
 import dayjs from "dayjs";
-import { Button, Col, Layout, Row } from "antd";
-import { Content } from "antd/es/layout/layout";
+import {Button, Col, Layout, Row} from "antd";
+import {Content} from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import { CloseOutlined, ProjectOutlined } from "@ant-design/icons";
-import {
-    progressColorGanttChart,
-    statusColorGanttChart,
-    statusColorGanttChartSelected,
-} from "../../../common/status";
-import { useSearchParams } from "react-router-dom";
+import {CloseOutlined, ProjectOutlined} from "@ant-design/icons";
+import {progressColorGanttChart, statusColorGanttChart, statusColorGanttChartSelected,} from "../../../common/status";
+import {useSearchParams} from "react-router-dom";
 import ProjectInfo from "./project-info";
-import { TooltipGanttChart } from "../view/tabs/elements/TooltipGanttChart";
-import { getWorkPages } from "../../../../api/work";
+import {TooltipGanttChart} from "../view/tabs/elements/TooltipGanttChart";
+import {getWorkPages, updateWorkDate} from "../../../../api/work";
+import WorkViewInfo from "../../work/view/info";
+import {useSelector} from "react-redux";
 
-const ProjectGanttChart = ({ isWork }) => {
+const ProjectGanttChart = ({isWork}) => {
     const [tasks, setTasks] = useState([]);
     const [collapsed, setCollapsed] = useState(true);
     const [searchParams] = useSearchParams();
     const [viewMode, setViewMode] = useState(ViewMode.Day);
     const [selectedProject, setSelectedProject] = useState();
     const [selectedProjectName, setSelectedProjectName] = useState();
+
+    const {reload} = useSelector(state => state.commonReducer);
+
     useEffect(() => {
+        if (reload) {
+            fetchData();
+        }
+    }, [reload]);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
         if (!isWork) {
-            getProjectPages({ page: 1, pageSize: Number.MAX_VALUE })
+            getProjectPages({page: 1, pageSize: Number.MAX_VALUE})
                 .then((res) => {
                     setTasks(res.data?.items?.map(mapData) || []);
                 })
                 .catch(message_error);
         } else {
-            getWorkPages({ page: 1, pageSize: Number.MAX_VALUE })
+            getWorkPages({page: 1, pageSize: Number.MAX_VALUE, isTree: true})
                 .then((res) => {
                     setTasks(res.data?.items?.map(mapData) || []);
                 })
                 .catch(message_error);
         }
-    }, []);
+    }
 
     const columnWidth = useMemo(() => {
         switch (viewMode) {
@@ -95,11 +106,22 @@ const ProjectGanttChart = ({ isWork }) => {
         fontSize: "40px",
     });
 
-    const onDateChange = ({ id, start, end }) => {
-        return updateDateProject(id, start, end);
+    const onDateChange = ({id, start, end}) => {
+        if (!isWork) {
+            return updateDateProject(id, start, end).then(() => {
+                return true;
+            }).catch(message_error);
+        } else {
+            return updateWorkDate(id, start, end).then(() => {
+                return true;
+            }).catch((err) => {
+                message_error(err);
+                return false;
+            });
+        }
     };
 
-    const onClick = ({ id, name }) => {
+    const onClick = ({id, name}) => {
         setSelectedProject(id);
         setSelectedProjectName(name);
         setCollapsed(false);
@@ -107,16 +129,16 @@ const ProjectGanttChart = ({ isWork }) => {
 
     return (
         tasks.length > 0 && (
-            <Layout className={"rounded-[8px]"}>
+            <Layout className={"rounded-[8px] h-fit"}>
                 <Content
                     className={"bg-white"}
-                    style={{ border: "1px solid #ccc", borderRadius: 8 }}
+                    style={{border: "1px solid #ccc", borderRadius: 8}}
                 >
                     <Gantt
                         tasks={tasks}
                         locale={"vi"}
                         onDateChange={onDateChange}
-                        onClick={onClick}
+                        onDoubleClick={onClick}
                         listCellWidth={""}
                         ganttHeight={710}
                         columnWidth={columnWidth}
@@ -158,7 +180,7 @@ const ProjectGanttChart = ({ isWork }) => {
                                         }}
                                         icon={
                                             <ProjectOutlined
-                                                style={{ fontSize: 16 }}
+                                                style={{fontSize: 16}}
                                             />
                                         }
                                     />
@@ -169,14 +191,15 @@ const ProjectGanttChart = ({ isWork }) => {
                         <Col>
                             <Button
                                 type={"text"}
-                                icon={<CloseOutlined />}
+                                icon={<CloseOutlined/>}
                                 className={"float-right"}
                                 onClick={() => setCollapsed(true)}
                             />
                         </Col>
                     </Row>
                     <div className={"p-5"}>
-                        <ProjectInfo projectId={selectedProject} />
+                        {!isWork ? <ProjectInfo projectId={selectedProject}/> :
+                            <WorkViewInfo workId={selectedProject}/>}
                     </div>
                 </Sider>
             </Layout>

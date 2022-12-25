@@ -17,12 +17,15 @@ const WorkViewInfo = ({workId}) => {
     useEffect(() => {
         setLoading(true);
 
-        getWork(workId).then((res) => {
-            setData(res.data);
-            setTimeout(() => {
-                setLoading(false);
-            }, 500)
-        })
+        if (workId) {
+            getWork(workId).then((res) => {
+                setData(res.data);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500)
+            })
+        }
+
 
     }, [workId]);
 

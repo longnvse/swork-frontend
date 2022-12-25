@@ -111,8 +111,7 @@ const ProjectViewGanttChart = ({projectId}) => {
         ]
     }
 
-    const onDateChange = ({id, start, end, isPhase, phaseId}) => {
-        console.log(start, end);
+    const onDateChange = ({id, start, end, isPhase}) => {
         if (!isPhase) {
             return updateWorkDate(id, start, end).then(() => {
                 return true;
