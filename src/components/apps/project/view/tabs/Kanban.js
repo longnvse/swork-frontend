@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {approvalProject} from "../../../../../api/project";
 import {DATE_FORMAT, message_error, STATUS_ARRAY} from "../../../../common/Constant";
 import {statusBgColorKanban, statusColorKanban, statusString} from "../../../../common/status";
 import {Badge, Col, message, Progress, Row} from "antd";
@@ -8,7 +7,7 @@ import {CommentOutlined, PaperClipOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
 import {isReload} from "../../../../../redux/actions/common/actions";
 import Kanban from "../../../kanban";
-import {getWorkPages} from "../../../../../api/work";
+import {approvalWork, getWorkPages} from "../../../../../api/work";
 
 const ProjectViewKanban = ({projectId}) => {
     const [data, setData] = useState({lanes: []});
@@ -56,8 +55,8 @@ const ProjectViewKanban = ({projectId}) => {
         cardDroppable: false
     })
 
-    const onUpdateStatus = (projectId, status) => {
-        approvalProject(projectId, status).then(res => {
+    const onUpdateStatus = (workId, status) => {
+        approvalWork(workId, status).then(res => {
             message.success("Cập nhật trạng thái thành công!")
         }).catch(error => {
             message_error(error);
