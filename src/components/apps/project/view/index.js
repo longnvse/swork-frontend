@@ -21,6 +21,7 @@ import ProjectForm from "../form";
 import ButtonModal from "../../../common/button/ButtonModal";
 import ProjectMemberForm from "../form/update-member-form";
 import SWFile from "../../../common/file";
+import ProjectViewKanban from "./tabs/Kanban";
 
 function ProjectView(props) {
     const [data, setData] = useState({});
@@ -59,6 +60,16 @@ function ProjectView(props) {
                     phaseData={phaseData}
                 />
             ),
+        },
+        {
+            label: "Kanban",
+            key: "kanban",
+            children: <ProjectViewKanban projectId={data.id}/>,
+        },
+        {
+            label: "Gantt Chart",
+            key: "gantt chart",
+            children: <ProjectViewPhase projectId={data.id}/>,
         },
         {
             label: "Giai đoạn",
