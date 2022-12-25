@@ -6,8 +6,10 @@ const {Content} = Layout
 function CommonContent({children}) {
     return (
         <Content
+            className={"app__content"}
+            id={"content"}
             style={{
-                margin: '15px',
+                position: "relative"
             }}
         >
             {children}

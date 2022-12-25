@@ -1,25 +1,20 @@
-import LoginPage from "./components/page/login";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Dashboard from "./components/common/layout";
-import BusinessList from "./components/apps/business";
-import RootPage from "./components/page";
-import BusinessRouter from "./components/apps/business/router";
+import Routers from "./router";
+import {useEffect, useState} from "react";
+import {useSelector} from "react-redux";
+import {getMe} from "./api/common";
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route element={<RootPage/>}>
-                    <Route index element={<BusinessList/>}/>
-                    <Route path={"/business/*"} element={<BusinessRouter/>}/>
-                    <Route path={"/dashboard"} element={<Dashboard/>}/>
+    const [role, setRole] = useState();
+    const {loggedInSuccess} = useSelector(state => state.loginReducer)
 
-                </Route>
-                <Route path={"/login"} element={<LoginPage/>}/>
-                {/*<Route path={"/list"} element={<CommonList/>}/>*/}
-            </Routes>
-        </BrowserRouter>
-    );
+
+    useEffect(() => {
+        if (loggedInSuccess) {
+            setRole(getMe().role);
+        }
+    }, [loggedInSuccess]);
+
+    return <Routers role={role}/>;
 }
 
 export default App;

@@ -7,9 +7,10 @@ import {
 } from "../index";
 import {getToken, refreshToken} from "../../../api/login/api";
 import {logoutStart} from "../../../redux/actions/login/actions";
+import {closeDrawer, isReload, loadingFinish, loadingStart} from "../../../redux/actions/common/actions";
+import {urlFile} from "../../../api/file";
 
 const setup = (store) => {
-
 
     axiosInstance.interceptors.request.use(
         (config) => {
@@ -19,20 +20,40 @@ const setup = (store) => {
             config.headers["Authorization"] = oauth2Token;
             config.headers["swork-x-user-context-request"] = accessToken;
 
+            if (config.url !== urlFile) {
+                store.dispatch(loadingStart(config.url));
+            }
+
             return config;
 
         },
         (error) => {
+            store.dispatch(loadingFinish(error.config.url));
+
             return Promise.reject(error);
         }
     );
 
     axiosInstance.interceptors.response.use(
         (res) => {
+            store.dispatch(loadingFinish(res.config.url));
+            if (res.config.method === "get") {
+                store.dispatch(isReload(false));
+            }
+
+            switch (res.config.method) {
+                case "put":
+                case "post":
+                case "patch":
+                case "delete": {
+                    store.dispatch(isReload(true));
+                    store.dispatch(closeDrawer(new Boolean(true)));
+                }
+            }
             return res;
         },
         async (err) => {
-            console.log(err);
+            store.dispatch(loadingFinish(err.config.url));
 
             const originalConfig = err.config;
 
@@ -51,10 +72,7 @@ const setup = (store) => {
                         updateLocalAccessToken(accessToken);
                         return axiosInstance(originalConfig);
                     } catch (_error) {
-                        debugger
-                        if (_error.config.url === `/login-rest/v1.0/refreshtoken` && _error.response.status === 400) {
-                            store.dispatch(logoutStart());
-                        }
+                        store.dispatch(logoutStart());
                         return Promise.reject(_error);
                     }
                 }
@@ -70,6 +88,8 @@ const setup = (store) => {
                     return Promise.reject(_error);
                 }
             }
+
+            store.dispatch(closeDrawer(false));
 
             return Promise.reject(err);
         }

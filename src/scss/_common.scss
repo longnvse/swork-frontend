@@ -1,0 +1,14 @@
+.text {
+    &__header {
+        font-family: 'Source Sans Pro', serif;
+        font-size: x-large;
+        font-weight: bold;
+        color: white;
+    }
+}
+
+.btn {
+    &--tab {
+        border-radius: var(--border-radius);
+    }
+}

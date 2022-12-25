@@ -1,5 +1,6 @@
 import axios from "axios";
 import {BASE_PATH} from "./config/Url";
+import {notification, Progress} from "antd";
 
 
 export const SWAxios = axios.create({

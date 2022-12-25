@@ -21,3 +21,6 @@ export const updateBusiness = (businessId, values) => {
 export const deleteBusiness = (businessId) => {
     return SWAxios.delete(`${url}/${businessId}`);
 }
+export const approvalBusiness = (businessId, status) => {
+    return SWAxios.put(`${url}/approval/${businessId}`, {}, {params: {status}});
+}

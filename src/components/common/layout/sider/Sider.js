@@ -1,19 +1,33 @@
-import React, {useState} from 'react';
-import {Layout, Menu} from "antd";
+import React, {useMemo, useState} from 'react';
+import {Image, Menu} from "antd";
 import logo from "../../../../images/logo.png";
-import {Link} from "react-router-dom";
+import Sider from "antd/es/layout/Sider";
+import {SiderByPermission} from "../../sider";
 
-const {Sider} = Layout
-
-function CommonSider({children}) {
+function CommonSider({role, children}) {
     const [collapsed, setCollapsed] = useState(false);
 
-    const items = [
-        {
-            label: <Link to={"/business"}>Công ty/Doanh nghiệp</Link>,
-            key: "business",
-        },
-    ]
+    const getDefaultOpenKeys = useMemo(() => window.location.pathname.split("/").filter(value => {
+        if (!value) {
+            return false;
+        }
+
+        if (!Number(value)) {
+            return true;
+        }
+    }), []);
+
+    const getDefaultSelectedKeys = useMemo(() => {
+        return window.location.pathname.split("/").filter(value => {
+            if (!value) {
+                return false;
+            }
+
+            if (!Number(value)) {
+                return true;
+            }
+        }).join("-");
+    }, [])
 
     return (
         <Sider
@@ -23,14 +37,27 @@ function CommonSider({children}) {
             collapsed={collapsed}
             onCollapse={(value) => setCollapsed(value)}
         >
-            <div>
-                <img src={logo} alt="logo" className={"app__header--logo"}/>
+            <div style={{
+                margin: 8,
+                maxHeight: 64
+            }} className={"flex items-center justify-center"}>
+                <Image
+                    src={logo}
+                    alt={"logo"}
+                    className={"app__header--logo"}
+                    preview={false}
+                />
             </div>
             <div>
                 {children}
                 <Menu
                     mode="inline"
-                    items={items}
+                    items={SiderByPermission[role] || []}
+                    style={{
+                        backgroundColor: 'inherit'
+                    }}
+                    defaultOpenKeys={getDefaultOpenKeys}
+                    defaultSelectedKeys={[...getDefaultOpenKeys, getDefaultSelectedKeys]}
                 />
             </div>
         </Sider>
