@@ -68,7 +68,7 @@ const ProjectViewGanttChart = ({projectId}) => {
                 name: item.name,
                 id: `${item.id} - ${item.name}`,
                 phaseId: item.id,
-                type: 'task',
+                type: 'project',
                 progress: item.progress,
                 isPhase: true,
                 status: item.status,
@@ -112,6 +112,7 @@ const ProjectViewGanttChart = ({projectId}) => {
     }
 
     const onDateChange = ({id, start, end, isPhase, phaseId}) => {
+        console.log(start, end);
         if (!isPhase) {
             return updateWorkDate(id, start, end).then(() => {
                 return true;

@@ -8,7 +8,7 @@ import {
     UnorderedListOutlined,
 } from "@ant-design/icons";
 import { Button, message, Popconfirm, Progress, Col, Row } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { deleteWork, getWorkPages } from "../../../../api/work";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
@@ -36,8 +36,11 @@ import ButtonTab from "../../../common/button/ButtonTab";
 import AccountGroup from "../../../common/account/group";
 import { TbLayoutKanban } from "react-icons/tb";
 import { CiViewTimeline } from "react-icons/ci";
+import ProjectKanban from "../../project/kanban";
+import ProjectGanttChart from "../../project/gantt-chart";
+import { ViewMode } from "gantt-task-react";
 
-const WorkList = ({ projectId, phaseId }) => {
+const WorkList = (props) => {
     const [filter, setFilter] = useState(null);
     const dispatch = useDispatch();
     const [viewMode, setViewMode] = useState("list");
@@ -192,6 +195,30 @@ const WorkList = ({ projectId, phaseId }) => {
         ...status.map((item) => ({ label: STATUS[item], key: item })),
     ];
 
+    const tabItemsForGanttChart = [
+        { label: "Ngày", key: ViewMode.Day },
+        {
+            label: "Tuần",
+            key: ViewMode.Week,
+        },
+        { label: "Tháng", key: ViewMode.Month },
+        {
+            label: "Năm",
+            key: ViewMode.Year,
+        },
+    ];
+
+    const tabItems = useMemo(() => {
+        switch (viewMode) {
+            case "list":
+                return tabItemsForList;
+            case "ganttChart":
+                return tabItemsForGanttChart;
+            default:
+                return [];
+        }
+    }, [viewMode]);
+
     const onChangeStatusFilter = (activeKey) => {
         setStatusFilter(activeKey);
         if (!isValidStatus(activeKey)) {
@@ -310,10 +337,14 @@ const WorkList = ({ projectId, phaseId }) => {
         <div>
             <SWTabs
                 onChange={onChangeStatusFilter}
-                items={tabItemsForList}
+                items={tabItems}
                 tabBarExtraContent={tabExtra}
             />
             {renderList()}
+            {viewMode === "kanban" ? <ProjectKanban isWork={true} /> : null}
+            {viewMode === "ganttChart" ? (
+                <ProjectGanttChart isWork={true} />
+            ) : null}
         </div>
     );
 };

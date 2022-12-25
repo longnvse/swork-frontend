@@ -27,6 +27,7 @@ export const approvalWork = (workId, status) => {
 }
 
 export const updateWorkDate = (workId, startDate, endDate) => {
+    console.log("axios:", startDate, endDate);
     return SWAxios.put(`${url}/date/${workId}`, {}, {params: {startDate, endDate}});
 }
 
