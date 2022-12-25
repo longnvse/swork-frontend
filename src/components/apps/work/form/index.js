@@ -217,42 +217,36 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
                                             </div>
                                         </div>
                                     </Select.Option>
-                                    <Select.Option value="byChecklist">
-                                        <b>Theo tỷ lệ hoàn thành đầu việc</b>
-                                        <div className="ml-3">
-                                            <div>
-                                                Ví dụ công việc có 10 đầu việc ,
-                                                khi người dùng
-                                            </div>
-                                            <div>
-                                                tích chọn đầu việc đã hoàn thành
-                                                là 5 ,
-                                            </div>
-                                            <div>
-                                                thì hệ thống sẽ tính ra kết quả
-                                                công việc là 50%
-                                            </div>
+                                    <Select.Option value="proportionDate">
+                                        <b>Theo tỷ trọng ngày thực hiện </b>
+                                        <div
+                                        >
+                                            Ví dụ dự án gồm 2 công việc A và B .
                                         </div>
-                                    </Select.Option>
-                                    <Select.Option value="byProportion">
-                                        <b>Theo tỷ trọng công việc con</b>
-                                        <div className="ml-3">
-                                            <div>
-                                                Ví dụ Công việc X gồm 2 công
-                                                việc A và B .
-                                            </div>
-                                            <div>
-                                                Công việc A có tỷ trọng là 40 ,
-                                                tiến độ là 50%
-                                            </div>
-                                            <div>
-                                                Công việc B có tỷ trọng là 30 ,
-                                                tiến độ là 40%
-                                            </div>
-                                            <div>
-                                                Tiến độ Công việc X là
-                                                [(40*50)+(30*40)]/(40+30) = 35%
-                                            </div>
+                                        <div
+                                        >
+                                            Công việc A yêu cầu thời gian thực hiện
+                                            trong 4 ngày , tiến độ 40%, gồm 4 người thực hiện
+                                        </div>
+                                        <div
+                                        >
+                                            thì tổng khối lượng công việc là 4*4=16,
+                                            khối lượng công việc đã hoàn thành là 4*4*40%=6.4
+                                        </div>
+                                        <div
+                                        >
+                                            Công việc B yêu cầu thời gian thực hiện
+                                            trong 6 ngày , tiến độ 50%, gồm 2 nguời thực hiện
+                                        </div>
+                                        <div
+                                        >
+                                            thì tổng khối lượng công việc là 6*2=12,
+                                            khối lượng công việc đã hoàn thành là 6*2*50%=6
+                                        </div>
+                                        <div
+                                        >
+                                            Tiến độ dự án là
+                                            ((6+6.4) / (16+12)) * 100 = 45% (44.28%)
                                         </div>
                                     </Select.Option>
                                 </Select>

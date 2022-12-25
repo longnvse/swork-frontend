@@ -22,6 +22,7 @@ import ButtonModal from "../../../common/button/ButtonModal";
 import ProjectMemberForm from "../form/update-member-form";
 import SWFile from "../../../common/file";
 import ProjectViewKanban from "./tabs/Kanban";
+import ProjectViewGanttChart from "./tabs/Gantt-Chart";
 
 function ProjectView(props) {
     const [data, setData] = useState({});
@@ -69,7 +70,7 @@ function ProjectView(props) {
         {
             label: "Gantt Chart",
             key: "gantt chart",
-            children: <ProjectViewPhase projectId={data.id}/>,
+            children: <ProjectViewGanttChart projectId={data.id}/>,
         },
         {
             label: "Giai đoạn",

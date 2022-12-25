@@ -10,6 +10,7 @@ import {CloseOutlined, ProjectOutlined} from "@ant-design/icons";
 import {progressColorGanttChart, statusColorGanttChart, statusColorGanttChartSelected} from "../../../common/status";
 import {useSearchParams} from "react-router-dom";
 import ProjectInfo from "./project-info";
+import {TooltipGanttChart} from "../view/tabs/elements/TooltipGanttChart";
 
 const ProjectGanttChart = (props) => {
     const [tasks, setTasks] = useState([]);
@@ -64,6 +65,8 @@ const ProjectGanttChart = (props) => {
         id: item.id,
         type: 'task',
         progress: item.progress,
+        isProject: true,
+        status: item.status,
         styles: {
             backgroundColor: statusColorGanttChart(item.status),
             backgroundSelectedColor: statusColorGanttChartSelected(item.status),
@@ -94,6 +97,7 @@ const ProjectGanttChart = (props) => {
                 ganttHeight={710}
                 columnWidth={columnWidth}
                 viewMode={viewMode}
+                TooltipContent={TooltipGanttChart}
             />
         </Content>
         <Sider
