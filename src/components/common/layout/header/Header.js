@@ -5,17 +5,20 @@ import {IoMdNotificationsOutline} from "react-icons/io";
 import {FiSearch} from "react-icons/fi";
 import {useSelector} from "react-redux";
 import {debounce} from "lodash";
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 const {Header} = Layout;
 
 function CommonHeader(props) {
     const {title} = useSelector(state => state.commonReducer);
     const [searchParams, setSearchParams] = useSearchParams();
+    let navigate = useNavigate();
+
     const onChangeSearch = (e) => {
         const {value} = e.target;
         searchBounce(value);
     }
+
 
     const searchBounce = useRef(debounce((nextValue) => {
         if (!nextValue) {
@@ -23,7 +26,7 @@ function CommonHeader(props) {
         } else {
             searchParams.set("keyword", nextValue);
         }
-        setSearchParams(searchParams, {relative: "route"});
+        navigate(`?${searchParams.toString()}`)
     }, 500)).current;
 
     return (<Header
