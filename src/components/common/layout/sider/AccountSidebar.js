@@ -3,14 +3,16 @@ import Sider from "antd/es/layout/Sider";
 import React, {useState} from "react";
 import {RiGitRepositoryPrivateLine} from "react-icons/ri";
 import {VscAccount} from "react-icons/vsc";
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import logo from "../../../../images/logo.png";
 import {URIS} from "../../../../utils/constant";
+import {homePageByRole} from "../../Constant";
+import {getMe} from "../../../../api/common";
 
 function AccountSidebar({children}) {
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation();
-
+    let navigate = useNavigate();
     const items = [
         {
             label: <Link to={URIS.ACCOUNT_INFO}>Thông tin cá nhân</Link>,
@@ -37,7 +39,10 @@ function AccountSidebar({children}) {
                     margin: 8,
                     maxHeight: 64,
                 }}
-                className={"flex items-center justify-center"}
+                onClick={(e) => {
+                    navigate(homePageByRole[getMe().role])
+                }}
+                className={"flex items-center justify-center hover:cursor-pointer"}
             >
                 <Image
                     src={logo}
