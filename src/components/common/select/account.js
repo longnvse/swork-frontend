@@ -2,8 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {Select} from "antd";
 import {getAccountPages} from "../../../api/account/api";
 import {SearchOutlined} from "@ant-design/icons";
+import {getDepartmentPages} from "../../../api/department/api";
 
-const SelectAccount = ({value = [], onChange, placeholder, simple = false, withExt = false}) => {
+const SelectAccount = ({
+                           value = [],
+                           onChange,
+                           placeholder,
+                           simple = false,
+                           withExt = false
+                       }) => {
     const [options, setOptions] = useState([]);
     const [values, setValues] = useState([]);
 
@@ -22,9 +29,10 @@ const SelectAccount = ({value = [], onChange, placeholder, simple = false, withE
     }, [JSON.stringify(value)]);
 
     const mapOption = (item) => ({
-        value: item.id, label: item.fullName || item.email, ext: item.externalReferenceCode
+        value: item.id,
+        label: item.fullName || item.email || item.name,
+        ext: item.externalReferenceCode
     })
-
 
     const onChangeSelect = (value, option) => {
         if (withExt) {
@@ -45,15 +53,15 @@ const SelectAccount = ({value = [], onChange, placeholder, simple = false, withE
     }
 
     return (<Select
-            allowClear={true}
-            showSearch={true}
-            options={options}
-            value={values}
-            onChange={onChangeSelect}
-            mode={"multiple"}
-            placeholder={placeholder || "Chọn tài khoản"}
-            suffixIcon={<SearchOutlined/>}
-        />);
+        allowClear={true}
+        showSearch={true}
+        options={options}
+        value={values}
+        onChange={onChangeSelect}
+        mode={"multiple"}
+        placeholder={placeholder || "Chọn tài khoản"}
+        suffixIcon={<SearchOutlined/>}
+    />);
 };
 
 export default SelectAccount;

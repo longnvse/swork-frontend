@@ -21,7 +21,7 @@ const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
     };
 
     useEffect(() => {
-        if (projectId) {
+        if (projectId || phaseId) {
             getTeamPages({
                 projectId,
                 phaseId,

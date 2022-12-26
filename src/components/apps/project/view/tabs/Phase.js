@@ -1,14 +1,20 @@
 import React from "react";
 import CommonList from "../../../../common/list";
-import {columnPhase} from "../../common/columns";
-import {deletePhase, getPhasePages} from "../../../../../api/phase";
+import { columnPhase } from "../../common/columns";
+import { deletePhase, getPhasePages } from "../../../../../api/phase";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {ADD, DATE_FORMAT, INACTIVE, message_error, UPDATE} from "../../../../common/Constant";
+import {
+    ADD,
+    DATE_FORMAT,
+    INACTIVE,
+    message_error,
+    UPDATE,
+} from "../../../../common/Constant";
 import PhaseForm from "../../../phase/form";
-import {renderStatus} from "../../../../common/status";
-import {Button, message, Popconfirm, Progress} from "antd";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import {Link} from "react-router-dom";
+import { renderStatus } from "../../../../common/status";
+import { Button, message, Popconfirm, Progress } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 
 function ProjectViewPhase({ projectId }) {
@@ -74,14 +80,7 @@ function ProjectViewPhase({ projectId }) {
         </ButtonDrawer>
     );
 
-    return (
-        <CommonList
-            mapData={mapData}
-            load={load}
-            columns={columnPhase}
-            buttonAdd={buttonAdd}
-        />
-    );
+    return <CommonList mapData={mapData} load={load} columns={columnPhase} />;
 }
 
 export default ProjectViewPhase;
