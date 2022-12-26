@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Row, Col } from "antd";
+import {Form, Row, Col, InputNumber} from "antd";
 
 const ByUserForm = () => {
     const [form] = Form.useForm();
