@@ -29,7 +29,6 @@ const Routers = ({role}) => {
                         />
                     }
                 >
-                    <Route key={"3"} path={URIS.DASHBOARD} element={<Dashboard/>}/>
                     {RouteByPermission[role]?.map(mapRoute) || <></>}
                 </Route>
                 <Route key={"4"} path={URIS.LOGIN} element={<LoginPage/>}/>

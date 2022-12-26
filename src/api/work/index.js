@@ -26,6 +26,11 @@ export const approvalWork = (workId, status) => {
     return SWAxios.put(`${url}/approval/${workId}`, {}, {params: {status}});
 }
 
+export const updateWorkDate = (workId, startDate, endDate) => {
+    console.log("axios:", startDate, endDate);
+    return SWAxios.put(`${url}/date/${workId}`, {}, {params: {startDate, endDate}});
+}
+
 export const reportProgressByAmount = (workId, completeAmount) => {
     return SWAxios.put(`${url}/report-process/by-amount/${workId}`, {}, {params: {completeAmount}});
 }

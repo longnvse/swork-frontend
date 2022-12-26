@@ -5,11 +5,34 @@ import ProjectViewSummary from "./elements/Summary";
 import DashboardStatusWork from "../../dashboard/status-work";
 import CommentList from "../../../../common/comment/list";
 import {CLASS_PK_NAME} from "../../../../common/Constant";
+import DashboardProgressPhase from "../../dashboard/phase-progress";
+import {Link} from "react-router-dom";
+import DashboardBudget from "../../dashboard/budget";
 
 const ProjectViewDetail = ({data, teamData, phaseData}) => {
     return (
         <Row gutter={12}>
-            <ProjectViewGeneral data={data}/>
+            <Col
+                span={7}
+            >
+                <Row
+                    className={"rounded-[8px] border-solid border-[1px] border-[#ccc] w-full h-fit"}>
+                    <ProjectViewGeneral data={data}/>
+                </Row>
+                <Row className={"mt-1.5 rounded-[8px] border-solid border-[1px] border-[#ccc] p-6 w-full"}>
+                    <div>
+                        <span>
+                            <strong>THU CHI</strong>
+                        </span>
+                    </div>
+                    <div style={{
+                        paddingTop: 15,
+                        width: '100%'
+                    }}>
+                        <DashboardBudget projectId={data?.id} budget={data?.budget}/>
+                    </div>
+                </Row>
+            </Col>
             <Col span={17}>
                 <Row>
                     <ProjectViewSummary
@@ -18,22 +41,36 @@ const ProjectViewDetail = ({data, teamData, phaseData}) => {
                         phaseData={phaseData}
                     />
                 </Row>
+                <Row className={"mt-1.5 h-fit"}>
+                    <Col className={"rounded-[8px] border-solid border-[1px] border-[#ccc] p-6 w-full"}>
+                        <div>
+                        <span>
+                            <strong>Giai đoạn</strong>
+                        </span>
+                            <Link to={`/project/view/${data.id}?tab=phase`}
+                                  style={{fontSize: 12, paddingLeft: 7}}>
+                                <i>Chi tiết</i>
+                            </Link>
+                        </div>
+                        <div style={{
+                            paddingTop: 15,
+                            width: '100%'
+                        }}>
+                            <DashboardProgressPhase projectId={data.id}/>
+                        </div>
+                    </Col>
+                </Row>
                 <Row className={"mt-1.5"}>
                     <Col
-                        className={"rounded-[8px] border-solid border-[1px] border-[#ccc] p-6 w-full"}
-                        span={8}>
-                        <div
-                            style={{
-                                paddingTop: 13,
-                                paddingLeft: 26,
-                            }}>
+                        className={"rounded-[8px] border-solid border-[1px] border-[#ccc] p-6 w-full"}>
+                        <div>
                         <span>
                             <strong>Công việc</strong>
                         </span>
-                            {/*<Link to={`/workplace/work/project/all/view/${id}?tabKey=work`}*/}
-                            {/*      style={{fontSize: 12, paddingLeft: 7}}>*/}
-                            {/*    <i>Chi tiết</i>*/}
-                            {/*</Link>*/}
+                            <Link to={`/project/view/${data.id}?tab=work`}
+                                  style={{fontSize: 12, paddingLeft: 7}}>
+                                <i>Chi tiết</i>
+                            </Link>
                         </div>
                         <div style={{
                             paddingTop: 15,
@@ -47,9 +84,9 @@ const ProjectViewDetail = ({data, teamData, phaseData}) => {
                     className={"rounded-[8px] border-solid border-[1px] border-[#ccc] mt-1.5 p-6 w-full"}
                 >
                     <Row className={"w-full"}>
-                            <strong>Thảo luận</strong>
+                        <strong>Thảo luận</strong>
                     </Row>
-                    <Row className={"w-full"}>
+                    <Row className={"w-full h-[400px] overflow-x-hidden"}>
                         <CommentList classPkId={data.id} classPkName={CLASS_PK_NAME.PROJECT}/>
                     </Row>
                 </Row>

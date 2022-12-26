@@ -34,6 +34,10 @@ export const updateMemberProject = (projectId, values) => {
     return SWAxios.put(`${url}/member/${projectId}`, values);
 }
 
+export const getGanttChartDataProject = (projectId) => {
+    return SWAxios.get(`${url}/gantt-chart/${projectId}`);
+}
+
 export async function getDashboardProgressPhase(projectId) {
     return SWAxios.get(`${url}`);
 }

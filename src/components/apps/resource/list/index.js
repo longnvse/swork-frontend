@@ -17,9 +17,10 @@ import { columnsResource } from "../common/columns";
 import ResourceForm from "../form";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
-import { DG_Format_Money } from "../../../common/convert/format";
+import { formatMoney } from "../../../common/convert/format";
+import { convertMoney } from "../../../common/convert";
 
-const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
+const ResourceList = ({ resourceData, workId, projectId, phaseId, teamId }) => {
     const [dataSources, setDataSources] = useState([]);
     const { reload } = useSelector((state) => state.commonReducer);
 
@@ -28,6 +29,7 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
             getResourcePages({
                 projectId: projectId,
                 phaseId: phaseId,
+                workId: workId,
                 teamId: teamId,
             }).then((response) => {
                 setDataSources(mapData(response?.data?.items));
@@ -68,8 +70,8 @@ const ResourceList = ({ resourceData, projectId, phaseId, teamId }) => {
                 key: item.id,
                 ...item,
                 name: item?.resourceTypeName,
-                quantity: item?.quantity,
-                totalAmount: DG_Format_Money(item?.totalAmount),
+                quantity: formatMoney(item?.quantity),
+                totalAmount: convertMoney(item?.totalAmount) + " VNĐ",
                 team: (
                     <Link to={`/project/view-team/${item?.teamId}`}>
                         {item?.teamName}

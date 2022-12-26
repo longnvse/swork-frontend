@@ -1,3 +1,3 @@
-export const DG_Format_Money = (value) => {
+export const formatMoney = (value) => {
     return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };

@@ -4,6 +4,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
 import {
     ADD,
+    DATE_FORMAT,
     DENIED,
     message_error,
     UPDATE,
@@ -14,20 +15,21 @@ import { columnsWork } from "../../../work/common/columns";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { renderStatus } from "../../../../common/status";
+import dayjs from "dayjs";
 
-function ProjectViewWork({ projectId, phaseId, parentId }) {
+function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
     const [dataSources, setDataSources] = useState([]);
     const { reload } = useSelector((state) => state.commonReducer);
 
     useEffect(() => {
-        if (projectId || phaseId) {
-            getWorkPages({ projectId: projectId, phaseId: phaseId }).then(
+        if (projectId || phaseId || parentId) {
+            getWorkPages({ isTree: true, projectId, phaseId, parentId }).then(
                 (response) => {
                     setDataSources(mapData(response?.data?.items));
                 },
             );
         }
-    }, [projectId, phaseId, reload]);
+    }, [projectId, phaseId, parentId, reload]);
 
     const onConfirmDelete = (id) => {
         deleteWork(id)
@@ -52,8 +54,11 @@ function ProjectViewWork({ projectId, phaseId, parentId }) {
                 admin: item?.admin,
                 status: renderStatus(item?.status),
                 priority: item?.priority,
-                intendTime: item?.intendTime,
+                endDate: `${dayjs(item?.startDate).format(
+                    DATE_FORMAT,
+                )} - ${dayjs(item?.endDate).format(DATE_FORMAT)}`,
                 deadline: item?.deadline,
+                children: item?.works?.length > 0 ? mapData(item?.works) : null,
                 action: (
                     <div className={"flex justify-evenly"}>
                         <ButtonDrawer
@@ -91,27 +96,29 @@ function ProjectViewWork({ projectId, phaseId, parentId }) {
 
     return (
         <div>
-            <Row gutter={12} className={"mb-4"}>
-                <Col>
-                    <ButtonDrawer
-                        title={"Thêm mới công việc"}
-                        formId={"work-form"}
-                        mode={ADD}
-                        buttonProps={{
-                            value: "Thêm mới",
-                        }}
-                        drawerProps={{
-                            width: 500,
-                        }}
-                    >
-                        <WorkForm
-                            projectId={projectId}
-                            phaseId={phaseId}
-                            parentId={parentId}
-                        />
-                    </ButtonDrawer>
-                </Col>
-            </Row>
+            {!hiddenBtn ? (
+                <Row gutter={12} className={"mb-4"}>
+                    <Col>
+                        <ButtonDrawer
+                            title={"Thêm mới công việc"}
+                            formId={"work-form"}
+                            mode={ADD}
+                            buttonProps={{
+                                value: "Thêm mới",
+                            }}
+                            drawerProps={{
+                                width: 500,
+                            }}
+                        >
+                            <WorkForm
+                                projectId={projectId}
+                                phaseId={phaseId}
+                                parentId={parentId}
+                            />
+                        </ButtonDrawer>
+                    </Col>
+                </Row>
+            ) : null}
             <Table dataSource={dataSources} columns={columnsWork} />
         </div>
     );
