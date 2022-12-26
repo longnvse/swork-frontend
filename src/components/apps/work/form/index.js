@@ -219,34 +219,32 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
                                     </Select.Option>
                                     <Select.Option value="proportionDate">
                                         <b>Theo tỷ trọng ngày thực hiện </b>
-                                        <div
-                                        >
+                                        <div>
                                             Ví dụ dự án gồm 2 công việc A và B .
                                         </div>
-                                        <div
-                                        >
-                                            Công việc A yêu cầu thời gian thực hiện
-                                            trong 4 ngày , tiến độ 40%, gồm 4 người thực hiện
+                                        <div>
+                                            Công việc A yêu cầu thời gian thực
+                                            hiện trong 4 ngày , tiến độ 40%, gồm
+                                            4 người thực hiện
                                         </div>
-                                        <div
-                                        >
-                                            thì tổng khối lượng công việc là 4*4=16,
-                                            khối lượng công việc đã hoàn thành là 4*4*40%=6.4
+                                        <div>
+                                            thì tổng khối lượng công việc là
+                                            4*4=16, khối lượng công việc đã hoàn
+                                            thành là 4*4*40%=6.4
                                         </div>
-                                        <div
-                                        >
-                                            Công việc B yêu cầu thời gian thực hiện
-                                            trong 6 ngày , tiến độ 50%, gồm 2 nguời thực hiện
+                                        <div>
+                                            Công việc B yêu cầu thời gian thực
+                                            hiện trong 6 ngày , tiến độ 50%, gồm
+                                            2 nguời thực hiện
                                         </div>
-                                        <div
-                                        >
-                                            thì tổng khối lượng công việc là 6*2=12,
-                                            khối lượng công việc đã hoàn thành là 6*2*50%=6
+                                        <div>
+                                            thì tổng khối lượng công việc là
+                                            6*2=12, khối lượng công việc đã hoàn
+                                            thành là 6*2*50%=6
                                         </div>
-                                        <div
-                                        >
-                                            Tiến độ dự án là
-                                            ((6+6.4) / (16+12)) * 100 = 45% (44.28%)
+                                        <div>
+                                            Tiến độ dự án là ((6+6.4) / (16+12))
+                                            * 100 = 45% (44.28%)
                                         </div>
                                     </Select.Option>
                                 </Select>
@@ -290,16 +288,21 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
                                 </Col>
                             </>
                         )}
-                        <Col span={24}>
-                            <Form.Item label="Công việc cha" name="parentId">
-                                <Select
-                                    className="w-full"
-                                    placeholder="Chọn công việc cha"
-                                    options={workData}
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Col>
+                        {!parentId ? (
+                            <Col span={24}>
+                                <Form.Item
+                                    label="Công việc cha"
+                                    name="parentId"
+                                >
+                                    <Select
+                                        className="w-full"
+                                        placeholder="Chọn công việc cha"
+                                        options={workData}
+                                        allowClear
+                                    />
+                                </Form.Item>
+                            </Col>
+                        ) : null}
                     </Row>
                 </Collapse.Panel>
             </Collapse>
