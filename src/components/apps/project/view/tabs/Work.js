@@ -35,6 +35,14 @@ function ProjectViewWork({projectId, phaseId, parentId, hiddenBtn, role}) {
             .catch(message_error);
     };
 
+    const isDisable = (role, item) => {
+        if (item.manages?.findIndex(manage => manage.memberId) !== -1) {
+            return false;
+        }
+
+        return role !== PROJECT_ROLE.MANAGE;
+    }
+
     const mapData = (data) => {
         if (data?.length <= 0) return [];
         return data?.map((item) => {
@@ -77,7 +85,7 @@ function ProjectViewWork({projectId, phaseId, parentId, hiddenBtn, role}) {
                                 icon: <EditOutlined/>,
                                 type: "link",
                                 value: null,
-                                disabled: role === PROJECT_ROLE.PARTICIPATE
+                                disabled: isDisable(role, item)
                             }}
                         >
                             <WorkForm
@@ -87,13 +95,13 @@ function ProjectViewWork({projectId, phaseId, parentId, hiddenBtn, role}) {
                             />
                         </ButtonDrawer>
                         <Popconfirm
-                            disabled={item.status !== DENIED || role === PROJECT_ROLE.PARTICIPATE}
+                            disabled={item.status !== DENIED || isDisable(role, item)}
                             title={"Chắc chắn chứ!"}
                             onConfirm={() => onConfirmDelete(item.id)}
                         >
                             <Button
                                 type={"link"}
-                                disabled={item.status !== DENIED || role === PROJECT_ROLE.PARTICIPATE}
+                                disabled={item.status !== DENIED || isDisable(role, item)}
                                 icon={<DeleteOutlined/>}
                             />
                         </Popconfirm>

@@ -1,13 +1,13 @@
-import { Col, Progress, Row } from "antd";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import {Col, Progress, Row} from "antd";
+import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import SWDescription from "../../../../common/description";
-import { viewWorkFirstColumn, viewWorkSecondColumn } from "../columns";
-import { renderStatus } from "../../../../common/status";
+import {viewWorkFirstColumn, viewWorkSecondColumn} from "../columns";
+import {renderStatus} from "../../../../common/status";
 import dayjs from "dayjs";
 import AccountGroup from "../../../../common/account/group";
 
-const ViewWorkGeneral = ({ data }) => {
+const ViewWorkGeneral = ({data}) => {
     const dateFormat = "DD/MM/YYYY";
     const [workData, setWorkData] = useState({});
 
@@ -35,7 +35,7 @@ const ViewWorkGeneral = ({ data }) => {
                 ),
             },
             secondColumn: {
-                progress: <Progress percent={data?.progress} />,
+                progress: <Progress percent={data?.progress}/>,
                 project: (
                     <Link to={`/project/view/${data?.projectId}`}>
                         {data?.projectName}
@@ -44,6 +44,11 @@ const ViewWorkGeneral = ({ data }) => {
                 phase: (
                     <Link to={`/project/view-phase/${data?.phaseId}`}>
                         {data?.phaseName}
+                    </Link>
+                ),
+                parent: (
+                    <Link to={`/project/view-work/${data?.parentId}`}>
+                        {data?.parentName}
                     </Link>
                 ),
                 description: data?.description,
