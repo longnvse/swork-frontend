@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { renderStatus } from "../../../../common/status";
 import dayjs from "dayjs";
 import { getDeadline } from "../../../work/common/common";
+import AccountGroup from "../../../../common/account/group";
 
 function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
     const [dataSources, setDataSources] = useState([]);
@@ -52,7 +53,16 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
                     </Link>
                 ),
                 progress: <Progress percent={item?.progress} />,
-                admin: item?.admin,
+                admin: (
+                    <AccountGroup
+                        accountIds={item?.manages.map((item) => item.memberId)}
+                    />
+                ),
+                member: (
+                    <AccountGroup
+                        accountIds={item?.handles.map((item) => item.memberId)}
+                    />
+                ),
                 status: renderStatus(item?.status),
                 priority: item?.priority,
                 endDate: `${dayjs(item?.startDate).format(
