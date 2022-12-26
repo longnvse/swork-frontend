@@ -103,6 +103,7 @@ const ViewWork = () => {
                     <ViewWorkGeneral data={workData} />
                     <Collapse className="mt-3" defaultActiveKey={"work"} ghost>
                         <Collapse.Panel
+                            collapsible="icon"
                             header={
                                 <Row className={"items-center"}>
                                     Công việc con
@@ -127,8 +128,8 @@ const ViewWork = () => {
                                         }
                                     >
                                         <WorkForm
-                                            // projectId={workData?.projectId}
-                                            // phaseId={workData?.phaseId}
+                                            projectId={workData?.projectId}
+                                            phaseId={workData?.phaseId}
                                             parentId={workData?.id}
                                         />
                                     </ButtonDrawer>

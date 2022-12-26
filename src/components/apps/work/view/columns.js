@@ -19,10 +19,6 @@ export const viewWorkFirstColumn = [
         dataIndex: "participates",
         title: "Người theo dõi",
     },
-    {
-        dataIndex: "date",
-        title: "Thời gian thực tế",
-    },
 ];
 
 export const viewWorkSecondColumn = [
@@ -39,11 +35,11 @@ export const viewWorkSecondColumn = [
         title: "Giai đoạn",
     },
     {
-        dataIndex: "checklists",
-        title: "Đầu việc",
-    },
-    {
         dataIndex: "description",
         title: "Mô tả",
+    },
+    {
+        dataIndex: "date",
+        title: "Thời gian thực tế",
     },
 ];

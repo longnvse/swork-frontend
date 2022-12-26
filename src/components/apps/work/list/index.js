@@ -133,6 +133,11 @@ const WorkList = (props) => {
                     accountIds={item?.manages.map((item) => item.memberId)}
                 />
             ),
+            member: (
+                <AccountGroup
+                    accountIds={item?.handles.map((item) => item.memberId)}
+                />
+            ),
             status: renderStatus(item?.status),
             endDate: `${dayjs(item?.startDate).format(DATE_FORMAT)} - ${dayjs(
                 item?.endDate,

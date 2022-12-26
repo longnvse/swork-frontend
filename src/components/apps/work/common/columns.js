@@ -25,10 +25,6 @@ export const columnsWork = [
         title: "Thời gian dự kiến",
     },
     {
-        dataIndex: "deadline",
-        title: "Hạn",
-    },
-    {
         dataIndex: "action",
     },
 ];
