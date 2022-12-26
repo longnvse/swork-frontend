@@ -10,8 +10,7 @@ import {useSelector} from "react-redux";
 
 const CommentList = ({classPkId, classPkName}) => {
     const [data, setData] = useState([]);
-    const {reload} = useSelector(state => state.commonReducer);
-
+    const {reload, avatar} = useSelector(state => state.commonReducer);
     useEffect(() => {
         if ((classPkId && classPkName) || reload) {
             getCommentPages(classPkId, classPkName).then(res => {
@@ -25,7 +24,7 @@ const CommentList = ({classPkId, classPkName}) => {
         <>
             <Comment
                 className={"w-full"}
-                avatar={<Avatar icon={<UserOutlined/>}/>}
+                avatar={<Avatar src={avatar} icon={<UserOutlined/>}/>}
                 content={
                     <CommentForm classPkId={classPkId} classPkName={classPkName}/>
                 }

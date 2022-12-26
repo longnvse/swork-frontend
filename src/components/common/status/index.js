@@ -1,5 +1,5 @@
-import { Tag } from "antd";
-import { ACTIVE, COMPLETED, DENIED, INACTIVE, PENDING } from "../Constant";
+import {Tag} from "antd";
+import {ACTIVE, CLOSED, COMPLETED, DENIED, INACTIVE, PENDING} from "../Constant";
 
 export const renderStatus = (status) => {
     switch (status) {
@@ -13,6 +13,8 @@ export const renderStatus = (status) => {
             return renderTag("Huỷ", "error");
         case COMPLETED:
             return renderTag("Hoàn thành", "success");
+        case CLOSED:
+            return renderTag("Đóng", "rgba(16, 177, 57, 0.2)");
     }
 };
 
@@ -32,6 +34,9 @@ export const statusString = (status) => {
         }
         case DENIED: {
             return "Huỷ";
+        }
+        case CLOSED: {
+            return "Đóng"
         }
         default: {
             return "";
@@ -180,7 +185,7 @@ export const statusColorGanttChart = (status) => {
 export const renderTag = (title, color) => {
     return (
         <Tag
-            style={{ borderRadius: 14, height: 28 }}
+            style={{borderRadius: 14, height: 28}}
             className={
                 "flex items-center w-fit border-none  cursor-pointer m-0"
             }
