@@ -1,3 +1,7 @@
+.ant-collapse-header {
+    align-items: center !important;
+}
+
 .ant-drawer-content {
     border-radius: var(--border-radius);
 }
@@ -31,36 +35,13 @@
 }
 
 .ant-pagination {
-    & * {
-        border-color: #ffffff !important;
-        border-radius: 16px !important;
-    }
-
     &-item {
         &-active {
             border-radius: 16px !important;
-            background-color: var(--ant-primary-color) !important;
-            border-color: var(--ant-primary-color) !important;
-
-            &:hover,
-            :focus {
-                & a {
-                    color: white !important;
-                }
-            }
-
-            & a {
-                color: white !important;
-
-                &:hover,
-                :focus {
-                    color: white !important;
-                }
-            }
         }
 
-        &-ellipsis {
-            margin-right: 20px !important;
+        &:hover {
+            border-radius: 16px !important;
         }
     }
 }
@@ -76,4 +57,40 @@
         > .ant-collapse-content-box {
         padding: 0;
     }
+}
+
+.react-trello {
+    &-lane {
+        & header {
+            border-bottom: 1px solid rgba(196, 196, 196, 0.3);
+            padding: 13px 0;
+            margin: 0 16px;
+
+            & .bUyCIa {
+                padding-right: 0;
+            }
+        }
+    }
+
+    &-card {
+        & header {
+            align-items: center;
+            padding: 0 0 10px 0;
+            margin: 0;
+        }
+    }
+}
+
+.handleGroup {
+    & rect {
+        opacity: 0 !important;
+    }
+}
+
+._CZjuD {
+    border-radius: 12px;
+}
+
+.ant-btn > .anticon + span {
+    margin: 0;
 }

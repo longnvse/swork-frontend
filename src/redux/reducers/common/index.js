@@ -4,7 +4,9 @@ const initialState = {
     reload: false,
     isCloseDrawer: false,
     loading: true,
-    loadingKey: ""
+    loadingKey: "",
+    title: "",
+    avatar: undefined
 };
 
 const commonReducer = (state = initialState, action) => {
@@ -35,7 +37,16 @@ const commonReducer = (state = initialState, action) => {
             return {
                 ...state
             }
-
+        case commonTypes.SET_HEADER:
+            return {
+                ...state,
+                title: action.title
+            }
+        case commonTypes.CHANGE_AVATAR:
+            return {
+                ...state,
+                avatar: action.avatar
+            }
         default:
             return state;
     }

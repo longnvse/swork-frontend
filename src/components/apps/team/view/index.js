@@ -6,6 +6,7 @@ import SWDescription from "../../../common/description";
 import ResourceList from "../../resource/list";
 import {viewTeamFirstColumns, viewTeamSecondColumns} from "./columns";
 import {countMembers} from "../index";
+import AccountGroup from "../../../common/account/group";
 
 const TeamView = () => {
     const {id} = useParams();
@@ -39,12 +40,8 @@ const TeamView = () => {
         return {
             firstColumn: {
                 name: data?.name,
-                admins: data?.admins?.map((admin, index) => {
-                    return <span key={index}>{admin?.memberName}</span>;
-                }),
-                members: data?.members?.map((member, index) => {
-                    return <span key={index}>{member?.memberName}</span>;
-                }),
+                admins: <AccountGroup accountIds={data?.admins?.map(item => item.memberId)}/>,
+                members: <AccountGroup accountIds={data?.members?.map(item => item.memberId)}/>,
                 quantityMembers: countMembers(data),
             },
             secondColumn: {

@@ -18,3 +18,13 @@ export const loadingFinish = (key) => ({
     type: commonTypes.LOADING_FINISH,
     loadingKey: key
 });
+
+export const setHeader = (title) => ({
+    type: commonTypes.SET_HEADER,
+    title
+})
+
+export const changeAvatar = (avatar) => ({
+    type: commonTypes.CHANGE_AVATAR,
+    avatar
+})

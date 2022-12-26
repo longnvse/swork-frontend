@@ -1,27 +1,34 @@
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {Button, message, Popconfirm, Table} from "antd";
-import moment from "moment";
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {deleteResource, getResourcePages,} from "../../../../api/resource/resource";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import {DATE_FORMAT, INACTIVE, UPDATE} from "../../../common/Constant";
+import {DATE_FORMAT, INACTIVE, message_error, UPDATE,} from "../../../common/Constant";
 import {columnsResource} from "../common/columns";
 import ResourceForm from "../form";
+import dayjs from "dayjs";
+import {Link} from "react-router-dom";
+import {formatMoney} from "../../../common/convert/format";
+import {convertMoney} from "../../../common/convert";
 
-const ResourceList = ({resourceData, projectId, phaseId, teamId}) => {
+const ResourceList = ({resourceData, workId, projectId, phaseId, teamId}) => {
     const [dataSources, setDataSources] = useState([]);
     const {reload} = useSelector((state) => state.commonReducer);
-
+    console.log(workId, projectId, phaseId);
     useEffect(() => {
         if (!resourceData) {
-            getResourcePages({projectId: projectId, phaseId: phaseId}).then(
-                (response) => {
-                    setDataSources(mapData(response?.data?.items));
-                },
-            );
+            getResourcePages({
+                projectId: projectId,
+                phaseId: phaseId,
+                workId: workId,
+                teamId: teamId,
+            }).then((response) => {
+                setDataSources(mapData(response?.data?.items));
+            });
+        } else {
+            setDataSources(mapData(resourceData));
         }
-        setDataSources(resourceData);
     }, [resourceData, reload]);
 
     const onConfirmDelete = (id) => {
@@ -29,12 +36,23 @@ const ResourceList = ({resourceData, projectId, phaseId, teamId}) => {
             .then(() => {
                 message.success("Xoá thành công!");
             })
-            .catch((err) => {
-                message.error(
-                    err.response?.data?.detail || err.response?.data?.title ||
-                    "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
-                );
-            });
+            .catch(message_error);
+    };
+
+    const checkParentName = (data) => {
+        if (data?.phaseId === 0) {
+            return (
+                <Link to={`/project/view/${data?.projectId}`}>
+                    {data?.parentName}
+                </Link>
+            );
+        } else {
+            return (
+                <Link to={`/project/view-phase/${data?.phaseId}`}>
+                    {data?.parentName}
+                </Link>
+            );
+        }
     };
 
     const mapData = (data) => {
@@ -44,13 +62,17 @@ const ResourceList = ({resourceData, projectId, phaseId, teamId}) => {
                 key: item.id,
                 ...item,
                 name: item?.resourceTypeName,
-                quantity: item?.quantity,
-                totalAmount: item?.totalAmount,
-                team: item?.teamName,
-                parent: item?.parentName,
+                quantity: formatMoney(item?.quantity),
+                totalAmount: convertMoney(item?.totalAmount) + " VNĐ",
+                team: (
+                    <Link to={`/project/view-team/${item?.teamId}`}>
+                        {item?.teamName}
+                    </Link>
+                ),
+                parent: checkParentName(item),
                 date:
                     item?.dateResource &&
-                    moment(item.dateResource).format(DATE_FORMAT),
+                    dayjs(item.dateResource).format(DATE_FORMAT),
                 creator: item?.creator,
                 action: (
                     <div className={"flex justify-evenly"}>

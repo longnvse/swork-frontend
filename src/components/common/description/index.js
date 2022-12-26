@@ -1,4 +1,4 @@
-import { Descriptions } from "antd";
+import {Descriptions} from "antd";
 import React from "react";
 
 const SWDescription = ({
@@ -15,11 +15,17 @@ const SWDescription = ({
             <Descriptions
                 bordered={bordered || true}
                 column={span}
+                labelStyle={{
+                    width: '30%',
+                    maxWidth: 'fit-content'
+                }}
                 {...descriptionProps}
             >
                 {columns?.map((column, index) => {
                     return (
-                        <Descriptions.Item key={index} label={column.title}>
+                        <Descriptions.Item
+                            key={index}
+                            label={column.title}>
                             {dataSource[0]
                                 ? dataSource[0][column.dataIndex]
                                 : dataSource[column.dataIndex]}

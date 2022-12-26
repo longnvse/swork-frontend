@@ -1,17 +1,36 @@
-import React from "react";
-import { Avatar, Dropdown, Menu, Space } from "antd";
-import { KeyOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logoutStart } from "../../../../../redux/actions/login/actions";
-import { VscAccount } from "react-icons/vsc";
-import { RiGitRepositoryPrivateLine } from "react-icons/ri";
-import { URIS } from "../../../../../utils/constant";
-import { getMe } from "../../../../../api/common";
+import React, {useEffect, useState} from "react";
+import {Avatar, Dropdown, Menu, Space} from "antd";
+import {KeyOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons";
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {logoutStart} from "../../../../../redux/actions/login/actions";
+import {VscAccount} from "react-icons/vsc";
+import {RiGitRepositoryPrivateLine} from "react-icons/ri";
+import {URIS} from "../../../../../utils/constant";
+import {getMe} from "../../../../../api/common";
+import ModalChangePassword from "../../../../../page/resetPassword/modal";
+import {getAccountInfo} from "../../../../../api/account/api";
+import {changeAvatar} from "../../../../../redux/actions/common/actions";
 
 const ProfileIcon = (props) => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
+    const [open, setOpen] = useState(false);
+    const {avatar} = useSelector(state => state.commonReducer);
+
+    useEffect(() => {
+        getAccountInfo().then(res => {
+            dispatch(changeAvatar(res.data.avatar));
+        })
+    }, []);
+
+    const handleOpenChangePassword = () => {
+        setOpen(true);
+    };
+
+    const handleCloseChangePassword = () => {
+        setOpen(false);
+    };
 
     const handleOnLogout = () => {
         dispatch(logoutStart());
@@ -20,18 +39,18 @@ const ProfileIcon = (props) => {
     const menuItems = [
         {
             onClick: () => {
-                navigate("/system/user/account");
+                navigate("/account/info");
             },
             label: (
                 <>
                     <Space>
                         <Avatar
                             size={"large"}
-                            icon={<UserOutlined />}
                             style={{
                                 verticalAlign: "middle",
                             }}
-                            // src={`${base_url}${portraitThumbnail}`}
+                            icon={<UserOutlined/>}
+                            src={avatar}
                         />
                         {getMe().fullName}
                     </Space>
@@ -45,7 +64,7 @@ const ProfileIcon = (props) => {
             },
             label: "Thông tin cá nhân",
             key: "account-info",
-            icon: <VscAccount />,
+            icon: <VscAccount/>,
         },
         {
             onClick: () => {
@@ -53,17 +72,17 @@ const ProfileIcon = (props) => {
             },
             label: "Bảo mật",
             key: "account-security",
-            icon: <RiGitRepositoryPrivateLine />,
+            icon: <RiGitRepositoryPrivateLine/>,
         },
         {
             label: "Đổi mật khẩu",
             key: "/change-password",
-            icon: <KeyOutlined />,
+            icon: <KeyOutlined/>,
         },
         {
             label: "Đăng xuất",
             key: "/logout",
-            icon: <LogoutOutlined />,
+            icon: <LogoutOutlined/>,
             style: {
                 borderTop: "1px solid #ccc",
             },
@@ -77,18 +96,18 @@ const ProfileIcon = (props) => {
             items={[
                 {
                     onClick: () => {
-                        navigate("/system/user/account");
+                        navigate(URIS.ACCOUNT_INFO);
                     },
                     label: (
                         <>
                             <Space>
                                 <Avatar
                                     size={"large"}
-                                    icon={<UserOutlined />}
+                                    icon={<UserOutlined/>}
                                     style={{
                                         verticalAlign: "middle",
                                     }}
-                                    // src={`${base_url}${portraitThumbnail}`}
+                                    src={avatar}
                                 />
                                 {getMe().fullName}
                             </Space>
@@ -102,7 +121,7 @@ const ProfileIcon = (props) => {
                     },
                     label: "Thông tin cá nhân",
                     key: "account-info",
-                    icon: <VscAccount />,
+                    icon: <VscAccount/>,
                 },
                 {
                     onClick: () => {
@@ -110,17 +129,18 @@ const ProfileIcon = (props) => {
                     },
                     label: "Bảo mật",
                     key: "account-security",
-                    icon: <RiGitRepositoryPrivateLine />,
+                    icon: <RiGitRepositoryPrivateLine/>,
                 },
                 {
                     label: "Đổi mật khẩu",
                     key: "/change-password",
-                    icon: <KeyOutlined />,
+                    icon: <KeyOutlined/>,
+                    onClick: handleOpenChangePassword,
                 },
                 {
                     label: "Đăng xuất",
                     key: "/logout",
-                    icon: <LogoutOutlined />,
+                    icon: <LogoutOutlined/>,
                     style: {
                         borderTop: "1px solid #ccc",
                     },
@@ -131,16 +151,26 @@ const ProfileIcon = (props) => {
     );
 
     return (
-        <Dropdown overlay={menu} trigger={["click"]} placement={"bottomRight"}>
-            <div className={"cursor-pointer float-right app__header--item"}>
-                <Avatar
-                    size={"default"}
-                    icon={<UserOutlined />}
-                    // src={require("../../../../../images/avatar.png")}
-                    // src={`${base_url}${portraitThumbnail}`}
-                />
-            </div>
-        </Dropdown>
+        <>
+            <Dropdown
+                overlay={menu}
+                trigger={["click"]}
+                placement={"bottomRight"}
+            >
+                <div className={"cursor-pointer float-right app__header--item"}>
+                    <Avatar
+                        size={"default"}
+                        icon={<UserOutlined/>}
+                        src={avatar}
+                    />
+                </div>
+            </Dropdown>
+            <ModalChangePassword
+                open={open}
+                setOpen={setOpen}
+                onCancel={handleCloseChangePassword}
+            />
+        </>
     );
 };
 

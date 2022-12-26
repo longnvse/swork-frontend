@@ -10,7 +10,8 @@ const ButtonModal = ({
                          formId = undefined,
                          mode = "",
                          modalProps = {},
-                         buttonProps = {}
+                         buttonProps = {},
+                         button
                      }) => {
     const [open, setOpen] = useState(false);
     const {isCloseDrawer} = useSelector(state => state.commonReducer);
@@ -47,9 +48,9 @@ const ButtonModal = ({
     }, [isCloseDrawer]);
 
 
-    return (
-        <div>
-            <Button onClick={onOpen} {...buttonProps}>{buttonProps.value}</Button>
+    return (<div>
+            {!button ? <Button
+                onClick={onOpen} {...buttonProps}>{buttonProps.value}</Button> : React.cloneElement(button, {onClick: onOpen})}
             <Modal
                 open={open}
                 title={title || ""}
@@ -61,8 +62,7 @@ const ButtonModal = ({
             >
                 {React.cloneElement(children)}
             </Modal>
-        </div>
-    );
+        </div>);
 };
 
 ButtonModal.propTypes = {};

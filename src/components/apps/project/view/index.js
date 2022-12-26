@@ -1,37 +1,72 @@
-import React, {useEffect, useState} from "react";
-import {Col, Row, Tabs} from "antd";
-import {approvalProject, getProject} from "../../../../api/project";
+import React, { useEffect, useState } from "react";
+import { Col, Row } from "antd";
+import { approvalProject, getProject } from "../../../../api/project";
 import ProjectViewPhase from "./tabs/Phase";
 import ProjectViewResource from "./tabs/Resource";
 import ProjectViewWork from "./tabs/Work";
-import {useParams} from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import TeamList from "../../team";
 import ProjectViewDetail from "./tabs/Project";
-import {getTeamPages} from "../../../../api/team";
-import {getPhasePages} from "../../../../api/phase";
+import { getTeamPages } from "../../../../api/team";
+import { getPhasePages } from "../../../../api/phase";
 import ButtonTab from "../../../common/button/ButtonTab";
-import {CiViewTimeline} from "react-icons/ci";
 import ButtonStatus from "../../work/common/button-status";
+import SWTabs from "../../../common/tabs";
+import { useDispatch, useSelector } from "react-redux";
+import { setHeader } from "../../../../redux/actions/common/actions";
+import ButtonDrawer from "../../../common/button/ButtonDrawer";
+import { ADD, MODULE_ID, UPDATE } from "../../../common/Constant";
+import {
+    EditOutlined,
+    PlusOutlined,
+    UsergroupAddOutlined,
+} from "@ant-design/icons";
+import ProjectForm from "../form";
+import ButtonModal from "../../../common/button/ButtonModal";
+import ProjectMemberForm from "../form/update-member-form";
+import SWFile from "../../../common/file";
+import ProjectViewKanban from "./tabs/Kanban";
+import ProjectViewGanttChart from "./tabs/Gantt-Chart";
+import PhaseForm from "../../phase/form";
+import WorkForm from "../../work/form";
+import ResourceForm from "../../resource/form";
+import TeamForm from "../../team/form";
+
+const ADD_BTN = {
+    phase: "giai đoạn",
+    team: "đội nhóm",
+    resource: "tài nguyên",
+    work: "công việc",
+};
 
 function ProjectView(props) {
     const [data, setData] = useState({});
-    const {id} = useParams();
+    const { id } = useParams();
     const [teamData, setTeamData] = useState([]);
     const [phaseData, setPhaseData] = useState([]);
+    const { reload } = useSelector((state) => state.commonReducer);
+    const dispatch = useDispatch();
+    const [searchParams] = useSearchParams();
+    let tabKey = searchParams.get("tab");
+    const keys = ["phase", "team", "resource", "work"];
+
+    useEffect(() => {
+        dispatch(setHeader("Chi tiết dự án"));
+    }, []);
 
     useEffect(() => {
         getProject(id).then((response) => {
             setData(response?.data);
         });
 
-        getTeamPages({projectId: id}).then((response) => {
+        getTeamPages({ projectId: id }).then((response) => {
             setTeamData(response?.data.items);
         });
 
         getPhasePages(id).then((response) => {
             setPhaseData(response?.data.items);
         });
-    }, [id]);
+    }, [id, reload]);
 
     const tabItems = [
         {
@@ -46,48 +81,143 @@ function ProjectView(props) {
             ),
         },
         {
+            label: "Kanban",
+            key: "kanban",
+            children: <ProjectViewKanban projectId={data.id} />,
+        },
+        {
+            label: "Gantt Chart",
+            key: "gantt chart",
+            children: <ProjectViewGanttChart projectId={data.id} />,
+        },
+        {
             label: "Giai đoạn",
             key: "phase",
-            children: <ProjectViewPhase projectId={data.id}/>,
+            children: <ProjectViewPhase projectId={data.id} />,
         },
         {
             label: "Đội nhóm",
             key: "team",
-            children: <TeamList projectId={data.id}/>,
+            children: <TeamList projectId={data.id} />,
         },
         {
             label: "Tài nguyên",
             key: "resource",
-            children: <ProjectViewResource projectId={data.id || id}/>,
+            children: (
+                <ProjectViewResource
+                    hiddenBtn={true}
+                    projectId={data.id || id}
+                />
+            ),
         },
         {
             label: "Công việc",
             key: "work",
-            children: <ProjectViewWork projectId={data.id || id} phaseId={0}/>,
+            children: (
+                <ProjectViewWork
+                    hiddenBtn={true}
+                    projectId={data.id || id}
+                    phaseId={0}
+                />
+            ),
+        },
+        {
+            label: "Đính kèm",
+            key: "attach",
+            children: (
+                <SWFile
+                    projectId={data.id}
+                    appId={`${data.id}`}
+                    moduleId={MODULE_ID.PROJECT}
+                />
+            ),
         },
     ];
 
+    const renderForm = (tabKey) => {
+        switch (tabKey) {
+            case "phase":
+                return <PhaseForm projectId={id || data?.id} />;
+            case "team":
+                return <TeamForm projectId={id || data?.id} />;
+            case "resource":
+                return <ResourceForm projectId={id || data?.id} />;
+            case "work":
+                return <WorkForm projectId={id || data?.id} />;
+            default:
+                break;
+        }
+    };
+
     const tabExtra = (
         <Row gutter={8}>
+            {keys?.includes(tabKey) ? (
+                <Col>
+                    <ButtonDrawer
+                        title={`Thêm ${ADD_BTN[tabKey]}`}
+                        formId={`${tabKey}-form`}
+                        mode={ADD}
+                        button={
+                            <ButtonTab
+                                icon={<PlusOutlined style={{ fontSize: 20 }} />}
+                                title={
+                                    <span className="capitalize">
+                                        {ADD_BTN[tabKey]}
+                                    </span>
+                                }
+                            />
+                        }
+                    >
+                        {renderForm(tabKey)}
+                    </ButtonDrawer>
+                </Col>
+            ) : null}
             <Col>
-                <ButtonStatus status={data?.status} updateStatus={(status) => approvalProject(id, status)}/>
-            </Col>
-            <Col>
-                <ButtonTab
-                    icon={<CiViewTimeline style={{fontSize: 20}}/>}
-                    title={"Gantt chart"}
+                <ButtonStatus
+                    status={data?.status}
+                    updateStatus={(status) => approvalProject(id, status)}
                 />
             </Col>
+            <Col>
+                <ButtonModal
+                    title={"Thêm người thực hiện"}
+                    formId={"project-member-form"}
+                    mode={UPDATE}
+                    button={
+                        <ButtonTab
+                            icon={
+                                <UsergroupAddOutlined
+                                    style={{ fontSize: 20 }}
+                                />
+                            }
+                            title={"Người thực hiện"}
+                        />
+                    }
+                >
+                    <ProjectMemberForm projectData={data} />
+                </ButtonModal>
+            </Col>
+            <Col>
+                <ButtonDrawer
+                    title={"Cập nhật dự án"}
+                    formId={"project-form"}
+                    mode={UPDATE}
+                    button={
+                        <ButtonTab
+                            icon={<EditOutlined style={{ fontSize: 20 }} />}
+                            title={"Sửa dự án"}
+                        />
+                    }
+                >
+                    <ProjectForm id={id} />
+                </ButtonDrawer>
+            </Col>
         </Row>
-    )
+    );
 
     return (
         <div>
-            <Tabs
-                items={tabItems}
-                tabBarExtraContent={tabExtra}
-                destroyInactiveTabPane={true}
-            />
+            <SWTabs items={tabItems} tabBarExtraContent={tabExtra} />
         </div>
     );
 }

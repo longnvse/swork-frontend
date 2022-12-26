@@ -1,44 +1,49 @@
-import {Button, Col, message, Popconfirm, Progress, Row, Table,} from "antd";
-import React, {useEffect, useState} from "react";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import { Button, Col, message, Popconfirm, Progress, Row, Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {ADD, DENIED, UPDATE} from "../../../../common/Constant";
+import {
+    ADD,
+    DATE_FORMAT,
+    DENIED,
+    message_error,
+    UPDATE,
+} from "../../../../common/Constant";
 import WorkForm from "../../../work/form";
-import {deleteWork, getWorkPages} from "../../../../../api/work";
-import {columnsWork} from "../../../work/common/columns";
-import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {renderStatus} from "../../../../common/status";
+import { deleteWork, getWorkPages } from "../../../../../api/work";
+import { columnsWork } from "../../../work/common/columns";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { renderStatus } from "../../../../common/status";
+import dayjs from "dayjs";
+import { getDeadline } from "../../../work/common/common";
+import AccountGroup from "../../../../common/account/group";
 
-function ProjectViewWork({projectId, phaseId}) {
+function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
     const [dataSources, setDataSources] = useState([]);
-    const {reload} = useSelector(state => state.commonReducer);
+    const { reload } = useSelector((state) => state.commonReducer);
 
     useEffect(() => {
-        getWorkPages({projectId: projectId, phaseId: phaseId}).then(
-            (response) => {
-                setDataSources(mapData(response?.data?.items));
-            },
-        );
-    }, [projectId, phaseId, reload]);
+        if (projectId || phaseId || parentId) {
+            getWorkPages({ isTree: true, projectId, phaseId, parentId }).then(
+                (response) => {
+                    setDataSources(mapData(response?.data?.items));
+                },
+            );
+        }
+    }, [projectId, phaseId, parentId, reload]);
 
     const onConfirmDelete = (id) => {
         deleteWork(id)
             .then((value) => {
                 message.success("Xoá thành công!");
             })
-            .catch((err) => {
-                message.error(
-                    err.response?.data?.detail || err.response?.data?.title ||
-                    "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
-                );
-            });
+            .catch(message_error);
     };
 
     const mapData = (data) => {
         if (data?.length <= 0) return [];
         return data?.map((item) => {
-            console.log(item.status);
             return {
                 key: item.id,
                 ...item,
@@ -47,12 +52,27 @@ function ProjectViewWork({projectId, phaseId}) {
                         {item?.name}
                     </Link>
                 ),
-                progress: <Progress percent={item?.progress}/>,
-                admin: item?.admin,
+                progress: <Progress percent={item?.progress} />,
+                admin: (
+                    <AccountGroup
+                        accountIds={item?.manages.map((item) => item.memberId)}
+                    />
+                ),
+                member: (
+                    <AccountGroup
+                        accountIds={item?.handles.map((item) => item.memberId)}
+                    />
+                ),
                 status: renderStatus(item?.status),
                 priority: item?.priority,
-                intendTime: item?.intendTime,
-                deadline: item?.deadline,
+                endDate: `${dayjs(item?.startDate).format(
+                    DATE_FORMAT,
+                )} - ${dayjs(item?.endDate).format(DATE_FORMAT)}`,
+                deadline:
+                    item?.status === "active"
+                        ? getDeadline(new Date(item?.endDate), new Date())
+                        : null,
+                children: item?.works?.length > 0 ? mapData(item?.works) : null,
                 action: (
                     <div className={"flex justify-evenly"}>
                         <ButtonDrawer
@@ -60,12 +80,16 @@ function ProjectViewWork({projectId, phaseId}) {
                             formId={"work-form"}
                             mode={UPDATE}
                             buttonProps={{
-                                icon: <EditOutlined/>,
+                                icon: <EditOutlined />,
                                 type: "link",
                                 value: null,
                             }}
                         >
-                            <WorkForm workId={item?.id}/>
+                            <WorkForm
+                                projectId={projectId}
+                                workId={item?.id}
+                                phaseId={phaseId}
+                            />
                         </ButtonDrawer>
                         <Popconfirm
                             disabled={item.status !== DENIED}
@@ -75,7 +99,7 @@ function ProjectViewWork({projectId, phaseId}) {
                             <Button
                                 type={"link"}
                                 disabled={item.status !== DENIED}
-                                icon={<DeleteOutlined/>}
+                                icon={<DeleteOutlined />}
                             />
                         </Popconfirm>
                     </div>
@@ -86,24 +110,30 @@ function ProjectViewWork({projectId, phaseId}) {
 
     return (
         <div>
-            <Row gutter={12} className={"mb-4"}>
-                <Col>
-                    <ButtonDrawer
-                        title={"Thêm mới công việc"}
-                        formId={"work-form"}
-                        mode={ADD}
-                        buttonProps={{
-                            value: "Thêm mới",
-                        }}
-                        drawerProps={{
-                            width: 500,
-                        }}
-                    >
-                        <WorkForm/>
-                    </ButtonDrawer>
-                </Col>
-            </Row>
-            <Table dataSource={dataSources} columns={columnsWork}/>
+            {!hiddenBtn ? (
+                <Row gutter={12} className={"mb-4"}>
+                    <Col>
+                        <ButtonDrawer
+                            title={"Thêm mới công việc"}
+                            formId={"work-form"}
+                            mode={ADD}
+                            buttonProps={{
+                                value: "Thêm mới",
+                            }}
+                            drawerProps={{
+                                width: 500,
+                            }}
+                        >
+                            <WorkForm
+                                projectId={projectId}
+                                phaseId={phaseId}
+                                parentId={parentId}
+                            />
+                        </ButtonDrawer>
+                    </Col>
+                </Row>
+            ) : null}
+            <Table dataSource={dataSources} columns={columnsWork} />
         </div>
     );
 }

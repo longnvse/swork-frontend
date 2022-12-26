@@ -1,13 +1,13 @@
-import {Col, Progress, Row} from "antd";
-import moment from "moment";
-import React, {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import { Col, Progress, Row } from "antd";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import SWDescription from "../../../../common/description";
-import {viewWorkFirstColumn, viewWorkSecondColumn} from "../columns";
-import {renderStatus} from "../../../../common/status";
+import { viewWorkFirstColumn, viewWorkSecondColumn } from "../columns";
+import { renderStatus } from "../../../../common/status";
+import dayjs from "dayjs";
+import AccountGroup from "../../../../common/account/group";
 
-const ViewWorkGeneral = ({data}) => {
-    const {id} = useParams();
+const ViewWorkGeneral = ({ data }) => {
     const dateFormat = "DD/MM/YYYY";
     const [workData, setWorkData] = useState({});
 
@@ -16,21 +16,26 @@ const ViewWorkGeneral = ({data}) => {
             firstColumn: {
                 name: data?.name,
                 status: renderStatus(data?.status),
-                handles: data?.handles?.map((handle, index) => {
-                    return <span key={index}>{handle?.memberName}</span>;
-                }),
-                manages: data?.manages.map((manage, index) => {
-                    return <span key={index}>{manage?.memberName}</span>;
-                }),
-                participates: data?.participates.map((participate, index) => {
-                    return <span key={index}>{participate?.memberName}</span>;
-                }),
-                date: `${moment(data?.startDate).format(dateFormat)} - ${moment(
-                    data?.endDate,
-                ).format(dateFormat)}`,
+                handles: (
+                    <AccountGroup
+                        accountIds={data?.handles?.map((item) => item.memberId)}
+                    />
+                ),
+                manages: (
+                    <AccountGroup
+                        accountIds={data?.manages?.map((item) => item.memberId)}
+                    />
+                ),
+                participates: (
+                    <AccountGroup
+                        accountIds={data?.participates?.map(
+                            (item) => item.memberId,
+                        )}
+                    />
+                ),
             },
             secondColumn: {
-                progress: <Progress percent={data?.progress}/>,
+                progress: <Progress percent={data?.progress} />,
                 project: (
                     <Link to={`/project/view/${data?.projectId}`}>
                         {data?.projectName}
@@ -41,8 +46,10 @@ const ViewWorkGeneral = ({data}) => {
                         {data?.phaseName}
                     </Link>
                 ),
-                checklists: data?.checklists,
                 description: data?.description,
+                date: `${dayjs(data?.startDate).format(dateFormat)} - ${dayjs(
+                    data?.endDate,
+                ).format(dateFormat)}`,
             },
             ...data,
         };

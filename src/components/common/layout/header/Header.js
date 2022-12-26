@@ -1,21 +1,38 @@
-import React, {useEffect, useState} from "react";
-import {Avatar, Badge, Button, Col, Dropdown, Input, Layout, List, Row, Tabs} from "antd";
+import React, {useEffect, useRef, useState} from "react";
+import {Avatar, Badge, Button, Dropdown, Input, Layout, List, Tabs} from "antd";
 import ProfileIcon from "./profile";
-import { FiSearch } from "react-icons/fi";
+import {FiSearch} from "react-icons/fi";
+import {useSelector} from "react-redux";
+import {debounce} from "lodash";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {getNotification, getNotificationCount} from "../../../../api/notification/api";
 import {BellOutlined} from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
 import VirtualList from "rc-virtual-list";
 
-const { Header } = Layout;
+const {Header} = Layout;
+
 const {TabPane} = Tabs;
 function CommonHeader(props) {
-    const { title } = props;
+    const {title} = useSelector(state => state.commonReducer);
+    const [searchParams, setSearchParams] = useSearchParams();
     const [totalCount, setTotalCount] = useState()
     const [data, setData] = useState([]);
     let navigate = useNavigate();
     const [count, setCount] = useState(1);
 
+    const onChangeSearch = (e) => {
+        const {value} = e.target;
+        searchBounce(value);
+    }
+
+    const searchBounce = useRef(debounce((nextValue) => {
+        if (!nextValue) {
+            searchParams.delete("keyword");
+        } else {
+            searchParams.set("keyword", nextValue);
+        }
+        navigate(`?${searchParams.toString()}`)
+    }, 500)).current;
 
     useEffect(() => {
         getNotification().then((res) => {
@@ -47,7 +64,7 @@ function CommonHeader(props) {
     );
 
     function onHandChange(item) {
-        
+
     }
 
     const onChange = (key) => {
@@ -71,8 +88,10 @@ function CommonHeader(props) {
         <>
             <Tabs
                 type="card"
-                style={{width: "400px",
-                background:'#BCBDBC'}}
+                style={{
+                    width: "400px",
+                    background: '#BCBDBC'
+                }}
             >
 
                 <TabPane tab={"Tất cả"} key="all" className={"padding__x--15"}>
@@ -121,9 +140,11 @@ function CommonHeader(props) {
                 <div className="mr-2">
                     <div className="flex items-center">
                         <Input
-                            prefix={<FiSearch />}
-                            className="mr-4"
+                            prefix={<FiSearch/>}
+                            className="mr-4 w-[302px]"
                             placeholder="Tìm kiếm"
+                            onChange={onChangeSearch}
+                            defaultValue={searchParams.get("keyword")}
                         />
                         <div className="app__header--item cursor-pointer flex items-center mr-2">
                             <Dropdown
@@ -137,7 +158,7 @@ function CommonHeader(props) {
                                 </Badge>
                             </Dropdown>
                         </div>
-                        <ProfileIcon />
+                        <ProfileIcon/>
                     </div>
                 </div>
             </div>

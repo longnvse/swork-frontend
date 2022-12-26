@@ -3,13 +3,19 @@ import CommonList from "../../../../common/list";
 import { columnPhase } from "../../common/columns";
 import { deletePhase, getPhasePages } from "../../../../../api/phase";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {ADD, DATE_FORMAT, INACTIVE, UPDATE} from "../../../../common/Constant";
+import {
+    ADD,
+    DATE_FORMAT,
+    INACTIVE,
+    message_error,
+    UPDATE,
+} from "../../../../common/Constant";
 import PhaseForm from "../../../phase/form";
 import { renderStatus } from "../../../../common/status";
 import { Button, message, Popconfirm, Progress } from "antd";
-import moment from "moment";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
 function ProjectViewPhase({ projectId }) {
     const load = (params) => {
@@ -21,12 +27,7 @@ function ProjectViewPhase({ projectId }) {
             .then((value) => {
                 message.success("Xoá thành công!");
             })
-            .catch((err) => {
-                message.error(
-                    err.response?.data?.detail ||
-                        "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút!",
-                );
-            });
+            .catch(message_error);
     };
 
     const mapData = (item) => ({
@@ -35,8 +36,8 @@ function ProjectViewPhase({ projectId }) {
         name: <Link to={`/project/view-phase/${item?.id}`}>{item?.name}</Link>,
         status: renderStatus(item.status),
         progress: <Progress percent={item.progress} />,
-        startDate: moment(item.startDate).format(DATE_FORMAT),
-        endDate: moment(item.endDate).format(DATE_FORMAT),
+        startDate: dayjs(item.startDate).format(DATE_FORMAT),
+        endDate: dayjs(item.endDate).format(DATE_FORMAT),
         action: (
             <div className={"flex justify-evenly"}>
                 <ButtonDrawer
@@ -79,14 +80,7 @@ function ProjectViewPhase({ projectId }) {
         </ButtonDrawer>
     );
 
-    return (
-        <CommonList
-            mapData={mapData}
-            load={load}
-            columns={columnPhase}
-            buttonAdd={buttonAdd}
-        />
-    );
+    return <CommonList mapData={mapData} load={load} columns={columnPhase} />;
 }
 
 export default ProjectViewPhase;

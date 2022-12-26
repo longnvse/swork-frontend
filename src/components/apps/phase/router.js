@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import PhaseList from ".";
 import PhaseView from "./view";
 

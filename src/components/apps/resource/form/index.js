@@ -2,8 +2,9 @@ import {Col, DatePicker, Form, Input, InputNumber, message, Row, Select,} from "
 import React, {useEffect, useState} from "react";
 import {addResource, getResource, updateResource,} from "../../../../api/resource/resource";
 import {getTeamPages} from "../../../../api/team";
-import moment from "moment";
-import {DATE_FORMAT} from "../../../common/Constant";
+import {DATE_FORMAT, message_error} from "../../../common/Constant";
+import dayjs from "dayjs";
+import InputNumberCustom from "../../../common/input/InputNumber";
 
 const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
     const [form] = Form.useForm();
@@ -20,8 +21,12 @@ const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
     };
 
     useEffect(() => {
-        if (projectId) {
-            getTeamPages({projectId, phaseId, params: {page: 1, pageSize: 10000}}).then((response) => {
+        if (projectId || phaseId) {
+            getTeamPages({
+                projectId,
+                phaseId,
+                params: {page: 1, pageSize: 10000},
+            }).then((response) => {
                 setTeams(mapDataTeams(response?.data?.items));
             });
         }
@@ -34,7 +39,7 @@ const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
                     ...response?.data,
                     dateResource:
                         response.data.dateResource &&
-                        moment(response?.data?.dateResource),
+                        dayjs(response?.data?.dateResource),
                 });
             });
         }
@@ -52,17 +57,13 @@ const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
                 .then(() => {
                     message.success("Thêm tài nguyên thành công!");
                 })
-                .catch(() => {
-                    message.error("Thêm tài nguyên thất bại!");
-                });
+                .catch(message_error);
         } else {
             updateResource(resourceId, values)
                 .then(() => {
                     message.success("Cập nhật tài nguyên thành công!");
                 })
-                .catch(() => {
-                    message.error("Cập nhật tài nguyên thất bại!");
-                });
+                .catch(message_error);
         }
     };
 
@@ -74,7 +75,7 @@ const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
             id="resource-form"
         >
             <Row gutter={12} wrap>
-                <Col span={24}>
+                <Col span={18}>
                     <Form.Item
                         name="resourceTypeName"
                         label="Tên tài nguyên"
@@ -86,6 +87,24 @@ const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
                         ]}
                     >
                         <Input placeholder="Tên tài nguyên"/>
+                    </Form.Item>
+                </Col>
+                <Col span={6}>
+                    <Form.Item
+                        name="type"
+                        label="Loại"
+                        initialValue={"spending"}
+                    >
+                        <Select options={[
+                            {
+                                label: "Chi",
+                                value: "spending"
+                            },
+                            {
+                                label: "Thu",
+                                value: "incoming"
+                            },
+                        ]}/>
                     </Form.Item>
                 </Col>
                 <Col span={24}>
@@ -121,7 +140,7 @@ const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
                 </Col>
                 <Col span={24}>
                     <Form.Item name="totalAmount" label="Thành tiền">
-                        <InputNumber
+                        <InputNumberCustom
                             placeholder="Thành tiền"
                             className="w-full"
                         />

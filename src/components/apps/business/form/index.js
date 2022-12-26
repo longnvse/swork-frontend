@@ -1,7 +1,8 @@
-import React, {useEffect, useMemo} from 'react';
-import {Form, Input, message, Typography} from "antd";
+import React, {useEffect} from 'react';
+import {Form, Input, message} from "antd";
 import {addBusiness, getBusiness, updateBusiness} from "../../../../api/business/api";
 import FormItem from "antd/es/form/FormItem";
+import {message_error} from "../../../common/Constant";
 
 const BusinessForm = ({id}) => {
     const [form] = Form.useForm();
@@ -19,17 +20,11 @@ const BusinessForm = ({id}) => {
             addBusiness(values).then(response => {
                 message.success("Tạo mới thành công!");
                 form.resetFields();
-            }).catch(error => {
-                console.log(error)
-                message.error(error?.response?.data?.detail || "Đã xảy ra lỗi, vui lòng thử lại!");
-            })
+            }).catch(message_error)
         } else {
             updateBusiness(id, values).then(response => {
                 message.success("Cập nhật thành công!");
-            }).catch(error => {
-                console.log(error)
-                message.error(error?.response?.data?.detail || "Đã xảy ra lỗi, vui lòng thử lại!");
-            })
+            }).catch(message_error)
         }
 
     }

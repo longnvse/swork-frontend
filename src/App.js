@@ -7,6 +7,7 @@ function App() {
     const [role, setRole] = useState();
     const {loggedInSuccess} = useSelector(state => state.loginReducer)
 
+
     useEffect(() => {
         if (loggedInSuccess) {
             setRole(getMe().role);

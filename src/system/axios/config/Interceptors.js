@@ -8,9 +8,11 @@ import {
 import {getToken, refreshToken} from "../../../api/login/api";
 import {logoutStart} from "../../../redux/actions/login/actions";
 import {closeDrawer, isReload, loadingFinish, loadingStart} from "../../../redux/actions/common/actions";
+import {urlFile} from "../../../api/file";
+import dayjs from "dayjs";
+import qs from "qs";
 
 const setup = (store) => {
-
 
     axiosInstance.interceptors.request.use(
         (config) => {
@@ -20,7 +22,13 @@ const setup = (store) => {
             config.headers["Authorization"] = oauth2Token;
             config.headers["swork-x-user-context-request"] = accessToken;
 
-            store.dispatch(loadingStart(config.url));
+            if (config.url !== urlFile) {
+                store.dispatch(loadingStart(config.url));
+            }
+
+            config.paramsSerializer = (params) => qs.stringify(params, {
+                serializeDate: (date) => dayjs(date).format("YYYY-MM-DD HH:mm:ss")
+            });
 
             return config;
 
@@ -42,12 +50,12 @@ const setup = (store) => {
             switch (res.config.method) {
                 case "put":
                 case "post":
+                case "patch":
                 case "delete": {
                     store.dispatch(isReload(true));
                     store.dispatch(closeDrawer(new Boolean(true)));
                 }
             }
-
             return res;
         },
         async (err) => {
@@ -70,10 +78,7 @@ const setup = (store) => {
                         updateLocalAccessToken(accessToken);
                         return axiosInstance(originalConfig);
                     } catch (_error) {
-                        debugger
-                        if (_error.config.url === `/login-rest/v1.0/refreshtoken` && _error.response.status === 400) {
-                            store.dispatch(logoutStart());
-                        }
+                        store.dispatch(logoutStart());
                         return Promise.reject(_error);
                     }
                 }

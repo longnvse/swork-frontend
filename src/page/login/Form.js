@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Checkbox, Form, Input } from "antd";
-import banner from "../../images/banner.jpg";
+import logo from "../../images/myLogo.jpg";
 import { useDispatch } from "react-redux";
 import { loginStart } from "../../redux/actions/login/actions";
 
@@ -15,11 +15,20 @@ function LoginForm(props) {
     return (
         <div
             className={
-                "page__login-form w-1/2 m-auto flex items-center justify-center"
+                "w-[30%] flex items-center justify-center rounded-lg overflow-hidden"
             }
+            style={{ border: "2px solid lightblue" }}
         >
-            <div className={"w-1/2 p-20 bg-white h-full"}>
-                <h1 className={"text-center text-3xl font-bold mb-10"}>
+            <div className={"w-full xl:px-20 md:p-10 py-7 bg-white h-full"}>
+                <div className="w-full text-center">
+                    <img src={logo} alt="logo" />
+                </div>
+
+                <h1
+                    className={
+                        "text-center text-2xl font-bold mb-5 text-blue-500"
+                    }
+                >
                     Đăng nhập
                 </h1>
                 <Form onFinish={onFinish} layout={"vertical"}>
@@ -51,24 +60,20 @@ function LoginForm(props) {
                         <Form.Item name={"remember"} valuePropName={"checked"}>
                             <Checkbox>Nhớ mật khẩu</Checkbox>
                         </Form.Item>
-                        <Form.Item>Quên mật khẩu?</Form.Item>
+                        <Form.Item>
+                            <a href="# ">Quên mật khẩu?</a>
+                        </Form.Item>
                     </div>
                     <Button
                         htmlType={"submit"}
                         block
-                        className={
-                            "h-10 bg-green-500 text-white hover:border-green-600 hover:text-green-600 focus:border-green-600 focus:text-green-600"
-                        }
+                        type="primary"
+                        className={"h-10 text-white"}
                     >
                         Đăng nhập
                     </Button>
                 </Form>
             </div>
-            <img
-                src={banner}
-                alt="banner"
-                className={"page__login-form--banner w-1/2 h-full"}
-            />
         </div>
     );
 }
