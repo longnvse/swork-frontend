@@ -41,14 +41,21 @@ export const columnPhase = [
     {
         title: "STT",
         dataIndex: "index",
+        width: '5%'
     },
     {
         title: "Tên giai đoạn",
         dataIndex: "name",
     },
     {
+        title: "Quản trị",
+        dataIndex: "manages",
+    },
+    {
         title: "Trạng thái",
         dataIndex: "status",
+        width: '8%',
+        align: 'center'
     },
     {
         title: "Tiến độ",

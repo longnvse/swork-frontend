@@ -4,18 +4,19 @@ import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {deleteResource, getResourcePages,} from "../../../../api/resource/resource";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import {DATE_FORMAT, INACTIVE, message_error, UPDATE,} from "../../../common/Constant";
+import {DATE_FORMAT, message_error, PROJECT_ROLE, UPDATE,} from "../../../common/Constant";
 import {columnsResource} from "../common/columns";
 import ResourceForm from "../form";
 import dayjs from "dayjs";
 import {Link} from "react-router-dom";
 import {formatMoney} from "../../../common/convert/format";
 import {convertMoney} from "../../../common/convert";
+import AccountGroup from "../../../common/account/group";
 
-const ResourceList = ({resourceData, workId, projectId, phaseId, teamId}) => {
+const ResourceList = ({resourceData, workId, projectId, phaseId, teamId, role}) => {
     const [dataSources, setDataSources] = useState([]);
     const {reload} = useSelector((state) => state.commonReducer);
-    console.log(workId, projectId, phaseId);
+
     useEffect(() => {
         if (!resourceData) {
             getResourcePages({
@@ -73,7 +74,7 @@ const ResourceList = ({resourceData, workId, projectId, phaseId, teamId}) => {
                 date:
                     item?.dateResource &&
                     dayjs(item.dateResource).format(DATE_FORMAT),
-                creator: item?.creator,
+                creator: <AccountGroup accountIds={[item.creatorId]}/>,
                 action: (
                     <div className={"flex justify-evenly"}>
                         <ButtonDrawer
@@ -84,6 +85,7 @@ const ResourceList = ({resourceData, workId, projectId, phaseId, teamId}) => {
                                 icon: <EditOutlined/>,
                                 type: "link",
                                 value: null,
+                                disabled: role === PROJECT_ROLE.PARTICIPATE
                             }}
                         >
                             <ResourceForm
@@ -94,13 +96,13 @@ const ResourceList = ({resourceData, workId, projectId, phaseId, teamId}) => {
                             />
                         </ButtonDrawer>
                         <Popconfirm
-                            disabled={item.status !== INACTIVE}
+                            disabled={role === PROJECT_ROLE.PARTICIPATE}
                             title={"Chắc chắn chứ!"}
                             onConfirm={() => onConfirmDelete(item.id)}
                         >
                             <Button
                                 type={"link"}
-                                disabled={item.status !== INACTIVE}
+                                disabled={role === PROJECT_ROLE.PARTICIPATE}
                                 icon={<DeleteOutlined/>}
                             />
                         </Popconfirm>

@@ -3,7 +3,7 @@ import {Button, Dropdown, message} from "antd";
 import {PauseCircleOutlined, PlayCircleOutlined} from "@ant-design/icons";
 import {message_error} from "../../../common/Constant";
 
-const ButtonStatus = ({updateStatus, status}) => {
+const ButtonStatus = ({updateStatus, status, disable = false}) => {
     const items = [{label: "Chờ thực hiện", key: "pending"}, {
         label: "Đang thực hiện",
         key: "active"
@@ -16,22 +16,24 @@ const ButtonStatus = ({updateStatus, status}) => {
     }
 
     return (<Dropdown
-            menu={{
-                items, selectable: true, selectedKeys: [status], onSelect: onSelectStatus
+        menu={{
+            items, selectable: true, selectedKeys: [status], onSelect: onSelectStatus
+        }}
+        disabled={disable}
+        overlayClassName={"w-[10rem]"}
+    >
+        <Button
+            icon={!status || status === 'pending' ? <PlayCircleOutlined style={{fontSize: 20}}/> :
+                <PauseCircleOutlined style={{fontSize: 20}}/>}
+            className={"flex flex-col items-center justify-center h-fit w-fit border-0 btn--tab"}
+            style={{
+                fontSize: 10, lineHeight: '16px',
+                backgroundColor: 'transparent'
             }}
-            overlayClassName={"w-[10rem]"}
         >
-            <Button
-                icon={!status || status === 'pending' ? <PlayCircleOutlined style={{fontSize: 20}}/> :
-                    <PauseCircleOutlined style={{fontSize: 20}}/>}
-                className={"flex flex-col items-center justify-center h-fit w-fit border-0" + " btn--tab"}
-                style={{
-                    fontSize: 10, lineHeight: '16px'
-                }}
-            >
-                Trạng thái
-            </Button>
-        </Dropdown>);
+            Trạng thái
+        </Button>
+    </Dropdown>);
 };
 
 export default ButtonStatus;

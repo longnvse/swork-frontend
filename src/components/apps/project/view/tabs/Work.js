@@ -1,31 +1,25 @@
-import { Button, Col, message, Popconfirm, Progress, Row, Table } from "antd";
-import React, { useEffect, useState } from "react";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {Button, Col, message, Popconfirm, Progress, Row, Table} from "antd";
+import React, {useEffect, useState} from "react";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {
-    ADD,
-    DATE_FORMAT,
-    DENIED,
-    message_error,
-    UPDATE,
-} from "../../../../common/Constant";
+import {ADD, DENIED, message_error, PROJECT_ROLE, UPDATE,} from "../../../../common/Constant";
 import WorkForm from "../../../work/form";
-import { deleteWork, getWorkPages } from "../../../../../api/work";
-import { columnsWork } from "../../../work/common/columns";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { renderStatus } from "../../../../common/status";
+import {deleteWork, getWorkPages} from "../../../../../api/work";
+import {columnsWork} from "../../../work/common/columns";
+import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {renderStatus} from "../../../../common/status";
 import dayjs from "dayjs";
-import { getDeadline } from "../../../work/common/common";
+import {getDeadline} from "../../../work/common/common";
 import AccountGroup from "../../../../common/account/group";
 
-function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
+function ProjectViewWork({projectId, phaseId, parentId, hiddenBtn, role}) {
     const [dataSources, setDataSources] = useState([]);
-    const { reload } = useSelector((state) => state.commonReducer);
+    const {reload} = useSelector((state) => state.commonReducer);
 
     useEffect(() => {
         if (projectId || phaseId || parentId) {
-            getWorkPages({ isTree: true, projectId, phaseId, parentId }).then(
+            getWorkPages({isTree: true, projectId, phaseId, parentId}).then(
                 (response) => {
                     setDataSources(mapData(response?.data?.items));
                 },
@@ -52,7 +46,7 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
                         {item?.name}
                     </Link>
                 ),
-                progress: <Progress percent={item?.progress} />,
+                progress: <Progress percent={item?.progress}/>,
                 admin: (
                     <AccountGroup
                         accountIds={item?.manages.map((item) => item.memberId)}
@@ -66,8 +60,8 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
                 status: renderStatus(item?.status),
                 priority: item?.priority,
                 endDate: `${dayjs(item?.startDate).format(
-                    DATE_FORMAT,
-                )} - ${dayjs(item?.endDate).format(DATE_FORMAT)}`,
+                    "DD/MM/YYYY",
+                )} - ${dayjs(item?.endDate).format("DD/MM/YYYY")}`,
                 deadline:
                     item?.status === "active"
                         ? getDeadline(new Date(item?.endDate), new Date())
@@ -80,9 +74,10 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
                             formId={"work-form"}
                             mode={UPDATE}
                             buttonProps={{
-                                icon: <EditOutlined />,
+                                icon: <EditOutlined/>,
                                 type: "link",
                                 value: null,
+                                disabled: role === PROJECT_ROLE.PARTICIPATE
                             }}
                         >
                             <WorkForm
@@ -92,14 +87,14 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
                             />
                         </ButtonDrawer>
                         <Popconfirm
-                            disabled={item.status !== DENIED}
+                            disabled={item.status !== DENIED || role === PROJECT_ROLE.PARTICIPATE}
                             title={"Chắc chắn chứ!"}
                             onConfirm={() => onConfirmDelete(item.id)}
                         >
                             <Button
                                 type={"link"}
-                                disabled={item.status !== DENIED}
-                                icon={<DeleteOutlined />}
+                                disabled={item.status !== DENIED || role === PROJECT_ROLE.PARTICIPATE}
+                                icon={<DeleteOutlined/>}
                             />
                         </Popconfirm>
                     </div>
@@ -133,7 +128,7 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
                     </Col>
                 </Row>
             ) : null}
-            <Table dataSource={dataSources} columns={columnsWork} />
+            <Table dataSource={dataSources} columns={columnsWork}/>
         </div>
     );
 }
