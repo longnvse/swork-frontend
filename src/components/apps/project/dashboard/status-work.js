@@ -1,74 +1,96 @@
 import React, {useEffect, useState} from 'react';
-import ReactEcharts from "echarts-for-react";
-import {getDashboardStatusWork} from "../../../../api/project";
+import {measureTextWidth, Pie} from '@ant-design/plots';
+import {getWorkPages} from "../../../../api/work";
+import {message_error, STATUS_ARRAY} from "../../../common/Constant";
 import {statusColor, statusString} from "../../../common/status";
 
-const DashboardStatusWork = props => {
-    const [data, setData] = useState([])
-
+const DashboardStatusWork = ({projectId}) => {
+    const [data, setData] = useState([]);
     useEffect(() => {
-        if (props.currentSlide === props.index)
-            getDashboardStatusWork(props.projectId).then(r => {
-                console.log(r.data.items)
-                setData(mapData(r.data?.items || []))
-            })
-    }, [props.projectId, props.currentSlide])
+        if (projectId) {
+            getWorkPages({projectId, page: 1, pageSize: Number.MAX_VALUE}).then(r => {
+                setData(mapData(r.data?.items || []));
+            }).catch(message_error);
+        }
+    }, [projectId]);
 
-    const mapData = (values) => {
-        return values.map(item => ({
-            name: statusString(item.obj),
-            value: item.sum,
-            itemStyle: {
-                color: statusColor(item.obj)
-            }
-        }))
+    const mapData = (items = []) => {
+        return STATUS_ARRAY.map(status => ({
+            status,
+            value: items.filter(item => status === item.status).length
+        })).filter(item => item.value > 0);
     }
-    console.log(data)
 
-    const getOption = {
-        tooltip: {
-            show: true,
-            trigger: 'item',
-            formatter: "{b} : ({d}%)"
-        },
+    const config = {
+        locale: "VN-vi",
         legend: {
-            top: '30%',
-            left: 'center',
-            orient: 'vertical',
-            icon: "circle"
+            layout: 'vertical',
+            position: 'left',
+            itemName: {
+                formatter: (text) => statusString(text)
+            },
         },
-        series: [
-            {
-                top: -50,
-                height: "400px",
-                type: 'pie',
-                radius: ['55%', '75%'],
-                avoidLabelOverlap: false,
-                label: {
-                    show: true,
-                    formatter: '{c}',
-                    position: 'inside',
-                    color: '#FFFFFF',
-                    fontSize: 10
+        color: ({status}) => statusColor(status),
+        appendPadding: [10, 10, 10, 10],
+        data,
+        angleField: 'value',
+        colorField: 'status',
+        radius: 1,
+        innerRadius: 0.64,
+        meta: {
+            value: {
+                formatter: (v) => `${v}`,
+            },
+        },
+        label: {
+            type: 'inner',
+            offset: '-50%',
+            style: {
+                textAlign: 'left',
+            },
+            autoRotate: false,
+            content: '{value}',
+        },
+        statistic: {
+            title: {
+                offsetY: -4,
+                customHtml: (container, view, datum) => {
+                    const {width, height} = container.getBoundingClientRect();
+                    const d = Math.sqrt(Math.pow(width / 2, 2) + Math.pow(height / 2, 2));
+                    const text = datum ? statusString(datum.status) : 'Tổng';
+                    return <div className={"flex items-center justify-center"}>
+                        {text}
+                    </div>
                 },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: "12",
-                        fontWeight: "bold"
-                    }
+            },
+            content: {
+                offsetY: 4,
+                style: {
+                    fontSize: '32px',
                 },
-                data: data
+                customHtml: (container, view, datum, data) => {
+                    const {width} = container.getBoundingClientRect();
+                    const text = datum ? `${datum.value}` : `${data.reduce((r, d) => r + d.value, 0)}`;
+
+                    return <div>
+                        {text}
+                    </div>
+                },
             }
-        ]
+        },
+        interactions: [
+            {
+                type: 'element-selected',
+            },
+            {
+                type: 'element-active',
+            },
+            {
+                type: 'pie-statistic-active',
+            },
+        ],
     };
-
-    return (
-        <ReactEcharts
-            option={getOption}
-        />
-    )
-
+    return <Pie height={300} {...config} />;
 };
 
 DashboardStatusWork.propTypes = {};

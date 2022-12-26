@@ -1,11 +1,26 @@
-import {Col, Collapse, DatePicker, Form, Input, InputNumber, message, Row, Select,} from "antd";
-import React, {useEffect, useState} from "react";
-import {addWork, getWork, getWorkPages, updateWork,} from "../../../../api/work";
+import {
+    Col,
+    Collapse,
+    DatePicker,
+    Form,
+    Input,
+    InputNumber,
+    message,
+    Row,
+    Select,
+} from "antd";
+import React, { useEffect, useState } from "react";
+import {
+    addWork,
+    getWork,
+    getWorkPages,
+    updateWork,
+} from "../../../../api/work";
 import SelectAccount from "../../../common/select/account";
 import dayjs from "dayjs";
-import {message_error} from "../../../common/Constant";
+import { message_error } from "../../../common/Constant";
 
-const WorkForm = ({workId, phaseId, projectId, parentId}) => {
+const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
     const [form] = Form.useForm();
     const [workData, setWorkData] = useState([]);
     const [progressType, setProgressType] = useState();
@@ -28,16 +43,16 @@ const WorkForm = ({workId, phaseId, projectId, parentId}) => {
 
     useEffect(() => {
         if (projectId || phaseId) {
-            getWorkPages({projectId, phaseId}).then(res => {
-                setWorkData(res.data?.items?.map(mapOptionWork) || [])
-            })
+            getWorkPages({ projectId, phaseId }).then((res) => {
+                setWorkData(res.data?.items?.map(mapOptionWork) || []);
+            });
         }
     }, [projectId, phaseId]);
 
     const mapOptionWork = (item) => ({
         label: item.name,
-        value: item.id
-    })
+        value: item.id,
+    });
 
     const onChangeProgressType = (value) => {
         setProgressType(value);
@@ -46,9 +61,9 @@ const WorkForm = ({workId, phaseId, projectId, parentId}) => {
     const onFinish = (values) => {
         values = {
             ...values,
-            projectId: Number(projectId),
-            phaseId: Number(phaseId),
-            parentId: Number(parentId),
+            projectId: Number(projectId) || 0,
+            phaseId: Number(phaseId) || 0,
+            parentId: Number(parentId) || 0,
         };
 
         if (!workId) {
@@ -88,7 +103,7 @@ const WorkForm = ({workId, phaseId, projectId, parentId}) => {
                                     },
                                 ]}
                             >
-                                <Input placeholder="Tên công việc"/>
+                                <Input placeholder="Tên công việc" />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -129,12 +144,12 @@ const WorkForm = ({workId, phaseId, projectId, parentId}) => {
                         </Col>
                         <Col span={24}>
                             <Form.Item name="handles" label="Người thực hiện">
-                                <SelectAccount withExt={true}/>
+                                <SelectAccount withExt={true} />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
                             <Form.Item name="manages" label="Người quản trị">
-                                <SelectAccount/>
+                                <SelectAccount />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
@@ -142,7 +157,7 @@ const WorkForm = ({workId, phaseId, projectId, parentId}) => {
                                 name="participates"
                                 label="Người theo dõi/phối hợp thực hiện"
                             >
-                                <SelectAccount withExt={true}/>
+                                <SelectAccount withExt={true} />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
@@ -202,42 +217,36 @@ const WorkForm = ({workId, phaseId, projectId, parentId}) => {
                                             </div>
                                         </div>
                                     </Select.Option>
-                                    <Select.Option value="byChecklist">
-                                        <b>Theo tỷ lệ hoàn thành đầu việc</b>
-                                        <div className="ml-3">
-                                            <div>
-                                                Ví dụ công việc có 10 đầu việc ,
-                                                khi người dùng
-                                            </div>
-                                            <div>
-                                                tích chọn đầu việc đã hoàn thành
-                                                là 5 ,
-                                            </div>
-                                            <div>
-                                                thì hệ thống sẽ tính ra kết quả
-                                                công việc là 50%
-                                            </div>
+                                    <Select.Option value="proportionDate">
+                                        <b>Theo tỷ trọng ngày thực hiện </b>
+                                        <div
+                                        >
+                                            Ví dụ dự án gồm 2 công việc A và B .
                                         </div>
-                                    </Select.Option>
-                                    <Select.Option value="byProportion">
-                                        <b>Theo tỷ trọng công việc con</b>
-                                        <div className="ml-3">
-                                            <div>
-                                                Ví dụ Công việc X gồm 2 công
-                                                việc A và B .
-                                            </div>
-                                            <div>
-                                                Công việc A có tỷ trọng là 40 ,
-                                                tiến độ là 50%
-                                            </div>
-                                            <div>
-                                                Công việc B có tỷ trọng là 30 ,
-                                                tiến độ là 40%
-                                            </div>
-                                            <div>
-                                                Tiến độ Công việc X là
-                                                [(40*50)+(30*40)]/(40+30) = 35%
-                                            </div>
+                                        <div
+                                        >
+                                            Công việc A yêu cầu thời gian thực hiện
+                                            trong 4 ngày , tiến độ 40%, gồm 4 người thực hiện
+                                        </div>
+                                        <div
+                                        >
+                                            thì tổng khối lượng công việc là 4*4=16,
+                                            khối lượng công việc đã hoàn thành là 4*4*40%=6.4
+                                        </div>
+                                        <div
+                                        >
+                                            Công việc B yêu cầu thời gian thực hiện
+                                            trong 6 ngày , tiến độ 50%, gồm 2 nguời thực hiện
+                                        </div>
+                                        <div
+                                        >
+                                            thì tổng khối lượng công việc là 6*2=12,
+                                            khối lượng công việc đã hoàn thành là 6*2*50%=6
+                                        </div>
+                                        <div
+                                        >
+                                            Tiến độ dự án là
+                                            ((6+6.4) / (16+12)) * 100 = 45% (44.28%)
                                         </div>
                                     </Select.Option>
                                 </Select>
@@ -276,7 +285,7 @@ const WorkForm = ({workId, phaseId, projectId, parentId}) => {
                                             },
                                         ]}
                                     >
-                                        <Input placeholder={"Chiếc"}/>
+                                        <Input placeholder={"Chiếc"} />
                                     </Form.Item>
                                 </Col>
                             </>

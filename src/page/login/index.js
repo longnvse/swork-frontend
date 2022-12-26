@@ -1,19 +1,23 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import LoginForm from "./Form";
 import background from "../../images/authentication/background.png";
 import Coffee from "../../images/authentication/Coffee.png";
 import Lightbulb from "../../images/authentication/Lightbulb.png";
 import Sun from "../../images/authentication/Sun.png";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {getMe} from "../../api/common";
+import {homePageByRole} from "../../components/common/Constant";
 
 function LoginPage(props) {
     const navigate = useNavigate();
-    const { loggedInSuccess } = useSelector((state) => state.loginReducer);
+    const {loggedInSuccess} = useSelector((state) => state.loginReducer);
 
     useEffect(() => {
         if (loggedInSuccess) {
-            navigate("/dashboard");
+            const {role} = getMe();
+
+            navigate(homePageByRole[role]);
         }
     }, [loggedInSuccess]);
 
@@ -33,8 +37,8 @@ function LoginPage(props) {
             </div>
             <div className="px-10 m-auto mt-10 flex items-start justify-between">
                 <div className="w-[10%] flex flex-col items-end">
-                    <img src={Coffee} alt="Coffee" className="mb-8" />
-                    <div className="w-[150px] bg-orange-500 rounded-lg h-[5px]" />
+                    <img src={Coffee} alt="Coffee" className="mb-8"/>
+                    <div className="w-[150px] bg-orange-500 rounded-lg h-[5px]"/>
                 </div>
 
                 <div className="mt-14 w-[30%]">
@@ -45,16 +49,16 @@ function LoginPage(props) {
                         Consequat adipisicing ea do labore irure adipisicing
                         occaecat cupidatat excepteur duis mo
                     </p>
-                    <img src={Sun} alt="Sun" className="mt-8" />
+                    <img src={Sun} alt="Sun" className="mt-8"/>
                 </div>
 
-                <LoginForm />
+                <LoginForm/>
 
                 <div className="w-[10%]">
                     <img
                         src={Lightbulb}
                         alt="Lightbulb"
-                        style={{ transform: "translate(50%, 200%)" }}
+                        style={{transform: "translate(50%, 200%)"}}
                     />
                 </div>
             </div>

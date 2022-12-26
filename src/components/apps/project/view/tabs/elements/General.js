@@ -14,10 +14,7 @@ const ProjectViewGeneral = ({data}) => {
     }, [data.startDate, data.endDate]);
 
     return (
-        <Col
-            span={7}
-            className={"rounded-[8px] border-solid border-[1px] border-[#ccc] h-fit"}
-        >
+        <div className={"w-full"}>
             <Row className={"justify-center text-[20px] font-bold p-[17px]"}>
                 {data.name}
             </Row>
@@ -93,7 +90,7 @@ const ProjectViewGeneral = ({data}) => {
                     <ProjectForm id={data.id}/>
                 </ButtonDrawer>
             </Row>
-        </Col>
+        </div>
     );
 };
 
