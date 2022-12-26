@@ -87,10 +87,10 @@ const ButtonDrawer = ({
             drawerStyle={{
                 borderRadius: 8
             }}
-            getContainer={document.getElementById('content')}
-            rootStyle={{
-                position: 'absolute'
-            }}
+            // getContainer={document.getElementById('content')}
+            // rootStyle={{
+            //     position: 'absolute'
+            // }}
             contentWrapperStyle={{
                 borderRadius: 8
             }}
