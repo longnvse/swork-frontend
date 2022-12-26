@@ -4,6 +4,7 @@ import {PercentageOutlined} from "@ant-design/icons";
 import {Modal} from "antd";
 import ReportAmountForm from "./report-amount-form";
 import {useSelector} from "react-redux";
+import ReportManual from "./report-manual";
 
 const ReportProgressModal = ({workId, progressType}) => {
     const [open, setOpen] = useState(false);
@@ -27,6 +28,10 @@ const ReportProgressModal = ({workId, progressType}) => {
         switch (progressType) {
             case "byAmount":
                 return <ReportAmountForm workId={workId}/>
+            case "manual":
+                return <ReportManual workId={workId}/>
+            default:
+                return <></>
         }
     }, [progressType]);
 
