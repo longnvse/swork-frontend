@@ -98,10 +98,11 @@ const ViewWork = () => {
                 defaultActiveKey="general"
                 tabBarExtraContent={tabExtra}
                 onChange={onChange}
+                destroyInactiveTabPane={true}
             >
                 <Tabs.TabPane key={"general"} tab="Thông tin chung">
                     <ViewWorkGeneral data={workData} />
-                    <Collapse className="mt-3" defaultActiveKey={"work"} ghost>
+                    <Collapse className="mt-3" defaultActiveKey={"work"}>
                         <Collapse.Panel
                             collapsible="icon"
                             header={
