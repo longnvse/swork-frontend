@@ -1,5 +1,5 @@
 import {Col, Divider, Progress, Row} from "antd";
-import React from "react";
+import React, {useMemo} from "react";
 import ButtonDrawer from "../../../../../common/button/ButtonDrawer";
 import {PROJECT_ROLE, UPDATE} from "../../../../../common/Constant";
 import {convertMoney} from "../../../../../common/convert";
@@ -10,8 +10,27 @@ import AccountGroup from "../../../../../common/account/group";
 
 const ProjectViewGeneral = ({data, role}) => {
     const dayDiffTime = (startDate, endDate) => {
+        if (!startDate || !endDate) {
+            return "";
+        }
+
         return dayjs(endDate).diff(dayjs(startDate), "days") + 1;
     }
+
+    const renderActualTime = useMemo(() => {
+        const arr = [];
+        if (data?.actualStartDate) {
+            arr.push(dayjs(data?.actualStartDate).format("DD/MM/YYYY"));
+        }
+        if (data?.actualEndDate) {
+            arr.push(dayjs(data?.actualEndDate).format("DD/MM/YYYY"));
+        }
+
+        const dayDiff = dayDiffTime(data?.actualStartDate, data?.actualEndDate);
+
+        return `${arr.join(" - ")}${!dayDiff ? "" : ` (${dayDiff} ngày)`}`;
+
+    }, [data]);
 
     return (
         <div className={"w-full"}>
@@ -46,11 +65,9 @@ const ProjectViewGeneral = ({data, role}) => {
                 <Col span={8} className={"font-bold"}>
                     Thời gian thực tế:
                 </Col>
-                <Col span={16}>{`${dayjs(data?.actualStartDate).format(
-                    "DD/MM/YYYY",
-                )} - ${dayjs(data.actualEndDate).format(
-                    "DD/MM/YYYY",
-                )} ${data?.actualEndDate && (`(${dayDiffTime(data?.actualStartDate, data.actualEndDate)} ngày)`)}`}</Col>
+                <Col span={16}>
+                    {renderActualTime}
+                </Col>
             </Row>}
             <Row className={"p-[17px]"}>
                 <Col span={8} className={"font-bold"}>
