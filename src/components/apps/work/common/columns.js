@@ -7,6 +7,7 @@ export const columnsWork = [
     {
         dataIndex: "progress",
         title: "Tiến độ",
+        width: '20%'
     },
     {
         dataIndex: "admin",

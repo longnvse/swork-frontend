@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row } from "antd";
-import { approvalProject, getProject } from "../../../../api/project";
+import React, {useEffect, useState} from "react";
+import {Col, Row} from "antd";
+import {approvalProject, getProject} from "../../../../api/project";
 import ProjectViewPhase from "./tabs/Phase";
 import ProjectViewResource from "./tabs/Resource";
 import ProjectViewWork from "./tabs/Work";
-import { useParams, useSearchParams } from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import TeamList from "../../team";
 import ProjectViewDetail from "./tabs/Project";
-import { getTeamPages } from "../../../../api/team";
-import { getPhasePages } from "../../../../api/phase";
+import {getTeamPages} from "../../../../api/team";
+import {getPhasePages} from "../../../../api/phase";
 import ButtonTab from "../../../common/button/ButtonTab";
 import ButtonStatus from "../../work/common/button-status";
 import SWTabs from "../../../common/tabs";
-import { useDispatch, useSelector } from "react-redux";
-import { setHeader } from "../../../../redux/actions/common/actions";
+import {useDispatch, useSelector} from "react-redux";
+import {setHeader} from "../../../../redux/actions/common/actions";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import { ADD, MODULE_ID, UPDATE } from "../../../common/Constant";
-import {
-    EditOutlined,
-    PlusOutlined,
-    UsergroupAddOutlined,
-} from "@ant-design/icons";
+import {ADD, MODULE_ID, UPDATE} from "../../../common/Constant";
+import {EditOutlined, PlusOutlined, UsergroupAddOutlined,} from "@ant-design/icons";
 import ProjectForm from "../form";
 import ButtonModal from "../../../common/button/ButtonModal";
 import ProjectMemberForm from "../form/update-member-form";
@@ -41,10 +37,10 @@ const ADD_BTN = {
 
 function ProjectView(props) {
     const [data, setData] = useState({});
-    const { id } = useParams();
+    const {id} = useParams();
     const [teamData, setTeamData] = useState([]);
     const [phaseData, setPhaseData] = useState([]);
-    const { reload } = useSelector((state) => state.commonReducer);
+    const {reload} = useSelector((state) => state.commonReducer);
     const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
     let tabKey = searchParams.get("tab");
@@ -59,7 +55,7 @@ function ProjectView(props) {
             setData(response?.data);
         });
 
-        getTeamPages({ projectId: id }).then((response) => {
+        getTeamPages({projectId: id}).then((response) => {
             setTeamData(response?.data.items);
         });
 
@@ -77,28 +73,29 @@ function ProjectView(props) {
                     data={data}
                     teamData={teamData}
                     phaseData={phaseData}
+                    role={data?.role}
                 />
             ),
         },
         {
             label: "Kanban",
             key: "kanban",
-            children: <ProjectViewKanban projectId={data.id} />,
+            children: <ProjectViewKanban role={data?.role} projectId={data.id}/>,
         },
         {
             label: "Gantt Chart",
             key: "gantt chart",
-            children: <ProjectViewGanttChart projectId={data.id} />,
+            children: <ProjectViewGanttChart role={data?.role} projectId={data.id}/>,
         },
         {
             label: "Giai đoạn",
             key: "phase",
-            children: <ProjectViewPhase projectId={data.id} />,
+            children: <ProjectViewPhase role={data?.role} projectId={data.id}/>,
         },
         {
             label: "Đội nhóm",
             key: "team",
-            children: <TeamList projectId={data.id} />,
+            children: <TeamList role={data?.role} projectId={data.id}/>,
         },
         {
             label: "Tài nguyên",
@@ -107,6 +104,7 @@ function ProjectView(props) {
                 <ProjectViewResource
                     hiddenBtn={true}
                     projectId={data.id || id}
+                    role={data?.role}
                 />
             ),
         },
@@ -118,6 +116,7 @@ function ProjectView(props) {
                     hiddenBtn={true}
                     projectId={data.id || id}
                     phaseId={0}
+                    role={data?.role}
                 />
             ),
         },
@@ -129,6 +128,7 @@ function ProjectView(props) {
                     projectId={data.id}
                     appId={`${data.id}`}
                     moduleId={MODULE_ID.PROJECT}
+                    role={data?.role}
                 />
             ),
         },
@@ -137,13 +137,13 @@ function ProjectView(props) {
     const renderForm = (tabKey) => {
         switch (tabKey) {
             case "phase":
-                return <PhaseForm projectId={id || data?.id} />;
+                return <PhaseForm projectId={id || data?.id}/>;
             case "team":
-                return <TeamForm projectId={id || data?.id} />;
+                return <TeamForm projectId={id || data?.id}/>;
             case "resource":
-                return <ResourceForm projectId={id || data?.id} />;
+                return <ResourceForm projectId={id || data?.id}/>;
             case "work":
-                return <WorkForm projectId={id || data?.id} />;
+                return <WorkForm projectId={id || data?.id}/>;
             default:
                 break;
         }
@@ -159,12 +159,13 @@ function ProjectView(props) {
                         mode={ADD}
                         button={
                             <ButtonTab
-                                icon={<PlusOutlined style={{ fontSize: 20 }} />}
+                                icon={<PlusOutlined style={{fontSize: 20}}/>}
                                 title={
                                     <span className="capitalize">
                                         {ADD_BTN[tabKey]}
                                     </span>
                                 }
+                                disable={data?.role === "participate"}
                             />
                         }
                     >
@@ -176,6 +177,7 @@ function ProjectView(props) {
                 <ButtonStatus
                     status={data?.status}
                     updateStatus={(status) => approvalProject(id, status)}
+                    disable={data?.role === 'participate'}
                 />
             </Col>
             <Col>
@@ -187,14 +189,15 @@ function ProjectView(props) {
                         <ButtonTab
                             icon={
                                 <UsergroupAddOutlined
-                                    style={{ fontSize: 20 }}
+                                    style={{fontSize: 20}}
                                 />
                             }
+                            disable={data?.role !== "manage"}
                             title={"Người thực hiện"}
                         />
                     }
                 >
-                    <ProjectMemberForm projectData={data} />
+                    <ProjectMemberForm projectData={data}/>
                 </ButtonModal>
             </Col>
             <Col>
@@ -204,12 +207,13 @@ function ProjectView(props) {
                     mode={UPDATE}
                     button={
                         <ButtonTab
-                            icon={<EditOutlined style={{ fontSize: 20 }} />}
+                            icon={<EditOutlined style={{fontSize: 20}}/>}
                             title={"Sửa dự án"}
+                            disable={data?.role !== "manage"}
                         />
                     }
                 >
-                    <ProjectForm id={id} />
+                    <ProjectForm id={id}/>
                 </ButtonDrawer>
             </Col>
         </Row>
@@ -217,7 +221,7 @@ function ProjectView(props) {
 
     return (
         <div>
-            <SWTabs items={tabItems} tabBarExtraContent={tabExtra} />
+            <SWTabs items={tabItems} tabBarExtraContent={tabExtra}/>
         </div>
     );
 }

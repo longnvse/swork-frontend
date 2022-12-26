@@ -1,18 +1,19 @@
-import { Col, Input, Row } from "antd";
+import {Col, Input, Row} from "antd";
 import React from "react";
-import { FiSearch } from "react-icons/fi";
+import {FiSearch} from "react-icons/fi";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import { ADD } from "../../../../common/Constant";
+import {ADD} from "../../../../common/Constant";
 import ResourceForm from "../../../resource/form";
 import ResourceList from "../../../resource/list";
 
 function ProjectViewResource({
-    projectId,
-    phaseId,
-    workId,
-    teamId,
-    hiddenBtn,
-}) {
+                                 projectId,
+                                 phaseId,
+                                 workId,
+                                 teamId,
+                                 hiddenBtn,
+                                 role
+                             }) {
     return (
         <div>
             {!hiddenBtn ? (
@@ -35,7 +36,7 @@ function ProjectViewResource({
                         </ButtonDrawer>
                     </Col>
                     <Col span={6}>
-                        <Input prefix={<FiSearch />} />
+                        <Input prefix={<FiSearch/>}/>
                     </Col>
                 </Row>
             ) : null}
@@ -44,6 +45,7 @@ function ProjectViewResource({
                 phaseId={phaseId}
                 workId={workId}
                 teamId={teamId}
+                role={role}
             />
         </div>
     );

@@ -9,7 +9,7 @@ import DashboardProgressPhase from "../../dashboard/phase-progress";
 import {Link} from "react-router-dom";
 import DashboardBudget from "../../dashboard/budget";
 
-const ProjectViewDetail = ({data, teamData, phaseData}) => {
+const ProjectViewDetail = ({data, teamData, phaseData, role}) => {
     return (
         <Row gutter={12}>
             <Col
@@ -17,7 +17,7 @@ const ProjectViewDetail = ({data, teamData, phaseData}) => {
             >
                 <Row
                     className={"rounded-[8px] border-solid border-[1px] border-[#ccc] w-full h-fit"}>
-                    <ProjectViewGeneral data={data}/>
+                    <ProjectViewGeneral data={data} role={role}/>
                 </Row>
                 <Row className={"mt-1.5 rounded-[8px] border-solid border-[1px] border-[#ccc] p-6 w-full"}>
                     <div>

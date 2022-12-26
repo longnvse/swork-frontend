@@ -1,23 +1,19 @@
 import React from "react";
 import CommonList from "../../../../common/list";
-import { columnPhase } from "../../common/columns";
-import { deletePhase, getPhasePages } from "../../../../../api/phase";
+import {columnPhase} from "../../common/columns";
+import {deletePhase, getPhasePages} from "../../../../../api/phase";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {
-    ADD,
-    DATE_FORMAT,
-    INACTIVE,
-    message_error,
-    UPDATE,
-} from "../../../../common/Constant";
+import {DATE_FORMAT, message_error, PENDING, PROJECT_ROLE, UPDATE,} from "../../../../common/Constant";
 import PhaseForm from "../../../phase/form";
-import { renderStatus } from "../../../../common/status";
-import { Button, message, Popconfirm, Progress } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import {Button, message, Popconfirm, Progress} from "antd";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {Link} from "react-router-dom";
 import dayjs from "dayjs";
+import {getMe} from "../../../../../api/common";
+import AccountGroup from "../../../../common/account/group";
+import {renderStatus} from "../../../../common/status";
 
-function ProjectViewPhase({ projectId }) {
+function ProjectViewPhase({projectId, role}) {
     const load = (params) => {
         return getPhasePages(projectId, params);
     };
@@ -30,14 +26,23 @@ function ProjectViewPhase({ projectId }) {
             .catch(message_error);
     };
 
+    const isDisable = (role, item) => {
+        if (role === PROJECT_ROLE.MANAGE) {
+            return false;
+        }
+
+        return item.phaseManages.findIndex(account => account.accountId === getMe().accountId) === -1;
+    }
+
     const mapData = (item) => ({
         key: item.id,
         ...item,
         name: <Link to={`/project/view-phase/${item?.id}`}>{item?.name}</Link>,
-        status: renderStatus(item.status),
-        progress: <Progress percent={item.progress} />,
+        status: <div className={"flex justify-center"}>{renderStatus(item.status)}</div>,
+        progress: <Progress percent={item.progress}/>,
         startDate: dayjs(item.startDate).format(DATE_FORMAT),
         endDate: dayjs(item.endDate).format(DATE_FORMAT),
+        manages: <AccountGroup accountIds={item.phaseManages.map(manage => manage.accountId)}/>,
         action: (
             <div className={"flex justify-evenly"}>
                 <ButtonDrawer
@@ -45,42 +50,33 @@ function ProjectViewPhase({ projectId }) {
                     formId={"phase-form"}
                     mode={UPDATE}
                     buttonProps={{
-                        icon: <EditOutlined />,
+                        icon: <EditOutlined/>,
                         type: "link",
                         value: null,
+                        disabled: isDisable(role, item)
                     }}
                 >
-                    <PhaseForm projectId={projectId} id={item.id} />
+                    <PhaseForm projectId={projectId} id={item.id}/>
                 </ButtonDrawer>
                 <Popconfirm
-                    disabled={item.status !== INACTIVE}
+                    disabled={item.status !== PENDING || isDisable(role, item)}
                     title={"Chắc chắn chứ!"}
                     onConfirm={() => onConfirmDelete(item.id)}
                 >
                     <Button
                         type={"link"}
-                        disabled={item.status !== INACTIVE}
-                        icon={<DeleteOutlined />}
+                        disabled={item.status !== PENDING || isDisable(role, item)}
+                        icon={<DeleteOutlined/>}
                     />
                 </Popconfirm>
             </div>
         ),
     });
 
-    const buttonAdd = (
-        <ButtonDrawer
-            title={"Thêm mới giai đoạn"}
-            formId={"phase-form"}
-            mode={ADD}
-            buttonProps={{
-                value: "Thêm mới",
-            }}
-        >
-            <PhaseForm projectId={projectId} />
-        </ButtonDrawer>
-    );
-
-    return <CommonList mapData={mapData} load={load} columns={columnPhase} />;
+    return <CommonList
+        mapData={mapData}
+        load={load}
+        columns={columnPhase}/>;
 }
 
 export default ProjectViewPhase;

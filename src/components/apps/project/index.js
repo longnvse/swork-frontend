@@ -189,6 +189,8 @@ function ProjectList(props) {
                 button={<ButtonTab
                     icon={<PlusOutlined style={{fontSize: 20}}/>}
                     title={"Thêm dự án"}
+                    disable={getMe().role !== "admin"}
+                    visible={getMe().role === "admin"}
                 />}
             >
                 <ProjectForm/>
