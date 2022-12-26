@@ -63,6 +63,7 @@ const DashboardBudget = ({projectId, budget = 0}) => {
             height={458}
             xField={"type"}
             yField={"value"}
+            legend={false}
             yAxis={{
                 label: {
                     formatter: (text) => convertMoney(text)
