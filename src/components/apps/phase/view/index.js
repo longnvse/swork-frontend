@@ -1,28 +1,47 @@
-import {Col, Collapse, Row} from "antd";
-import React, {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
-import {getPhase} from "../../../../api/phase";
-import {DATE_FORMAT, MODULE_ID} from "../../../common/Constant";
+import { Col, Collapse, Row } from "antd";
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+import { getPhase } from "../../../../api/phase";
+import { ADD, DATE_FORMAT, MODULE_ID } from "../../../common/Constant";
 import SWDescription from "../../../common/description";
-import {renderStatus} from "../../../common/status";
+import { renderStatus } from "../../../common/status";
 import ProjectViewResource from "../../project/view/tabs/Resource";
 import ProjectViewWork from "../../project/view/tabs/Work";
 import TeamList from "../../team";
-import {viewPhaseFirstColumns, viewPhaseSecondColumns} from "./columns";
+import { viewPhaseFirstColumns, viewPhaseSecondColumns } from "./columns";
 import dayjs from "dayjs";
 import SWTabs from "../../../common/tabs";
 import AccountGroup from "../../../common/account/group";
 import SWFile from "../../../common/file";
+import TeamForm from "../../team/form";
+import ResourceForm from "../../resource/form";
+import ButtonDrawer from "../../../common/button/ButtonDrawer";
+import ButtonTab from "../../../common/button/ButtonTab";
+import { PlusOutlined } from "@ant-design/icons";
+import WorkForm from "../../work/form";
+
+const ADD_BTN = {
+    team: "đội nhóm",
+    resource: "tài nguyên",
+};
 
 const PhaseView = () => {
-    const {id} = useParams();
+    const { id } = useParams();
     const [phaseData, setPhaseData] = useState({});
+    const [searchParams] = useSearchParams();
+    let tabKey = searchParams.get("tab");
 
     const mapData = (data) => {
         return {
             firstColumn: {
                 name: data?.name,
-                phaseManages: <AccountGroup accountIds={data?.phaseManages?.map(item => item.accountId)}/>,
+                phaseManages: (
+                    <AccountGroup
+                        accountIds={data?.phaseManages?.map(
+                            (item) => item.accountId,
+                        )}
+                    />
+                ),
                 status: renderStatus(data?.status),
                 date: `${dayjs(data?.startDate).format(DATE_FORMAT)} - ${dayjs(
                     data?.endDate,
@@ -72,8 +91,35 @@ const PhaseView = () => {
                         </Col>
                     </Row>
                     <Collapse defaultActiveKey={"work"} className="mt-3">
-                        <Collapse.Panel header="Công việc" key={"work"}>
+                        <Collapse.Panel
+                            header="Công việc"
+                            key={"work"}
+                            collapsible="icon"
+                            extra={
+                                <ButtonDrawer
+                                    title={`Thêm công việc`}
+                                    formId={`work-form`}
+                                    mode={ADD}
+                                    button={
+                                        <ButtonTab
+                                            icon={
+                                                <PlusOutlined
+                                                    style={{ fontSize: 20 }}
+                                                />
+                                            }
+                                            title={"Thêm công việc"}
+                                        />
+                                    }
+                                >
+                                    <WorkForm
+                                        phaseId={id || phaseData?.id}
+                                        projectId={phaseData?.projectId}
+                                    />
+                                </ButtonDrawer>
+                            }
+                        >
                             <ProjectViewWork
+                                hiddenBtn={true}
                                 projectId={phaseData?.projectId}
                                 phaseId={id}
                             />
@@ -86,7 +132,7 @@ const PhaseView = () => {
             key: "team",
             label: "Đội nhóm",
             children: (
-                <TeamList projectId={phaseData?.projectId} phaseId={id}/>
+                <TeamList projectId={phaseData?.projectId} phaseId={id} />
             ),
         },
         {
@@ -94,6 +140,7 @@ const PhaseView = () => {
             label: "Tài nguyên",
             children: (
                 <ProjectViewResource
+                    hiddenBtn={true}
                     projectId={phaseData?.projectId}
                     phaseId={id}
                 />
@@ -102,15 +149,65 @@ const PhaseView = () => {
         {
             key: "attach",
             label: "Đính kèm",
-            children: <SWFile
-                projectId={phaseData?.projectId}
-                phaseId={phaseData?.id}
-                moduleId={MODULE_ID.PHASE}
-                appId={`${phaseData?.id}`}/>,
+            children: (
+                <SWFile
+                    projectId={phaseData?.projectId}
+                    phaseId={phaseData?.id}
+                    moduleId={MODULE_ID.PHASE}
+                    appId={`${phaseData?.id}`}
+                />
+            ),
         },
     ];
 
-    return <SWTabs items={tabItems}/>;
+    const renderForm = (tabKey) => {
+        switch (tabKey) {
+            case "team":
+                return (
+                    <TeamForm
+                        phaseId={id || phaseData?.id}
+                        projectId={phaseData?.projectId}
+                    />
+                );
+            case "resource":
+                return (
+                    <ResourceForm
+                        phaseId={id || phaseData?.id}
+                        projectId={phaseData?.projectId}
+                    />
+                );
+            default:
+                break;
+        }
+    };
+
+    const tabExtra = (
+        <Row gutter={8}>
+            {tabKey !== "general" && tabKey !== "attach" ? (
+                <Col>
+                    <ButtonDrawer
+                        title={`Thêm ${ADD_BTN[tabKey]}`}
+                        formId={`${tabKey}-form`}
+                        mode={ADD}
+                        button={
+                            <ButtonTab
+                                icon={<PlusOutlined style={{ fontSize: 20 }} />}
+                                title={
+                                    <span className="capitalize">
+                                        {ADD_BTN[tabKey]}
+                                    </span>
+                                }
+                            />
+                        }
+                    >
+                        {renderForm(tabKey)}
+                    </ButtonDrawer>
+                </Col>
+            ) : null}
+        </Row>
+    );
+
+    return <SWTabs items={tabItems} tabBarExtraContent={tabExtra} />;
 };
 
 export default PhaseView;

@@ -29,6 +29,7 @@ function ProjectViewResource({
                             <ResourceForm
                                 projectId={projectId}
                                 phaseId={phaseId}
+                                workId={workId}
                                 teamId={teamId}
                             />
                         </ButtonDrawer>
