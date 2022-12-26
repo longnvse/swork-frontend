@@ -61,6 +61,9 @@ export const statusColor = (status) => {
         case DENIED: {
             return "rgba(233, 10, 53, 0.6)";
         }
+        case CLOSED:{
+            return "rgba(16, 177, 57, 0.8)";
+        }
         default: {
             return "#000000";
         }

@@ -6,10 +6,10 @@ export function convertMoney(labelValue) {
     }
     // Nine Zeroes for Billions
     return Math.abs(Number(labelValue)) >= 1.0e9
-        ? Math.abs(Number(labelValue)) / 1.0e9 + " tỷ"
+        ? Number(labelValue) / 1.0e9 + " tỷ"
         : // Six Zeroes for Millions
         Math.abs(Number(labelValue)) >= 1.0e6
-            ? Math.abs(Number(labelValue)) / 1.0e6 + " triệu"
+            ? Number(labelValue) / 1.0e6 + " triệu"
             : // Three Zeroes for Thousands
             formatMoney(labelValue);
 }
