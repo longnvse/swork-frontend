@@ -26,7 +26,7 @@ export const columns = [
     },
     {
         title: 'Địa chỉ',
-        dataIndex: 'businessAddress',
+        dataIndex: 'address',
     },
     {
         title: "Trạng thái",
