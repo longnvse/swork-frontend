@@ -90,7 +90,7 @@ const DashboardStatusWork = ({projectId}) => {
             },
         ],
     };
-    return <Pie height={300} {...config} />;
+    return <Pie height={250} {...config} />;
 };
 
 DashboardStatusWork.propTypes = {};
