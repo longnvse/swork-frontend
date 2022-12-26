@@ -16,12 +16,15 @@ import WorkForm from "../form";
 import SWFile from "../../../common/file";
 import CommentList from "../../../common/comment/list";
 import ProjectViewResource from "../../project/view/tabs/Resource";
+import ResourceForm from "../../resource/form";
+import UploadFile from "../../../common/file/upload";
 
 const ViewWork = () => {
     const { id } = useParams();
     const [workData, setWorkData] = useState();
     const { reload } = useSelector((state) => state.commonReducer);
     const dispatch = useDispatch();
+    const [tabKey, setTabKey] = useState("general");
 
     useEffect(() => {
         dispatch(setHeader("Chi tiết công việc"));
@@ -41,16 +44,38 @@ const ViewWork = () => {
         }
     }, [reload]);
 
-    const moreMenu = [
-        {
-            label: "Thêm đầu việc",
-            key: "checklist",
-        },
-    ];
+    const onChange = (tabKey) => {
+        setTabKey(tabKey);
+    };
 
     const tabExtra = useMemo(() => {
         return (
             <Row gutter={8}>
+                {tabKey === "resources" ? (
+                    <Col>
+                        <ButtonDrawer
+                            title={"Thêm tài nguyên"}
+                            formId={"resource-form"}
+                            mode={ADD}
+                            button={
+                                <ButtonTab
+                                    icon={
+                                        <PlusOutlined
+                                            style={{ fontSize: 20 }}
+                                        />
+                                    }
+                                    title={"Thêm tài nguyên"}
+                                />
+                            }
+                        >
+                            <ResourceForm
+                                projectId={workData?.projectId}
+                                phaseId={workData?.phaseId}
+                                parentId={workData?.id}
+                            />
+                        </ButtonDrawer>
+                    </Col>
+                ) : null}
                 <Col>
                     <ButtonStatus
                         status={workData?.status}
@@ -65,11 +90,15 @@ const ViewWork = () => {
                 </Col>
             </Row>
         );
-    }, [workData]);
+    }, [workData, tabKey]);
 
     return (
         <>
-            <Tabs defaultActiveKey="general" tabBarExtraContent={tabExtra}>
+            <Tabs
+                defaultActiveKey="general"
+                tabBarExtraContent={tabExtra}
+                onChange={onChange}
+            >
                 <Tabs.TabPane key={"general"} tab="Thông tin chung">
                     <ViewWorkGeneral data={workData} />
                     <Collapse className="mt-3" defaultActiveKey={"work"} ghost>
@@ -98,8 +127,8 @@ const ViewWork = () => {
                                         }
                                     >
                                         <WorkForm
-                                            projectId={workData?.projectId}
-                                            phaseId={workData?.phaseId}
+                                            // projectId={workData?.projectId}
+                                            // phaseId={workData?.phaseId}
                                             parentId={workData?.id}
                                         />
                                     </ButtonDrawer>
@@ -131,6 +160,7 @@ const ViewWork = () => {
                 {workData?.projectId ? (
                     <Tabs.TabPane key={"resources"} tab="Tài nguyên">
                         <ProjectViewResource
+                            hiddenBtn={true}
                             workId={id || workData?.id}
                             phaseId={workData?.phaseId}
                             projectId={workData?.projectId}
