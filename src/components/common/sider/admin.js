@@ -3,7 +3,6 @@ import {URIS} from "../../../utils/constant";
 import {ApartmentOutlined, UserOutlined} from "@ant-design/icons";
 import React from "react";
 import {BiBuildings} from "react-icons/bi";
-import {MdWorkOutline} from "react-icons/md";
 
 export const AdminSider = [
     {
@@ -17,13 +16,8 @@ export const AdminSider = [
         icon: <UserOutlined style={{fontSize: 20}}/>
     },
     {
-        label: <Link to={"/project"}>Dự án</Link>,
-        key: "project",
+        label: <Link to={"/project/all"}>Dự án</Link>,
+        key: "project-all",
         icon: <BiBuildings style={{fontSize: 20}}/>,
-    },
-    {
-        label: <Link to={"/work"}>Công việc</Link>,
-        key: "work",
-        icon: <MdWorkOutline style={{fontSize: 20}}/>,
-    },
+    }
 ]
