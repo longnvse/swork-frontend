@@ -24,6 +24,7 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
     const [form] = Form.useForm();
     const [workData, setWorkData] = useState([]);
     const [progressType, setProgressType] = useState();
+    const [parent, setParent] = useState(0);
 
     useEffect(() => {
         if (workId) {
@@ -36,6 +37,7 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
                     endDate:
                         response.data?.endDate && dayjs(response.data?.endDate),
                 });
+                setParent(response?.data?.parentId);
                 setProgressType(response.data?.progressType);
             });
         }
@@ -63,7 +65,7 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
             ...values,
             projectId: Number(projectId) || 0,
             phaseId: Number(phaseId) || 0,
-            parentId: Number(parentId) || 0,
+            parentId: parent || Number(parentId) || 0,
         };
 
         if (!workId) {
@@ -277,7 +279,7 @@ const WorkForm = ({ workId, phaseId, projectId, parentId }) => {
                         </Col>
                     </>
                 )}
-                {!parentId ? (
+                {!parentId || parent !== 0 ? (
                     <Col span={24}>
                         <Form.Item label="Công việc cha" name="parentId">
                             <Select
