@@ -9,7 +9,7 @@ import CommentContent from "./resource/content";
 import {getMe} from "../../../api/common";
 
 const dayOfWeek = ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"]
-const SWComment = ({id, content, creatorId, creatorName, date, classPkId, classPkName, comments = []}) => {
+const SWComment = ({id, avatar, content, creatorId, creatorName, date, classPkId, classPkName, comments = []}) => {
     const [reply, setReply] = useState(false);
     const [hiddenActionContent, setHiddenActionContent] = useState(true);
     const replyRef = useRef();
@@ -86,7 +86,7 @@ const SWComment = ({id, content, creatorId, creatorName, date, classPkId, classP
             key={id}
             actions={actions}
             className={"w-full"}
-            avatar={<Avatar icon={<UserOutlined/>}/>}
+            avatar={<Avatar src={avatar} icon={<UserOutlined/>}/>}
             content={<CommentContent id={id} content={content} replyRef={replyRef} hiddenAction={hiddenActionContent}/>}
             author={creatorName}
         >

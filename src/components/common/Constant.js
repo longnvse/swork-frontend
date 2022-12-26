@@ -8,6 +8,7 @@ export const ACTIVE = "active";
 export const INACTIVE = "inactive";
 export const DENIED = "denied";
 export const COMPLETED = "completed";
+export const CLOSED = "closed";
 export const DATE_FORMAT = "DD-MM-YYYY"
 export const STATUS = {
     "pending": "Chờ thực hiện",
