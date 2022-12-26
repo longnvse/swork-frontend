@@ -4,6 +4,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
 import {
     ADD,
+    DATE_FORMAT,
     DENIED,
     message_error,
     UPDATE,
@@ -14,6 +15,7 @@ import { columnsWork } from "../../../work/common/columns";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { renderStatus } from "../../../../common/status";
+import dayjs from "dayjs";
 
 function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
     const [dataSources, setDataSources] = useState([]);
@@ -52,7 +54,9 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
                 admin: item?.admin,
                 status: renderStatus(item?.status),
                 priority: item?.priority,
-                intendTime: item?.intendTime,
+                endDate: `${dayjs(item?.startDate).format(
+                    DATE_FORMAT,
+                )} - ${dayjs(item?.endDate).format(DATE_FORMAT)}`,
                 deadline: item?.deadline,
                 children: item?.works?.length > 0 ? mapData(item?.works) : null,
                 action: (
