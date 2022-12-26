@@ -33,7 +33,8 @@ const ProjectViewKanban = ({projectId}) => {
                 />, cards: projects.map(mapCard), titleStyle: {
                     color: statusColorKanban(status), fontWeight: "bold"
                 }, style: {
-                    background: statusBgColorKanban(status)
+                    background: statusBgColorKanban(status),
+                    maxHeight: '81vh'
                 }
             }
         })

@@ -1,10 +1,13 @@
 import React from "react";
 import Board from "react-trello";
 
-const Kanban = ({ data = [], onUpdateStatus = (id, status) => {} }) => {
+const Kanban = ({
+                    data = [], onUpdateStatus = (id, status) => {
+    }
+                }) => {
     {
         return (
-            <div id={"kanban"}>
+            <div id={"kanban"} className={"h-full"}>
                 {data && (
                     <Board
                         hideCardDeleteIcon
@@ -26,12 +29,12 @@ const Kanban = ({ data = [], onUpdateStatus = (id, status) => {} }) => {
                         }}
                         style={{
                             backgroundColor: "inherit",
-                            height: "82.1vh",
+                            height: "81.1vh",
                         }}
                         laneStyle={{
                             width: "24.5%",
                             overflow: "auto",
-                            maxHeight: "calc(100vh - 130px)",
+                            maxHeight: "81vh",
                             backgroundColor: "#f5f5f5",
                         }}
                         cardStyle={{
