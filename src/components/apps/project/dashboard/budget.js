@@ -60,7 +60,7 @@ const DashboardBudget = ({projectId, budget = 0}) => {
 
     return (
         <Column
-            height={458}
+            height={495}
             xField={"type"}
             yField={"value"}
             legend={false}

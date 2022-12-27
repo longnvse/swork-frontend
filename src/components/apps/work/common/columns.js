@@ -2,11 +2,12 @@ export const columnsWork = [
     {
         dataIndex: "name",
         title: "Tên công việc",
-        width: "30%",
+        width: "30%"
     },
     {
         dataIndex: "progress",
         title: "Tiến độ",
+        width: '20%'
     },
     {
         dataIndex: "admin",
@@ -34,6 +35,7 @@ export const columnsWorkPending = [
         dataIndex: "name",
         title: "Tên công việc",
         width: "30%",
+        sorter: {}
     },
     {
         dataIndex: "admin",
@@ -61,10 +63,11 @@ export const columnsWorkActive = [
         dataIndex: "name",
         title: "Tên công việc",
         width: "30%",
+        sorter: {}
     },
     {
         dataIndex: "progress",
-        title: "Tiến độ",
+        title: "Tiến độ"
     },
     {
         dataIndex: "admin",

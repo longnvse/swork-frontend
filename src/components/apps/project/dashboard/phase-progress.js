@@ -3,6 +3,7 @@ import {Bar} from "@ant-design/plots";
 import {getPhasePages} from "../../../../api/phase";
 import {message_error} from "../../../common/Constant";
 import {statusColor} from "../../../common/status";
+import {Empty} from "antd";
 
 const DashboardProgressPhase = ({projectId}) => {
     const [data, setData] = useState([]);
@@ -30,37 +31,41 @@ const DashboardProgressPhase = ({projectId}) => {
     }
 
     return (
-        <Bar
-            data={data}
-            xField={"value"}
-            yField={"phase"}
-            seriesField={"status"}
-            height={200}
-            xAxis={{
-                min: 0,
-                max: 100,
-                label: {
-                    formatter: (text) => `${text}%`
-                }
-            }}
-            label={{
-                formatter: ({value}) => `${value}%`
-            }}
-            yAxis={{
-                label: {
-                    autoRotate: false,
-                },
-            }}
-            legend={false}
-            color={colorBar}
-            barWidthRatio={0.7}
-            tooltip={{
-                formatter: formatterTooltip
-            }}
-            scrollbar={{
-                type: "vertical"
-            }}
-        />
+        <>
+            {data.length > 0 ?
+                <Bar
+                    data={data}
+                    xField={"value"}
+                    yField={"phase"}
+                    seriesField={"status"}
+                    height={200}
+                    xAxis={{
+                        min: 0,
+                        max: 100,
+                        label: {
+                            formatter: (text) => `${text}%`
+                        }
+                    }}
+                    label={{
+                        formatter: ({value}) => `${value}%`
+                    }}
+                    yAxis={{
+                        label: {
+                            autoRotate: false,
+                        },
+                    }}
+                    legend={false}
+                    color={colorBar}
+                    barWidthRatio={0.7}
+                    tooltip={{
+                        formatter: formatterTooltip
+                    }}
+                    scrollbar={{
+                        type: "vertical"
+                    }}
+                /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"Chưa có giai đoạn"}/>
+            }
+        </>
     );
 };
 

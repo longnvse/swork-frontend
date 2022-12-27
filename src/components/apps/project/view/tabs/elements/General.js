@@ -1,17 +1,36 @@
 import {Col, Divider, Progress, Row} from "antd";
 import React, {useMemo} from "react";
 import ButtonDrawer from "../../../../../common/button/ButtonDrawer";
-import {UPDATE} from "../../../../../common/Constant";
+import {PROJECT_ROLE, UPDATE} from "../../../../../common/Constant";
 import {convertMoney} from "../../../../../common/convert";
 import {renderStatus} from "../../../../../common/status";
 import ProjectForm from "../../../form";
 import dayjs from "dayjs";
 import AccountGroup from "../../../../../common/account/group";
 
-const ProjectViewGeneral = ({data}) => {
-    const dayDiffTime = useMemo(() => {
-        return dayjs(data.endDate).diff(dayjs(data.startDate), "day");
-    }, [data.startDate, data.endDate]);
+const ProjectViewGeneral = ({data, role}) => {
+    const dayDiffTime = (startDate, endDate) => {
+        if (!startDate || !endDate) {
+            return "";
+        }
+
+        return dayjs(endDate).diff(dayjs(startDate), "days") + 1;
+    }
+
+    const renderActualTime = useMemo(() => {
+        const arr = [];
+        if (data?.actualStartDate) {
+            arr.push(dayjs(data?.actualStartDate).format("DD/MM/YYYY"));
+        }
+        if (data?.actualEndDate) {
+            arr.push(dayjs(data?.actualEndDate).format("DD/MM/YYYY"));
+        }
+
+        const dayDiff = dayDiffTime(data?.actualStartDate, data?.actualEndDate);
+
+        return `${arr.join(" - ")}${!dayDiff ? "" : ` (${dayDiff} ngày)`}`;
+
+    }, [data]);
 
     return (
         <div className={"w-full"}>
@@ -39,15 +58,17 @@ const ProjectViewGeneral = ({data}) => {
                         "DD/MM/YYYY",
                     )} - ${dayjs(data.endDate).format(
                         "DD/MM/YYYY",
-                    )} (${dayDiffTime} ngày)`}
+                    )} (${dayDiffTime(data?.startDate, data?.endDate)} ngày)`}
                 </Col>
             </Row>
-            <Row className={"p-[17px]"}>
+            {data?.actualStartDate && <Row className={"p-[17px]"}>
                 <Col span={8} className={"font-bold"}>
                     Thời gian thực tế:
                 </Col>
-                <Col span={16}>{data.actualStartDate}</Col>
-            </Row>
+                <Col span={16}>
+                    {renderActualTime}
+                </Col>
+            </Row>}
             <Row className={"p-[17px]"}>
                 <Col span={8} className={"font-bold"}>
                     Ngân sách:
@@ -85,6 +106,9 @@ const ProjectViewGeneral = ({data}) => {
                     mode={UPDATE}
                     buttonProps={{
                         value: "Cập nhật",
+                        style: {
+                            display: role !== PROJECT_ROLE.MANAGE && "none"
+                        }
                     }}
                 >
                     <ProjectForm id={data.id}/>

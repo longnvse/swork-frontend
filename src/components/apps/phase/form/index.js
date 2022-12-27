@@ -109,7 +109,8 @@ const PhaseForm = ({projectId, id}) => {
                     placeholder={"Chọn trạng thái"}
                     options={[
                         {label: "Đang hoạt động", value: "active"},
-                        {label: "Chờ hoạt động", value: "inactive"},
+                        {label: "Chờ hoạt động", value: "pending"},
+                        {label: "Đóng", value: "closed"},
                     ]}
                 />
             </Form.Item>

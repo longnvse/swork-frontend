@@ -35,11 +35,16 @@ export const viewWorkSecondColumn = [
         title: "Giai đoạn",
     },
     {
-        dataIndex: "description",
-        title: "Mô tả",
+        dataIndex: "parent",
+        title: "Công việc cha",
     },
     {
         dataIndex: "date",
         title: "Thời gian thực tế",
     },
+    {
+        dataIndex: "description",
+        title: "Mô tả",
+    },
+
 ];

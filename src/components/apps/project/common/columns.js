@@ -10,6 +10,7 @@ export const columns = [
     {
         title: "Tên dự án",
         dataIndex: "name",
+        sorter: {}
     },
     {
         title: "Người quản trị",
@@ -26,10 +27,12 @@ export const columns = [
     {
         title: "Bắt đầu",
         dataIndex: "startDate",
+        sorter: {}
     },
     {
         title: "Kết thúc",
         dataIndex: "endDate",
+        sorter: {}
     },
     {
         dataIndex: "action",
@@ -41,14 +44,22 @@ export const columnPhase = [
     {
         title: "STT",
         dataIndex: "index",
+        width: '5%'
     },
     {
         title: "Tên giai đoạn",
         dataIndex: "name",
+        sorter: {}
+    },
+    {
+        title: "Quản trị",
+        dataIndex: "manages",
     },
     {
         title: "Trạng thái",
         dataIndex: "status",
+        width: '8%',
+        align: 'center'
     },
     {
         title: "Tiến độ",
@@ -57,10 +68,12 @@ export const columnPhase = [
     {
         title: "Ngày bắt đầu",
         dataIndex: "startDate",
+        sorter: {}
     },
     {
         title: "Ngày kết thúc",
         dataIndex: "endDate",
+        sorter: {}
     },
     {
         dataIndex: "action",
