@@ -94,7 +94,7 @@ const FileList = ({projectId, phaseId, workId, moduleId, appId, role}) => {
     }
 
     const rowSelection = useMemo(() => {
-        if (getMe().role === "admin") {
+        if (getMe().role === "admin" || role === PROJECT_ROLE.MANAGE) {
             return {
                 selectedRowKeys,
                 onChange: setSelectedRowKeys,
@@ -103,7 +103,7 @@ const FileList = ({projectId, phaseId, workId, moduleId, appId, role}) => {
         }
 
         return {};
-    }, [selectedRowKeys]);
+    }, [selectedRowKeys, role]);
 
 
     return (
@@ -129,7 +129,7 @@ const FileList = ({projectId, phaseId, workId, moduleId, appId, role}) => {
                 mapData={mapData}
                 hiddenButton={true}
                 maxHeight={600}
-                isSelections={getMe().role === "admin"}
+                isSelections={getMe().role === "admin" || role === PROJECT_ROLE.MANAGE}
                 rowSelection={rowSelection}
             />
         </>
