@@ -81,7 +81,9 @@ function CommonHeader(props) {
             case "PROJECT":
                 navigate("/project/view/" + item?.subjectId);
                 break;
-
+            case "WORK":
+                navigate("/project/view-work/" + item?.subjectId);
+                break;
         }
     }
 
