@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import {isReload} from "../../../../../redux/actions/common/actions";
 import Kanban from "../../../kanban";
 import {approvalWork, getWorkPages} from "../../../../../api/work";
+import {Link} from "react-router-dom";
 
 const ProjectViewKanban = ({projectId}) => {
     const [data, setData] = useState({lanes: []});
@@ -34,7 +35,7 @@ const ProjectViewKanban = ({projectId}) => {
                     color: statusColorKanban(status), fontWeight: "bold"
                 }, style: {
                     background: statusBgColorKanban(status),
-                    maxHeight: '81vh'
+                    maxHeight: '75vh'
                 }
             }
         })
@@ -42,7 +43,7 @@ const ProjectViewKanban = ({projectId}) => {
 
     const mapCard = (item) => ({
         id: item.id,
-        title: <><span style={{color: '#333'}}>{item.name}</span></>,
+        title: <><Link to={`/project/view-work/${item.id}`} style={{color: '#333'}}>{item.name}</Link></>,
         label: <Progress type="circle" percent={item.progress} width={40}/>,
         description: <Row className={"pt-[10px] justify-between"}>
             <Col>

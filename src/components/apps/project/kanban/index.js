@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import {useDispatch, useSelector} from "react-redux";
 import {isReload} from "../../../../redux/actions/common/actions";
 import {approvalWork, getWorkPages} from "../../../../api/work";
+import {Link} from "react-router-dom";
 
 const ProjectKanban = ({isWork}) => {
     const [data, setData] = useState({lanes: []});
@@ -52,7 +53,7 @@ const ProjectKanban = ({isWork}) => {
                 },
                 style: {
                     background: statusBgColorKanban(status),
-                    maxHeight: '81vh'
+                    maxHeight: '75vh'
                 },
             };
         }),
@@ -62,9 +63,10 @@ const ProjectKanban = ({isWork}) => {
         id: item.id,
         title: (
             <>
-                <span style={{color: "#333"}}>
+                <Link to={!isWork ? `/project/view/${item.id}` : `/project/view-work/${item.id}`}
+                      style={{color: "#333"}}>
                     {!isWork ? `${item.code} - ${item.name}` : item.name}
-                </span>
+                </Link>
             </>
         ),
         label: <Progress type="circle" percent={item.progress} width={40}/>,
