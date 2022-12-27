@@ -10,6 +10,7 @@ const InputNumberCustom = (props) => {
             parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
             onChange={props.onChange}
             min={0}
+            step={1000000}
             {...props}
         />
     );
