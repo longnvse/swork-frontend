@@ -47,9 +47,9 @@ function CommonHeader(props) {
                         onChange={onChangeSearch}
                         defaultValue={searchParams.get("keyword")}
                     />
-                    <div className="app__header--item cursor-pointer flex items-center mr-2">
-                        <IoMdNotificationsOutline className="text-white w-6 h-6"/>
-                    </div>
+                    {/*<div className="app__header--item cursor-pointer flex items-center mr-2">*/}
+                    {/*    <IoMdNotificationsOutline className="text-white w-6 h-6"/>*/}
+                    {/*</div>*/}
                     <ProfileIcon/>
                 </div>
             </div>
