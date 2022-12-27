@@ -34,7 +34,7 @@ const Kanban = ({
                         laneStyle={{
                             width: "24.5%",
                             overflow: "auto",
-                            maxHeight: "81vh",
+                            maxHeight: "70vh",
                             backgroundColor: "#f5f5f5",
                         }}
                         cardStyle={{

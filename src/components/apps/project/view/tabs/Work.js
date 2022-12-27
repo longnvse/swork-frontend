@@ -13,7 +13,14 @@ import dayjs from "dayjs";
 import {getDeadline} from "../../../work/common/common";
 import AccountGroup from "../../../../common/account/group";
 
-function ProjectViewWork({projectId, phaseId, parentId, hiddenBtn, role}) {
+function ProjectViewWork({
+                             projectId,
+                             phaseId,
+                             parentId,
+                             hiddenBtn,
+                             inProject = false,
+                             role
+                         }) {
     const [dataSources, setDataSources] = useState([]);
     const {reload} = useSelector((state) => state.commonReducer);
 
@@ -51,7 +58,7 @@ function ProjectViewWork({projectId, phaseId, parentId, hiddenBtn, role}) {
                 ...item,
                 name: (
                     <Link to={`/project/view-work/${item?.id}`}>
-                        {item?.name}
+                        {`${item?.name} ${inProject && item.phaseId ? `(${item.phaseName})` : ""}`}
                     </Link>
                 ),
                 progress: <Progress percent={item?.progress}/>,

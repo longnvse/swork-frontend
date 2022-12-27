@@ -34,7 +34,7 @@ const ProjectViewKanban = ({projectId}) => {
                     color: statusColorKanban(status), fontWeight: "bold"
                 }, style: {
                     background: statusBgColorKanban(status),
-                    maxHeight: '81vh'
+                    maxHeight: '75vh'
                 }
             }
         })

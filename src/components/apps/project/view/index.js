@@ -117,6 +117,7 @@ function ProjectView(props) {
                     projectId={data.id || id}
                     phaseId={0}
                     role={data?.role}
+                    inProject={true}
                 />
             ),
         },

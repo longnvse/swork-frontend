@@ -52,7 +52,7 @@ const ProjectKanban = ({isWork}) => {
                 },
                 style: {
                     background: statusBgColorKanban(status),
-                    maxHeight: '81vh'
+                    maxHeight: '75vh'
                 },
             };
         }),
