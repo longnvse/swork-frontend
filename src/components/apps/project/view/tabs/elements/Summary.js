@@ -34,6 +34,8 @@ const ProjectViewSummary = ({data, teamData, phaseData}) => {
         }
     }, [data]);
 
+    console.log(remainsBudget);
+
     return (
         <div
             className={
