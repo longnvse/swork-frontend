@@ -2,6 +2,7 @@ export const columns = [
     {
         dataIndex: "name",
         title: "Tên giai đoạn",
+        sorter: {}
     },
     {
         dataIndex: "status",

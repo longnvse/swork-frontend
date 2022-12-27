@@ -49,6 +49,7 @@ export const columnPhase = [
     {
         title: "Tên giai đoạn",
         dataIndex: "name",
+        sorter: {}
     },
     {
         title: "Quản trị",

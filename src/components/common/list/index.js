@@ -68,12 +68,12 @@ function CommonList({
         }))
     }
 
-    const onChangeTable = ({current, pageSize}, filters, sorter, extra) => {
-        changeSort(sorter)
+    const onChangeTable = ({current, pageSize}, filters, {field, order}, extra) => {
+        // changeSort(sorter)
         setParams(prevState => ({
             ...prevState,
             page: current,
-            pageSize
+            sort: field && order && `${field}:${order === "ascend" ? "asc" : "desc"}`
         }))
     }
 
