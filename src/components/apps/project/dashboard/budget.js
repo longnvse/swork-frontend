@@ -8,7 +8,7 @@ const DashboardBudget = ({projectId, budget = 0}) => {
     const [data, setData] = useState([]);
     useEffect(() => {
         if (projectId) {
-            getResourcePages({projectId}).then(res => {
+            getResourcePages({projectId, page: 1, pageSize: Number.MAX_VALUE}).then(res => {
                 mapData(res.data?.items || []);
             }).catch(err => {
                 console.log(err)

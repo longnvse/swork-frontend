@@ -20,16 +20,18 @@ const ProjectViewSummary = ({data, teamData, phaseData}) => {
     }, [data]);
 
     useEffect(() => {
-        getResourcePages({page: 1, pageSize: Number.MAX_VALUE}).then(res => {
-            const remainsBudget = res.data?.items?.reduce((previousValue, {type, totalAmount}) => {
-                if (type === "incoming") {
-                    return previousValue + totalAmount;
-                }
-                return previousValue - totalAmount;
-            }, (data?.budget || 0));
+        if (data?.id) {
+            getResourcePages({projectId: data?.id, page: 1, pageSize: Number.MAX_VALUE}).then(res => {
+                const remainsBudget = res.data?.items?.reduce((previousValue, {type, totalAmount}) => {
+                    if (type === "incoming") {
+                        return previousValue + totalAmount;
+                    }
+                    return previousValue - totalAmount;
+                }, (data?.budget || 0));
 
-            setRemainsBudget(parseFloat(Number((remainsBudget) * 100 / data?.budget).toFixed(2)));
-        })
+                setRemainsBudget(parseFloat(Number((remainsBudget) * 100 / data?.budget).toFixed(2)));
+            })
+        }
     }, [data]);
 
     return (
