@@ -18,8 +18,6 @@ const FileList = ({projectId, phaseId, workId, moduleId, appId, role}) => {
         return getFilePages({...params, projectId, phaseId, workId, moduleId, appId});
     }, [projectId, phaseId, workId, moduleId, appId]);
 
-    console.log("file role", role);
-
     const isDisable = (item, role) => {
         if (role === PROJECT_ROLE.MANAGE) {
             return false;
@@ -111,7 +109,7 @@ const FileList = ({projectId, phaseId, workId, moduleId, appId, role}) => {
     return (
         <>
             <Row className={"mb-4 justify-end"} gutter={12}>
-                {selectedRowKeys.length > 0 &&
+                {selectedRowKeys.length > 0 && role === PROJECT_ROLE.MANAGE &&
                     <Button type={"text"} icon={<DeleteOutlined/>}
                             onClick={() => onClickButtonDelete(selectedRowKeys)}/>
                 }

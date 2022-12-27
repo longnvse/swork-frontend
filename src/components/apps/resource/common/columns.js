@@ -1,7 +1,7 @@
 export const columnsResource = [
     {
-        dataIndex: "name",
-        title: "Tài nguyên",
+        dataIndex: "resourceTypeName",
+        title: "Tài nguyên"
     },
     {
         dataIndex: "quantity",

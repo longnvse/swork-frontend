@@ -19,6 +19,7 @@ function CommonList({
     const [totalCount, setTotalCount] = useState();
     const [data, setData] = useState([]);
     const {reload} = useSelector(state => state.commonReducer);
+    const [sort, setSort] = useState({});
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
@@ -37,6 +38,15 @@ function CommonList({
         }))
     }, [searchParams.get("keyword")]);
 
+    useEffect(() => {
+        setParams(prevState => {
+            const newSort = Object.keys(sort).map(item => `${item}:${sort[item]}`)
+            return {
+                ...prevState,
+                sort: newSort.join(",")
+            }
+        })
+    }, [sort])
 
     const fetchData = (params) => {
         load(params).then(response => {
@@ -47,9 +57,23 @@ function CommonList({
         }).catch(message_error);
     }
 
-    const onChangeTable = ({current, pageSize}, filters, sorter, extra) => {
+    const changeSort = (sorter) => {
+        if (Object.keys(sorter).length === 0) {
+            return;
+        }
+        const {field, order} = sorter;
+        setSort(prevState => ({
+            ...prevState,
+            [field]: order === "ascend" ? "asc" : "desc"
+        }))
+    }
+
+    const onChangeTable = ({current, pageSize}, filters, {field, order}, extra) => {
+        // changeSort(sorter)
         setParams(prevState => ({
-            ...prevState, page: current, pageSize
+            ...prevState,
+            page: current,
+            sort: field && order && `${field}:${order === "ascend" ? "asc" : "desc"}`
         }))
     }
 

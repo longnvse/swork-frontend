@@ -62,7 +62,7 @@ const ResourceList = ({resourceData, workId, projectId, phaseId, teamId, role}) 
             return {
                 key: item.id,
                 ...item,
-                name: item?.resourceTypeName,
+                resourceTypeName: item?.resourceTypeName,
                 quantity: formatMoney(item?.quantity),
                 totalAmount: convertMoney(item?.totalAmount) + " VNĐ",
                 team: (
