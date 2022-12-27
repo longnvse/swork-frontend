@@ -1,7 +1,7 @@
 import React from "react";
 import CommonList from "../../common/list";
 import {columns} from "./common/columns";
-import {ADD, DATE_FORMAT, message_error, UPDATE} from "../../common/Constant";
+import {DATE_FORMAT, message_error, PROJECT_ROLE, UPDATE} from "../../common/Constant";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {Button, message, Popconfirm} from "antd";
 import {deleteTeam, getTeamPages} from "../../../api/team";
@@ -12,7 +12,7 @@ import dayjs from "dayjs";
 import {convertMoney} from "../../common/convert";
 import AccountGroup from "../../common/account/group";
 
-const TeamList = ({projectId, phaseId}) => {
+const TeamList = ({projectId, phaseId, role}) => {
     const onConfirmDelete = (id) => {
         deleteTeam(id)
             .then(() => {
@@ -21,10 +21,11 @@ const TeamList = ({projectId, phaseId}) => {
             .catch(message_error);
     };
 
+    console.log(role);
+
     const load = (params) => {
         return getTeamPages({projectId, phaseId, params});
     };
-
 
     const mapData = (item, index) => {
         return {
@@ -34,10 +35,16 @@ const TeamList = ({projectId, phaseId}) => {
             name: (
                 <Link to={`/project/view-team/${item?.id}`}>{item?.name}</Link>
             ),
-            manages: <AccountGroup accountIds={item.admins.map(item => item.memberId)}/>,
+            manages: (
+                <AccountGroup
+                    accountIds={item.admins.map((item) => item.memberId)}
+                />
+            ),
             quantityMembers: countMembers(item),
-            inoutcoming: `${convertMoney(item.totalSpending)} VNĐ/${convertMoney(item.totalIncoming)} VNĐ`,
-            parent: item.projectName || item.phaseName || "",
+            inoutcoming: `${convertMoney(
+                item.totalSpending,
+            )} VNĐ/${convertMoney(item.totalIncoming)} VNĐ`,
+            parent: getParentLink(item),
             time: `${dayjs(item.createDate).format(DATE_FORMAT)}${
                 !item.isActive
                     ? "/" + dayjs(item.modifiedDate).format(DATE_FORMAT)
@@ -53,6 +60,7 @@ const TeamList = ({projectId, phaseId}) => {
                             icon: <EditOutlined/>,
                             type: "link",
                             value: null,
+                            disabled: role === PROJECT_ROLE.PARTICIPATE
                         }}
                     >
                         <TeamForm
@@ -64,35 +72,32 @@ const TeamList = ({projectId, phaseId}) => {
                     <Popconfirm
                         title={"Chắc chắn chứ!"}
                         onConfirm={() => onConfirmDelete(item.id)}
+                        disabled={role === PROJECT_ROLE.PARTICIPATE}
                     >
-                        <Button type={"link"} icon={<DeleteOutlined/>}/>
+                        <Button
+                            disabled={role === PROJECT_ROLE.PARTICIPATE}
+                            type={"link"}
+                            icon={<DeleteOutlined/>}/>
                     </Popconfirm>
                 </div>
             ),
         };
     };
 
-    const buttonAdd = (
-        <ButtonDrawer
-            formId={"team-form"}
-            mode={ADD}
-            title={"Thêm đội nhóm"}
-            buttonProps={{
-                value: "Thêm mới",
-            }}
-        >
-            <TeamForm projectId={projectId} phaseId={phaseId}/>
-        </ButtonDrawer>
-    );
+    const getParentLink = (item) => {
+        if (item.phaseId) {
+            return <Link to={`/project/view-phase/${item.phaseId}`}>{item.phaseName}</Link>
+        }
+
+        return <Link to={`/project/view/${item.projectId}`}>{item.projectName}</Link>
+    }
 
     return (
         <div>
             <CommonList
                 mapData={mapData}
                 load={load}
-                columns={columns}
-                buttonAdd={buttonAdd}
-            />
+                columns={columns}/>
         </div>
     );
 };

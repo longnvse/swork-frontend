@@ -14,7 +14,7 @@ export const renderStatus = (status) => {
         case COMPLETED:
             return renderTag("Hoàn thành", "success");
         case CLOSED:
-            return renderTag("Đóng", "rgba(16, 177, 57, 0.2)");
+            return renderTag("Đóng", "rgba(16, 177, 57, 0.8)");
     }
 };
 
@@ -60,6 +60,9 @@ export const statusColor = (status) => {
         }
         case DENIED: {
             return "rgba(233, 10, 53, 0.6)";
+        }
+        case CLOSED:{
+            return "rgba(16, 177, 57, 0.8)";
         }
         default: {
             return "#000000";

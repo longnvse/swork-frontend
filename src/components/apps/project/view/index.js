@@ -4,7 +4,7 @@ import {approvalProject, getProject} from "../../../../api/project";
 import ProjectViewPhase from "./tabs/Phase";
 import ProjectViewResource from "./tabs/Resource";
 import ProjectViewWork from "./tabs/Work";
-import {useParams} from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import TeamList from "../../team";
 import ProjectViewDetail from "./tabs/Project";
 import {getTeamPages} from "../../../../api/team";
@@ -15,14 +15,25 @@ import SWTabs from "../../../common/tabs";
 import {useDispatch, useSelector} from "react-redux";
 import {setHeader} from "../../../../redux/actions/common/actions";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import {MODULE_ID, UPDATE} from "../../../common/Constant";
-import {EditOutlined, UsergroupAddOutlined} from "@ant-design/icons";
+import {ADD, MODULE_ID, UPDATE} from "../../../common/Constant";
+import {EditOutlined, PlusOutlined, UsergroupAddOutlined,} from "@ant-design/icons";
 import ProjectForm from "../form";
 import ButtonModal from "../../../common/button/ButtonModal";
 import ProjectMemberForm from "../form/update-member-form";
 import SWFile from "../../../common/file";
 import ProjectViewKanban from "./tabs/Kanban";
 import ProjectViewGanttChart from "./tabs/Gantt-Chart";
+import PhaseForm from "../../phase/form";
+import WorkForm from "../../work/form";
+import ResourceForm from "../../resource/form";
+import TeamForm from "../../team/form";
+
+const ADD_BTN = {
+    phase: "giai đoạn",
+    team: "đội nhóm",
+    resource: "tài nguyên",
+    work: "công việc",
+};
 
 function ProjectView(props) {
     const [data, setData] = useState({});
@@ -31,6 +42,9 @@ function ProjectView(props) {
     const [phaseData, setPhaseData] = useState([]);
     const {reload} = useSelector((state) => state.commonReducer);
     const dispatch = useDispatch();
+    const [searchParams] = useSearchParams();
+    let tabKey = searchParams.get("tab");
+    const keys = ["phase", "team", "resource", "work"];
 
     useEffect(() => {
         dispatch(setHeader("Chi tiết dự án"));
@@ -59,55 +73,111 @@ function ProjectView(props) {
                     data={data}
                     teamData={teamData}
                     phaseData={phaseData}
+                    role={data?.role}
                 />
             ),
         },
         {
             label: "Kanban",
             key: "kanban",
-            children: <ProjectViewKanban projectId={data.id}/>,
+            children: <ProjectViewKanban role={data?.role} projectId={data.id}/>,
         },
         {
             label: "Gantt Chart",
             key: "gantt chart",
-            children: <ProjectViewGanttChart projectId={data.id}/>,
+            children: <ProjectViewGanttChart role={data?.role} projectId={data.id}/>,
         },
         {
             label: "Giai đoạn",
             key: "phase",
-            children: <ProjectViewPhase projectId={data.id}/>,
+            children: <ProjectViewPhase role={data?.role} projectId={data.id}/>,
         },
         {
             label: "Đội nhóm",
             key: "team",
-            children: <TeamList projectId={data.id}/>,
+            children: <TeamList role={data?.role} projectId={data.id}/>,
         },
         {
             label: "Tài nguyên",
             key: "resource",
-            children: <ProjectViewResource projectId={data.id || id}/>,
+            children: (
+                <ProjectViewResource
+                    hiddenBtn={true}
+                    projectId={data.id || id}
+                    role={data?.role}
+                />
+            ),
         },
         {
             label: "Công việc",
             key: "work",
-            children: <ProjectViewWork projectId={data.id || id} phaseId={0}/>,
+            children: (
+                <ProjectViewWork
+                    hiddenBtn={true}
+                    projectId={data.id || id}
+                    role={data?.role}
+                    inProject={true}
+                />
+            ),
         },
         {
             label: "Đính kèm",
             key: "attach",
-            children: <SWFile
-                projectId={data.id}
-                appId={`${data.id}`}
-                moduleId={MODULE_ID.PROJECT}/>,
+            children: (
+                <SWFile
+                    projectId={data.id}
+                    appId={`${data.id}`}
+                    moduleId={MODULE_ID.PROJECT}
+                    role={data?.role}
+                />
+            ),
         },
     ];
 
+    const renderForm = (tabKey) => {
+        switch (tabKey) {
+            case "phase":
+                return <PhaseForm projectId={id || data?.id}/>;
+            case "team":
+                return <TeamForm projectId={id || data?.id}/>;
+            case "resource":
+                return <ResourceForm projectId={id || data?.id}/>;
+            case "work":
+                return <WorkForm projectId={id || data?.id}/>;
+            default:
+                break;
+        }
+    };
+
     const tabExtra = (
         <Row gutter={8}>
+            {keys?.includes(tabKey) ? (
+                <Col>
+                    <ButtonDrawer
+                        title={`Thêm ${ADD_BTN[tabKey]}`}
+                        formId={`${tabKey}-form`}
+                        mode={ADD}
+                        button={
+                            <ButtonTab
+                                icon={<PlusOutlined style={{fontSize: 20}}/>}
+                                title={
+                                    <span className="capitalize">
+                                        {ADD_BTN[tabKey]}
+                                    </span>
+                                }
+                                disable={data?.role === "participate"}
+                            />
+                        }
+                    >
+                        {renderForm(tabKey)}
+                    </ButtonDrawer>
+                </Col>
+            ) : null}
             <Col>
                 <ButtonStatus
                     status={data?.status}
                     updateStatus={(status) => approvalProject(id, status)}
+                    disable={data?.role === 'participate'}
                 />
             </Col>
             <Col>
@@ -122,6 +192,7 @@ function ProjectView(props) {
                                     style={{fontSize: 20}}
                                 />
                             }
+                            disable={data?.role !== "manage"}
                             title={"Người thực hiện"}
                         />
                     }
@@ -138,6 +209,7 @@ function ProjectView(props) {
                         <ButtonTab
                             icon={<EditOutlined style={{fontSize: 20}}/>}
                             title={"Sửa dự án"}
+                            disable={data?.role !== "manage"}
                         />
                     }
                 >

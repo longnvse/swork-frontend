@@ -7,8 +7,9 @@ import CommentList from "../../../../common/comment/list";
 import {CLASS_PK_NAME} from "../../../../common/Constant";
 import DashboardProgressPhase from "../../dashboard/phase-progress";
 import {Link} from "react-router-dom";
+import DashboardBudget from "../../dashboard/budget";
 
-const ProjectViewDetail = ({data, teamData, phaseData}) => {
+const ProjectViewDetail = ({data, teamData, phaseData, role}) => {
     return (
         <Row gutter={12}>
             <Col
@@ -16,17 +17,20 @@ const ProjectViewDetail = ({data, teamData, phaseData}) => {
             >
                 <Row
                     className={"rounded-[8px] border-solid border-[1px] border-[#ccc] w-full h-fit"}>
-                    <ProjectViewGeneral data={data}/>
+                    <ProjectViewGeneral data={data} role={role}/>
                 </Row>
-                <Row
-                    className={"rounded-[8px] border-solid border-[1px] border-[#ccc] mt-1.5 p-6 w-full"}
-                >
-                    <Row className={"w-full"}>
-                        <strong>Thảo luận</strong>
-                    </Row>
-                    <Row className={"w-full h-[400px] overflow-auto"}>
-                        <CommentList classPkId={data.id} classPkName={CLASS_PK_NAME.PROJECT}/>
-                    </Row>
+                <Row className={"mt-1.5 rounded-[8px] border-solid border-[1px] border-[#ccc] p-6 w-full"}>
+                    <div>
+                        <span>
+                            <strong>THU CHI</strong>
+                        </span>
+                    </div>
+                    <div style={{
+                        paddingTop: 15,
+                        width: '100%'
+                    }}>
+                        <DashboardBudget projectId={data?.id} budget={data?.budget}/>
+                    </div>
                 </Row>
             </Col>
             <Col span={17}>
@@ -58,7 +62,6 @@ const ProjectViewDetail = ({data, teamData, phaseData}) => {
                 </Row>
                 <Row className={"mt-1.5"}>
                     <Col
-                        span={10}
                         className={"rounded-[8px] border-solid border-[1px] border-[#ccc] p-6 w-full"}>
                         <div>
                         <span>
@@ -77,16 +80,16 @@ const ProjectViewDetail = ({data, teamData, phaseData}) => {
                         </div>
                     </Col>
                 </Row>
-                {/*<Row*/}
-                {/*    className={"rounded-[8px] border-solid border-[1px] border-[#ccc] mt-1.5 p-6 w-full"}*/}
-                {/*>*/}
-                {/*    <Row className={"w-full"}>*/}
-                {/*        <strong>Thảo luận</strong>*/}
-                {/*    </Row>*/}
-                {/*    <Row className={"w-full"}>*/}
-                {/*        <CommentList classPkId={data.id} classPkName={CLASS_PK_NAME.PROJECT}/>*/}
-                {/*    </Row>*/}
-                {/*</Row>*/}
+                <Row
+                    className={"rounded-[8px] border-solid border-[1px] border-[#ccc] mt-1.5 p-6 w-full"}
+                >
+                    <Row className={"w-full"}>
+                        <strong>Thảo luận</strong>
+                    </Row>
+                    <Row className={"w-full h-[400px] overflow-x-hidden"}>
+                        <CommentList classPkId={data.id} classPkName={CLASS_PK_NAME.PROJECT}/>
+                    </Row>
+                </Row>
             </Col>
         </Row>
     );

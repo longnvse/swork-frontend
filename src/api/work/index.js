@@ -34,3 +34,7 @@ export const updateWorkDate = (workId, startDate, endDate) => {
 export const reportProgressByAmount = (workId, completeAmount) => {
     return SWAxios.put(`${url}/report-process/by-amount/${workId}`, {}, {params: {completeAmount}});
 }
+
+export const reportProgressManual = (workId, progress) => {
+    return SWAxios.put(`${url}/report-process/manual/${workId}`, {}, {params: {progress}});
+}

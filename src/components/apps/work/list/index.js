@@ -1,69 +1,75 @@
 import {
-    DeleteOutlined,
-    EditOutlined,
-    PlusOutlined,
-    FolderOutlined,
     ApartmentOutlined,
     CheckCircleOutlined,
+    DeleteOutlined,
+    EditOutlined,
+    FolderOutlined,
+    PlusOutlined,
     UnorderedListOutlined,
 } from "@ant-design/icons";
-import { Button, message, Popconfirm, Progress, Col, Row } from "antd";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { deleteWork, getWorkPages } from "../../../../api/work";
+import {Button, Col, message, Popconfirm, Progress, Row} from "antd";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
+import {Link, useParams} from "react-router-dom";
+import {deleteWork, getWorkPages} from "../../../../api/work";
 import ButtonDrawer from "../../../common/button/ButtonDrawer";
-import {
-    ADD,
-    DATE_FORMAT,
-    DENIED,
-    message_error,
-    STATUS,
-    UPDATE,
-} from "../../../common/Constant";
-import {
-    columnsWork,
-    columnsWorkActive,
-    columnsWorkPending,
-} from "../common/columns";
+import {ADD, DATE_FORMAT, DENIED, message_error, STATUS, UPDATE,} from "../../../common/Constant";
+import {columnsWork, columnsWorkActive, columnsWorkPending,} from "../common/columns";
 import WorkForm from "../form";
-import { useDispatch } from "react-redux";
-import { isReload, setHeader } from "../../../../redux/actions/common/actions";
+import {useDispatch} from "react-redux";
+import {isReload, setHeader} from "../../../../redux/actions/common/actions";
 import SWTabs from "../../../common/tabs";
 import CommonList from "../../../common/list";
-import { renderStatus, renderTag } from "../../../common/status";
+import {renderStatus} from "../../../common/status";
 import dayjs from "dayjs";
 import ButtonTab from "../../../common/button/ButtonTab";
 import AccountGroup from "../../../common/account/group";
-import { TbLayoutKanban } from "react-icons/tb";
-import { CiViewTimeline } from "react-icons/ci";
+import {TbLayoutKanban} from "react-icons/tb";
+import {CiViewTimeline} from "react-icons/ci";
 import ProjectKanban from "../../project/kanban";
 import ProjectGanttChart from "../../project/gantt-chart";
-import { ViewMode } from "gantt-task-react";
+import {ViewMode} from "gantt-task-react";
+import {getDeadline} from "../common/common";
+import {getMe} from "../../../../api/common";
 
+const WORK_FILTER = {
+    "assign": "workHandleAccount",
+    "manage": "workManage",
+    "follow": "workParticipateAccount"
+}
 const WorkList = (props) => {
     const [filter, setFilter] = useState(null);
     const dispatch = useDispatch();
     const [viewMode, setViewMode] = useState("list");
+    const [filterBySider, setFilterBySider] = useState("");
     const status = ["pending", "active", "completed", "inactive", "denied"];
     const [statusFilter, setStatusFilter] = useState("all");
+    const {type} = useParams();
 
     useEffect(() => {
         dispatch(setHeader("Danh sách công việc"));
     }, []);
 
     useEffect(() => {
-        if (filter !== null) {
+        if (filter !== null || filterBySider !== null) {
             dispatch(isReload(true));
         }
-    }, [filter]);
+    }, [filter, filterBySider]);
+
+    useEffect(() => {
+        if (type !== "all") {
+            setFilterBySider(`contains(${WORK_FILTER[type]},'${getMe().accountId}')`);
+        } else {
+            setFilterBySider("");
+        }
+    }, [type]);
 
     const onLoad = useCallback(
         (params) => {
-            params.filter = filter;
+            params.filter = `${filterBySider || ""}${filterBySider && filter ? " and " : ""}${filter || ""}`;
 
             return getWorkPages(params);
         },
-        [filter],
+        [filter, filterBySider],
     );
 
     const onConfirmDelete = (id) => {
@@ -72,23 +78,6 @@ const WorkList = (props) => {
                 message.success("Xoá thành công!");
             })
             .catch(message_error);
-    };
-
-    const getDeadline = (d1, d2) => {
-        let ms1 = d1.getTime();
-        let ms2 = d2.getTime();
-
-        const deadline = Math.ceil((ms2 - ms1) / (24 * 60 * 60 * 1000));
-
-        if (deadline > 1) {
-            return renderTag(`Quá hạn ${deadline} ngày`, "error");
-        } else if (deadline < 1) {
-            return renderTag(`Còn ${Math.abs(deadline)} ngày`, "success");
-        } else if (deadline === 1) {
-            return renderTag(`Đến hạn`, "volcano");
-        } else if (deadline === 0) {
-            return renderTag(`Hoàn thành`, "success");
-        }
     };
 
     const mapData = (item) => {
@@ -103,11 +92,11 @@ const WorkList = (props) => {
                     <div className="flex items-center">
                         {item?.projectId ? (
                             <div className="flex items-center">
-                                <FolderOutlined />
+                                <FolderOutlined/>
                                 <Link
                                     to={`/project/view/${item?.projectId}`}
                                     className="ml-2 block text-gray-800 hover:underline"
-                                    style={{ fontSize: 13 }}
+                                    style={{fontSize: 13}}
                                 >
                                     {item?.projectName}
                                 </Link>
@@ -118,11 +107,11 @@ const WorkList = (props) => {
                         ) : null}
                         {item?.phaseId ? (
                             <div className="flex items-center">
-                                <ApartmentOutlined />
+                                <ApartmentOutlined/>
                                 <Link
                                     to={`/project/view-phase/${item?.phaseId}`}
                                     className="ml-2 block text-gray-800 hover:underline"
-                                    style={{ fontSize: 13 }}
+                                    style={{fontSize: 13}}
                                 >
                                     {item?.phaseName}
                                 </Link>
@@ -130,11 +119,11 @@ const WorkList = (props) => {
                         ) : null}
                         {item?.parentId ? (
                             <div className="flex items-center">
-                                <CheckCircleOutlined />
+                                <CheckCircleOutlined/>
                                 <Link
                                     to={`/project/view-work/${item?.parentId}`}
                                     className="ml-2 block text-gray-800 hover:underline"
-                                    style={{ fontSize: 13 }}
+                                    style={{fontSize: 13}}
                                 >
                                     {item?.parentName}
                                 </Link>
@@ -143,10 +132,15 @@ const WorkList = (props) => {
                     </div>
                 </div>
             ),
-            progress: <Progress percent={item?.progress} />,
+            progress: <Progress percent={item?.progress}/>,
             admin: (
                 <AccountGroup
                     accountIds={item?.manages.map((item) => item.memberId)}
+                />
+            ),
+            member: (
+                <AccountGroup
+                    accountIds={item?.handles.map((item) => item.memberId)}
                 />
             ),
             status: renderStatus(item?.status),
@@ -164,12 +158,12 @@ const WorkList = (props) => {
                         formId={"work-form"}
                         mode={UPDATE}
                         buttonProps={{
-                            icon: <EditOutlined />,
+                            icon: <EditOutlined/>,
                             type: "link",
                             value: null,
                         }}
                     >
-                        <WorkForm workId={item?.id} />
+                        <WorkForm workId={item?.id}/>
                     </ButtonDrawer>
                     <Popconfirm
                         disabled={item.status !== DENIED}
@@ -179,7 +173,7 @@ const WorkList = (props) => {
                         <Button
                             type={"link"}
                             disabled={item.status !== DENIED}
-                            icon={<DeleteOutlined />}
+                            icon={<DeleteOutlined/>}
                         />
                     </Popconfirm>
                 </div>
@@ -192,16 +186,16 @@ const WorkList = (props) => {
             label: "Tất cả",
             key: "all",
         },
-        ...status.map((item) => ({ label: STATUS[item], key: item })),
+        ...status.map((item) => ({label: STATUS[item], key: item})),
     ];
 
     const tabItemsForGanttChart = [
-        { label: "Ngày", key: ViewMode.Day },
+        {label: "Ngày", key: ViewMode.Day},
         {
             label: "Tuần",
             key: ViewMode.Week,
         },
-        { label: "Tháng", key: ViewMode.Month },
+        {label: "Tháng", key: ViewMode.Month},
         {
             label: "Năm",
             key: ViewMode.Year,
@@ -243,7 +237,7 @@ const WorkList = (props) => {
                 <Col>
                     <ButtonTab
                         icon={
-                            <UnorderedListOutlined style={{ fontSize: 20 }} />
+                            <UnorderedListOutlined style={{fontSize: 20}}/>
                         }
                         title={"Danh sách"}
                         buttonProps={{
@@ -257,7 +251,7 @@ const WorkList = (props) => {
             )}
             <Col>
                 <ButtonTab
-                    icon={<TbLayoutKanban style={{ fontSize: 20 }} />}
+                    icon={<TbLayoutKanban style={{fontSize: 20}}/>}
                     title={"Kanban"}
                     buttonProps={{
                         onClick: () => {
@@ -269,7 +263,7 @@ const WorkList = (props) => {
             </Col>
             <Col>
                 <ButtonTab
-                    icon={<CiViewTimeline style={{ fontSize: 20 }} />}
+                    icon={<CiViewTimeline style={{fontSize: 20}}/>}
                     title={"Gantt chart"}
                     buttonProps={{
                         onClick: () => {
@@ -286,12 +280,12 @@ const WorkList = (props) => {
                     mode={ADD}
                     button={
                         <ButtonTab
-                            icon={<PlusOutlined style={{ fontSize: 20 }} />}
+                            icon={<PlusOutlined style={{fontSize: 20}}/>}
                             title={"Thêm công việc"}
                         />
                     }
                 >
-                    <WorkForm />
+                    <WorkForm/>
                 </ButtonDrawer>
             </Col>
         </Row>
@@ -341,9 +335,9 @@ const WorkList = (props) => {
                 tabBarExtraContent={tabExtra}
             />
             {renderList()}
-            {viewMode === "kanban" ? <ProjectKanban isWork={true} /> : null}
+            {viewMode === "kanban" ? <ProjectKanban isWork={true}/> : null}
             {viewMode === "ganttChart" ? (
-                <ProjectGanttChart isWork={true} />
+                <ProjectGanttChart isWork={true}/>
             ) : null}
         </div>
     );

@@ -1,47 +1,51 @@
-import React from 'react';
+import React from "react";
 import Board from "react-trello";
 
 const Kanban = ({
-                    data = [],
-                    onUpdateStatus = (id, status) => {
-                    }
+                    data = [], onUpdateStatus = (id, status) => {
+    }
                 }) => {
     {
         return (
-            <div id={"kanban"}>
-                {
-                    data && <Board
+            <div id={"kanban"} className={"h-full"}>
+                {data && (
+                    <Board
                         hideCardDeleteIcon
                         data={data}
                         draggable
-                        onCardMoveAcrossLanes={(fromLaneId, toLaneId, cardId, index) => {
+                        onCardMoveAcrossLanes={(
+                            fromLaneId,
+                            toLaneId,
+                            cardId,
+                            index,
+                        ) => {
                             if (fromLaneId === toLaneId) {
                                 return;
                             }
-                            onUpdateStatus(cardId, toLaneId)
+                            onUpdateStatus(cardId, toLaneId);
                         }}
                         onCardClick={(cardId, metadata, laneId) => {
-                            console.log(cardId, metadata, laneId)
+                            console.log(cardId, metadata, laneId);
                         }}
                         style={{
-                            backgroundColor: 'inherit',
-                            height: "82.1vh"
+                            backgroundColor: "inherit",
+                            height: "81.1vh",
                         }}
                         laneStyle={{
-                            width: '24.5%',
+                            width: "24.5%",
                             overflow: "auto",
-                            maxHeight: "calc(100vh - 130px)",
-                            backgroundColor: "#f5f5f5"
+                            maxHeight: "70vh",
+                            backgroundColor: "#f5f5f5",
                         }}
                         cardStyle={{
                             maxWidth: "100%",
                             minWidth: "330px",
                             borderRadius: 8,
-                            border: '1px solid #e5e5e5'
+                            border: "1px solid #e5e5e5",
                         }}
                         laneDraggable={false}
                     />
-                }
+                )}
             </div>
         );
     }

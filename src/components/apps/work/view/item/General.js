@@ -16,12 +16,23 @@ const ViewWorkGeneral = ({data}) => {
             firstColumn: {
                 name: data?.name,
                 status: renderStatus(data?.status),
-                handles: <AccountGroup accountIds={data?.handles?.map(item => item.memberId)}/>,
-                manages: <AccountGroup accountIds={data?.manages?.map(item => item.memberId)}/>,
-                participates: <AccountGroup accountIds={data?.participates?.map(item => item.memberId)}/>,
-                date: `${dayjs(data?.startDate).format(dateFormat)} - ${dayjs(
-                    data?.endDate,
-                ).format(dateFormat)}`,
+                handles: (
+                    <AccountGroup
+                        accountIds={data?.handles?.map((item) => item.memberId)}
+                    />
+                ),
+                manages: (
+                    <AccountGroup
+                        accountIds={data?.manages?.map((item) => item.memberId)}
+                    />
+                ),
+                participates: (
+                    <AccountGroup
+                        accountIds={data?.participates?.map(
+                            (item) => item.memberId,
+                        )}
+                    />
+                ),
             },
             secondColumn: {
                 progress: <Progress percent={data?.progress}/>,
@@ -35,8 +46,15 @@ const ViewWorkGeneral = ({data}) => {
                         {data?.phaseName}
                     </Link>
                 ),
-                checklists: data?.checklists,
+                parent: (
+                    <Link to={`/project/view-work/${data?.parentId}`}>
+                        {data?.parentName}
+                    </Link>
+                ),
                 description: data?.description,
+                date: `${dayjs(data?.startDate).format(dateFormat)} - ${dayjs(
+                    data?.endDate,
+                ).format(dateFormat)}`,
             },
             ...data,
         };

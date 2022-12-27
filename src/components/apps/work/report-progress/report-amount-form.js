@@ -14,6 +14,7 @@ const ReportAmountForm = ({workId}) => {
         getWork(workId).then(res => {
             setTotalAmount(res.data?.incompleteAmount);
             setUnit(res.data?.unit);
+            form.setFieldValue("completeAmount", res.data.complete);
         }).catch(message_error)
     }, [workId])
 

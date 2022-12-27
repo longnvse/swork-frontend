@@ -5,34 +5,45 @@ import {deleteFiles, getFilePages} from "../../../../api/file";
 import dayjs from "dayjs";
 import {defaultStyles, FileIcon} from "react-file-icon";
 import {Button, Col, Modal, Row} from "antd";
-import {formatBytes, message_error} from "../../Constant";
+import {formatBytes, message_error, PROJECT_ROLE} from "../../Constant";
 import UploadFile from "../upload";
 import {DeleteOutlined} from "@ant-design/icons";
 import {getMe} from "../../../../api/common";
 import AccountGroup from "../../account/group";
 
-const FileList = ({projectId, phaseId, workId, moduleId, appId}) => {
+const FileList = ({projectId, phaseId, workId, moduleId, appId, role}) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
     const load = useCallback((params) => {
         return getFilePages({...params, projectId, phaseId, workId, moduleId, appId});
     }, [projectId, phaseId, workId, moduleId, appId]);
 
-    const mapData = (item) => ({
-        ...item,
-        key: item.fileId,
-        creator: <AccountGroup accountIds={[item.creatorId]}/>,
-        fileName: renderFileName(item),
-        createDate: dayjs(item.createDate).format("HH:mm DD-MM-YYYY"),
-        action: <Row>
-            <Col>
-                <Button
-                    disabled={getMe().accountId !== item.creatorId}
-                    type={"link"} icon={<DeleteOutlined/>}
-                    onClick={() => onClickButtonDelete([item.fileId])}/>
-            </Col>
-        </Row>
-    })
+    const isDisable = (item, role) => {
+        if (role === PROJECT_ROLE.MANAGE) {
+            return false;
+        }
+
+        return item.creatorId !== getMe().accountId;
+    }
+
+    const mapData = (item) => {
+
+        return {
+            ...item,
+            key: item.fileId,
+            creator: <AccountGroup accountIds={[item.creatorId]}/>,
+            fileName: renderFileName(item),
+            createDate: dayjs(item.createDate).format("HH:mm DD-MM-YYYY"),
+            action: <Row>
+                <Col>
+                    <Button
+                        disabled={isDisable(item, role)}
+                        type={"link"} icon={<DeleteOutlined/>}
+                        onClick={() => onClickButtonDelete([item.fileId])}/>
+                </Col>
+            </Row>
+        }
+    }
 
     const renderFileName = (item) => {
         return (
@@ -83,7 +94,7 @@ const FileList = ({projectId, phaseId, workId, moduleId, appId}) => {
     }
 
     const rowSelection = useMemo(() => {
-        if (getMe().role === "admin") {
+        if (getMe().role === "admin" || role === PROJECT_ROLE.MANAGE) {
             return {
                 selectedRowKeys,
                 onChange: setSelectedRowKeys,
@@ -92,13 +103,13 @@ const FileList = ({projectId, phaseId, workId, moduleId, appId}) => {
         }
 
         return {};
-    }, [selectedRowKeys]);
+    }, [selectedRowKeys, role]);
 
 
     return (
         <>
             <Row className={"mb-4 justify-end"} gutter={12}>
-                {selectedRowKeys.length > 0 &&
+                {selectedRowKeys.length > 0 && role === PROJECT_ROLE.MANAGE &&
                     <Button type={"text"} icon={<DeleteOutlined/>}
                             onClick={() => onClickButtonDelete(selectedRowKeys)}/>
                 }
@@ -118,7 +129,7 @@ const FileList = ({projectId, phaseId, workId, moduleId, appId}) => {
                 mapData={mapData}
                 hiddenButton={true}
                 maxHeight={600}
-                isSelections={getMe().role === "admin"}
+                isSelections={getMe().role === "admin" || role === PROJECT_ROLE.MANAGE}
                 rowSelection={rowSelection}
             />
         </>

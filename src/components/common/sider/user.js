@@ -42,23 +42,18 @@ export const UserSider = [
                 icon: <BiBuildings style={{fontSize: 20}}/>
             },
             {
-                label: <Link to={"/work/assign"}>Bạn được giao</Link>,
+                label: <Link to={"/work/assign"}>Bạn thực hiện</Link>,
                 key: "work-assign",
                 icon: <BiBuildings style={{fontSize: 20}}/>
             },
             {
-                label: <Link to={"/work/manage"}>Bạn đã giao</Link>,
+                label: <Link to={"/work/manage"}>Bạn quản trị</Link>,
                 key: "work-manage",
                 icon: <BiBuildings style={{fontSize: 20}}/>
             },
             {
                 label: <Link to={"/work/follow"}>Bạn theo dõi</Link>,
                 key: "work-follow",
-                icon: <BiBuildings style={{fontSize: 20}}/>
-            },
-            {
-                label: <Link to={"/work/department"}>Phòng ban của bạn</Link>,
-                key: "work-department",
                 icon: <BiBuildings style={{fontSize: 20}}/>
             }
         ]

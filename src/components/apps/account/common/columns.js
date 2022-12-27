@@ -4,10 +4,6 @@ export const columns = [
         dataIndex: 'index'
     },
     {
-        title: 'Tên đăng nhập',
-        dataIndex: 'username',
-    },
-    {
         title: 'Họ và tên',
         dataIndex: 'fullName',
         sorter: {}
@@ -26,7 +22,7 @@ export const columns = [
     },
     {
         title: 'Địa chỉ',
-        dataIndex: 'businessAddress',
+        dataIndex: 'address',
     },
     {
         title: "Trạng thái",

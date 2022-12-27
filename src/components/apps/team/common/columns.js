@@ -8,6 +8,7 @@ export const columns = [
     {
         title: 'Tên đội nhóm',
         dataIndex: 'name',
+        sorter: {}
     },
     {
         title: 'Quản trị nhóm',

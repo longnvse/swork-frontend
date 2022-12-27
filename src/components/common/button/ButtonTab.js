@@ -1,9 +1,17 @@
 import React from "react";
-import { Button, theme } from "antd";
+import {Button, theme} from "antd";
 
-const { useToken } = theme;
-const ButtonTab = ({ icon, title, selected = false, onClick, buttonProps }) => {
-    const { token } = useToken();
+const {useToken} = theme;
+const ButtonTab = ({
+                       icon
+                       , title,
+                       selected = false,
+                       onClick,
+                       disable = false,
+                       visible = true,
+                       buttonProps
+                   }) => {
+    const {token} = useToken();
 
     return (
         <Button
@@ -17,9 +25,11 @@ const ButtonTab = ({ icon, title, selected = false, onClick, buttonProps }) => {
                 fontSize: 10,
                 lineHeight: "16px",
                 color: selected && token.colorPrimary,
-                backgroundColor: selected && hexToRGBA(token.colorPrimary),
+                display: !visible && 'none',
+                backgroundColor: selected ? hexToRGBA(token.colorPrimary) : "transparent",
             }}
             onClick={onClick}
+            disabled={disable}
             {...buttonProps}
         >
             {title || "Button"}

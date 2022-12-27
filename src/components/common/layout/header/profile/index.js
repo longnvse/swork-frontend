@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Avatar, Dropdown, Menu, Space} from "antd";
 import {KeyOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
@@ -9,12 +9,21 @@ import {RiGitRepositoryPrivateLine} from "react-icons/ri";
 import {URIS} from "../../../../../utils/constant";
 import {getMe} from "../../../../../api/common";
 import ModalChangePassword from "../../../../../page/resetPassword/modal";
+import {getAccountInfo} from "../../../../../api/account/api";
+import {changeAvatar} from "../../../../../redux/actions/common/actions";
 
 const ProfileIcon = (props) => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const {avatar} = useSelector(state => state.commonReducer);
+
+    useEffect(() => {
+        getAccountInfo().then(res => {
+            dispatch(changeAvatar(res.data.avatar));
+        })
+    }, []);
+
     const handleOpenChangePassword = () => {
         setOpen(true);
     };

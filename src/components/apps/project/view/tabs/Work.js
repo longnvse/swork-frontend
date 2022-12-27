@@ -1,27 +1,32 @@
-import { Button, Col, message, Popconfirm, Progress, Row, Table } from "antd";
-import React, { useEffect, useState } from "react";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {Button, Col, message, Popconfirm, Progress, Row, Table} from "antd";
+import React, {useEffect, useState} from "react";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import ButtonDrawer from "../../../../common/button/ButtonDrawer";
-import {
-    ADD,
-    DENIED,
-    message_error,
-    UPDATE,
-} from "../../../../common/Constant";
+import {ADD, DENIED, message_error, PROJECT_ROLE, UPDATE,} from "../../../../common/Constant";
 import WorkForm from "../../../work/form";
-import { deleteWork, getWorkPages } from "../../../../../api/work";
-import { columnsWork } from "../../../work/common/columns";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { renderStatus } from "../../../../common/status";
+import {deleteWork, getWorkPages} from "../../../../../api/work";
+import {columnsWork} from "../../../work/common/columns";
+import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {renderStatus} from "../../../../common/status";
+import dayjs from "dayjs";
+import {getDeadline} from "../../../work/common/common";
+import AccountGroup from "../../../../common/account/group";
 
-function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
+function ProjectViewWork({
+                             projectId,
+                             phaseId,
+                             parentId,
+                             hiddenBtn,
+                             inProject = false,
+                             role
+                         }) {
     const [dataSources, setDataSources] = useState([]);
-    const { reload } = useSelector((state) => state.commonReducer);
+    const {reload} = useSelector((state) => state.commonReducer);
 
     useEffect(() => {
         if (projectId || phaseId || parentId) {
-            getWorkPages({ isTree: true, projectId, phaseId, parentId }).then(
+            getWorkPages({isTree: true, projectId, phaseId, parentId}).then(
                 (response) => {
                     setDataSources(mapData(response?.data?.items));
                 },
@@ -37,6 +42,14 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
             .catch(message_error);
     };
 
+    const isDisable = (role, item) => {
+        if (item.manages?.findIndex(manage => manage.memberId) !== -1) {
+            return false;
+        }
+
+        return role !== PROJECT_ROLE.MANAGE;
+    }
+
     const mapData = (data) => {
         if (data?.length <= 0) return [];
         return data?.map((item) => {
@@ -45,15 +58,29 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
                 ...item,
                 name: (
                     <Link to={`/project/view-work/${item?.id}`}>
-                        {item?.name}
+                        {`${item?.name} ${inProject && item.phaseId ? `(${item.phaseName})` : ""}`}
                     </Link>
                 ),
-                progress: <Progress percent={item?.progress} />,
-                admin: item?.admin,
+                progress: <Progress percent={item?.progress}/>,
+                admin: (
+                    <AccountGroup
+                        accountIds={item?.manages.map((item) => item.memberId)}
+                    />
+                ),
+                member: (
+                    <AccountGroup
+                        accountIds={item?.handles.map((item) => item.memberId)}
+                    />
+                ),
                 status: renderStatus(item?.status),
                 priority: item?.priority,
-                intendTime: item?.intendTime,
-                deadline: item?.deadline,
+                endDate: `${dayjs(item?.startDate).format(
+                    "DD/MM/YYYY",
+                )} - ${dayjs(item?.endDate).format("DD/MM/YYYY")}`,
+                deadline:
+                    item?.status === "active"
+                        ? getDeadline(new Date(item?.endDate), new Date())
+                        : null,
                 children: item?.works?.length > 0 ? mapData(item?.works) : null,
                 action: (
                     <div className={"flex justify-evenly"}>
@@ -62,9 +89,10 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
                             formId={"work-form"}
                             mode={UPDATE}
                             buttonProps={{
-                                icon: <EditOutlined />,
+                                icon: <EditOutlined/>,
                                 type: "link",
                                 value: null,
+                                disabled: isDisable(role, item)
                             }}
                         >
                             <WorkForm
@@ -74,14 +102,14 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
                             />
                         </ButtonDrawer>
                         <Popconfirm
-                            disabled={item.status !== DENIED}
+                            disabled={item.status !== DENIED || isDisable(role, item)}
                             title={"Chắc chắn chứ!"}
                             onConfirm={() => onConfirmDelete(item.id)}
                         >
                             <Button
                                 type={"link"}
-                                disabled={item.status !== DENIED}
-                                icon={<DeleteOutlined />}
+                                disabled={item.status !== DENIED || isDisable(role, item)}
+                                icon={<DeleteOutlined/>}
                             />
                         </Popconfirm>
                     </div>
@@ -115,7 +143,7 @@ function ProjectViewWork({ projectId, phaseId, parentId, hiddenBtn }) {
                     </Col>
                 </Row>
             ) : null}
-            <Table dataSource={dataSources} columns={columnsWork} />
+            <Table dataSource={dataSources} columns={columnsWork}/>
         </div>
     );
 }

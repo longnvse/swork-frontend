@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {measureTextWidth, Pie} from '@ant-design/plots';
+import {Pie} from '@ant-design/plots';
 import {getWorkPages} from "../../../../api/work";
 import {message_error, STATUS_ARRAY} from "../../../common/Constant";
 import {statusColor, statusString} from "../../../common/status";
+import {Empty} from "antd";
 
 const DashboardStatusWork = ({projectId}) => {
     const [data, setData] = useState([]);
@@ -90,7 +91,8 @@ const DashboardStatusWork = ({projectId}) => {
             },
         ],
     };
-    return <Pie height={300} {...config} />;
+    return <>{data.length > 0 ? <Pie height={250} {...config} /> :
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"Chưa có công việc"}/>}</>;
 };
 
 DashboardStatusWork.propTypes = {};

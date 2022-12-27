@@ -5,9 +5,10 @@ import CommonList from "../../common/list";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
 import AccountForm from "./form";
 import {CheckOutlined, EditOutlined, StopOutlined} from "@ant-design/icons";
-import {ACTIVE, ADD, INACTIVE, UPDATE} from "../../common/Constant";
+import {ACTIVE, ADD, DATE_FORMAT, INACTIVE, UPDATE} from "../../common/Constant";
 import {renderStatus} from "../../common/status";
 import {approvalAccount, getAccountPages} from "../../../api/account/api";
+import dayjs from "dayjs";
 
 const AccountList = props => {
     const onConfirmStatus = (id, status) => {
@@ -21,6 +22,7 @@ const AccountList = props => {
             key: item.id,
             ...item,
             status: renderStatus(item.status),
+            dateOfBirth: dayjs((item.dateOfBirth)).format(DATE_FORMAT),
             action: <div className={"flex justify-evenly"}>
                 <ButtonDrawer
                     title={"Cập nhật tài khoản"}
