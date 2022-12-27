@@ -32,6 +32,7 @@ export const columns = [
     {
         title: "Kết thúc",
         dataIndex: "endDate",
+        sorter: {}
     },
     {
         dataIndex: "action",
@@ -71,6 +72,7 @@ export const columnPhase = [
     {
         title: "Ngày kết thúc",
         dataIndex: "endDate",
+        sorter: {}
     },
     {
         dataIndex: "action",

@@ -5,7 +5,7 @@ import {deleteProject, getProjectPages} from "../../../api/project";
 import {Button, Col, message, Popconfirm, Progress, Row, Tooltip} from "antd";
 import {renderStatus} from "../../common/status";
 import ButtonDrawer from "../../common/button/ButtonDrawer";
-import {ADD, DATE_FORMAT, DENIED, STATUS, UPDATE} from "../../common/Constant";
+import {ADD, DATE_FORMAT, DENIED, PROJECT_ROLE, STATUS, UPDATE} from "../../common/Constant";
 import {DeleteOutlined, EditOutlined, PlusOutlined, UnorderedListOutlined} from "@ant-design/icons";
 import ProjectForm from "./form";
 import dayjs from 'dayjs';
@@ -85,22 +85,24 @@ function ProjectList(props) {
                     formId={"project-form"}
                     mode={UPDATE}
                     buttonProps={{
-                        icon: <EditOutlined/>, type: "link", value: null
+                        icon: <EditOutlined/>, type: "link", value: null,
+                        disabled: item.role !== PROJECT_ROLE.MANAGE
                     }}
                 >
                     <ProjectForm id={item.id}/>
                 </ButtonDrawer>
                 <Popconfirm
-                    disabled={item.status !== DENIED}
+                    disabled={item.status !== DENIED || item.role !== PROJECT_ROLE.MANAGE}
                     title={"Chắc chắn chứ!"}
                     onConfirm={() => onConfirmDelete(item.id)}
                     autoAdjustOverflow={false}
                 >
                     <Tooltip
-                        title={item.status !== DENIED ? "Dự án phải ở trạng thái Huỷ" : null}
+                        title={item.status !== DENIED && item.role === PROJECT_ROLE.MANAGE ? "Dự án phải ở trạng thái Huỷ" : null}
                         placement={"left"}
                     >
-                        <Button type={"link"} disabled={item.status !== DENIED}
+                        <Button type={"link"}
+                                disabled={item.status !== DENIED || item.role !== PROJECT_ROLE.MANAGE}
                                 icon={<DeleteOutlined/>}/></Tooltip>
                 </Popconfirm>
             </div>,
