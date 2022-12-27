@@ -2,7 +2,7 @@ import {Col, Collapse, Row} from "antd";
 import React, {useEffect, useMemo, useState} from "react";
 import {Link, useParams, useSearchParams} from "react-router-dom";
 import {getPhase} from "../../../../api/phase";
-import {ADD, DATE_FORMAT, MODULE_ID, PROJECT_ROLE} from "../../../common/Constant";
+import {ADD, CLASS_PK_NAME, DATE_FORMAT, MODULE_ID, PROJECT_ROLE} from "../../../common/Constant";
 import SWDescription from "../../../common/description";
 import {renderStatus} from "../../../common/status";
 import ProjectViewResource from "../../project/view/tabs/Resource";
@@ -21,6 +21,7 @@ import {PlusOutlined} from "@ant-design/icons";
 import WorkForm from "../../work/form";
 import {getProject} from "../../../../api/project";
 import {getMe} from "../../../../api/common";
+import CommentList from "../../../common/comment/list";
 
 const ADD_BTN = {
     team: "đội nhóm",
@@ -241,7 +242,24 @@ const PhaseView = () => {
         </Row>
     );
 
-    return <SWTabs items={tabItems} tabBarExtraContent={tabExtra}/>;
+    return <>
+        <SWTabs items={tabItems} tabBarExtraContent={tabExtra}/>
+        <Row
+            className={
+                "rounded-[8px] border-solid border-[1px] border-[#ccc] mt-1.5 p-6 w-full"
+            }
+        >
+            <Row className={"w-full"}>
+                <strong>Thảo luận</strong>
+            </Row>
+            <Row className={"w-full"}>
+                <CommentList
+                    classPkId={phaseData?.id}
+                    classPkName={CLASS_PK_NAME.PHASE}
+                />
+            </Row>
+        </Row>
+    </>;
 };
 
 export default PhaseView;

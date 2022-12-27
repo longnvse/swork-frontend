@@ -48,8 +48,11 @@ function CommonList({
     }
 
     const onChangeTable = ({current, pageSize}, filters, sorter, extra) => {
+        console.log(current, pageSize, sorter);
         setParams(prevState => ({
-            ...prevState, page: current, pageSize
+            ...prevState,
+            page: current,
+            pageSize
         }))
     }
 

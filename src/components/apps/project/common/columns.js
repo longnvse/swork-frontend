@@ -10,6 +10,7 @@ export const columns = [
     {
         title: "Tên dự án",
         dataIndex: "name",
+        sorter: {}
     },
     {
         title: "Người quản trị",
@@ -26,6 +27,7 @@ export const columns = [
     {
         title: "Bắt đầu",
         dataIndex: "startDate",
+        sorter: {}
     },
     {
         title: "Kết thúc",
@@ -64,6 +66,7 @@ export const columnPhase = [
     {
         title: "Ngày bắt đầu",
         dataIndex: "startDate",
+        sorter: {}
     },
     {
         title: "Ngày kết thúc",
