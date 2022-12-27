@@ -126,6 +126,7 @@ const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
                         <InputNumber
                             placeholder="Số lượng"
                             className="w-full"
+                            min={0}
                         />
                     </Form.Item>
                 </Col>
@@ -143,6 +144,7 @@ const ResourceForm = ({resourceId, projectId, phaseId, workId, teamId}) => {
                         <InputNumberCustom
                             placeholder="Thành tiền"
                             className="w-full"
+
                         />
                     </Form.Item>
                 </Col>
