@@ -5,7 +5,7 @@ import {FiSearch} from "react-icons/fi";
 import {useSelector} from "react-redux";
 import {debounce} from "lodash";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {getNotification, getNotificationCount} from "../../../../api/notification/api";
+import {getNotification, getNotificationCount, updateStatusNotification} from "../../../../api/notification/api";
 import {BellOutlined} from "@ant-design/icons";
 import VirtualList from "rc-virtual-list";
 
@@ -35,15 +35,22 @@ function CommonHeader(props) {
     }, 500)).current;
 
     useEffect(() => {
-        getNotification().then((res) => {
-            setData(res?.items)
-            setTotalCount(res?.totalCount)
-        })
+        getDataNotification()
     }, [])
+
+    function getDataNotification(){
+        getNotification().then((res) => {
+            setData(res?.data?.items)
+            setTotalCount(res?.data?.totalCount)
+        })
+    }
 
     useEffect(() => {
         (async function getStatus() {
             await getNotificationCount().then((res) => {
+                if (res?.data !== count){
+                    getDataNotification()
+                }
                 setCount(res?.data);
             })
             setTimeout(getStatus, 15000);
@@ -64,7 +71,18 @@ function CommonHeader(props) {
     );
 
     function onHandChange(item) {
+        if (item?.status === "noRead"){
+            updateStatusNotification(item.id,{status : "read"}).then(r => {
+                getDataNotification()
+            })
+        }
+        console.log(item)
+        switch (item?.category){
+            case "PROJECT":
+                navigate("/project/view/" + item?.subjectId);
+                break;
 
+        }
     }
 
     const onChange = (key) => {
@@ -90,7 +108,9 @@ function CommonHeader(props) {
                 type="card"
                 style={{
                     width: "400px",
-                    background: '#BCBDBC'
+                    background: 'white',
+                    border: "1px solid lightgray",
+                    borderRadius: "5px"
                 }}
             >
 
@@ -118,7 +138,7 @@ function CommonHeader(props) {
                             )}
                         </VirtualList>
                     </List>
-                    {button}
+                    {/*{button}*/}
                 </TabPane>
 
             </Tabs>

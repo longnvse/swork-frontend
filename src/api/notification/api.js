@@ -10,6 +10,11 @@ export const getNotificationCount = (params) => {
     return SWAxios.get(urlCount, {params});
 }
 
+export const updateStatusNotification = (id,value) =>{
+    return SWAxios.put(url + `/${id}`,value)
+}
+
+
 
 
 
