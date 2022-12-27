@@ -33,6 +33,10 @@ const WorkForm = ({workId, phaseId, projectId, parentId}) => {
             getWorkPages({projectId, phaseId}).then((res) => {
                 setWorkData(res.data?.items?.map(mapOptionWork) || []);
             });
+        } else {
+            getWorkPages().then((res) => {
+                setWorkData(res.data?.items?.map(mapOptionWork) || []);
+            });
         }
     }, [projectId, phaseId]);
 

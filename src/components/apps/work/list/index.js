@@ -100,7 +100,7 @@ const WorkList = (props) => {
                                 >
                                     {item?.projectName}
                                 </Link>
-                                {item?.projectId && item?.phaseId ? (
+                                {item?.projectId && item?.phaseId || item?.parentId ? (
                                     <span className="mx-2">/</span>
                                 ) : null}
                             </div>
