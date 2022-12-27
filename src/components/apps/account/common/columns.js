@@ -4,10 +4,6 @@ export const columns = [
         dataIndex: 'index'
     },
     {
-        title: 'Tên đăng nhập',
-        dataIndex: 'username',
-    },
-    {
         title: 'Họ và tên',
         dataIndex: 'fullName',
         sorter: {}

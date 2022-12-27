@@ -122,13 +122,13 @@ const ViewWork = () => {
                         disable={isDisable}
                     />
                 </Col>
-                <Col>
+                {workData?.progressType !== "proportionDate" && <Col>
                     <ReportProgressModal
                         disable={isDisable}
                         workId={id}
                         progressType={workData?.progressType}
                     />
-                </Col>
+                </Col>}
             </Row>
         );
     }, [workData, tabKey]);
